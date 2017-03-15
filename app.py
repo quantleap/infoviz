@@ -7,6 +7,15 @@ api = Api(app)
 
 e = create_engine('sqlite:///./data/climate.db')
 
+#  HTML content
+
+
+@app.route('/', methods=['GET'])
+def homepage():
+    return "Hello project - index goes here"
+
+# REST API
+
 
 class City(Resource):
     def get(self, city):
@@ -15,7 +24,25 @@ class City(Resource):
         return {'city': city, 'avg_temperatures': [{'date': r[0], 'avg_temp': r[1]} for r in query.cursor.fetchall()]}
 
 
+class Country(Resource):
+    def get(self, iso_code):
+        conn = e.connect()
+        query_result = conn.execute("select country, continent, population, area, coastline "
+                                    "from country where iso_code = :iso_code", iso_code=iso_code).cursor.fetchone()
+        if query_result:
+            return {'iso_code':  iso_code,
+                    'country': query_result[0],
+                    'continent': query_result[1],
+                    'population': query_result[2],
+                    'area': query_result[3],
+                    'coastline': query_result[4]}
+        else:
+            return {'iso_code': iso_code,
+                    'country': 'unknown'}
+
+
 api.add_resource(City, '/city/<string:city>')
+api.add_resource(Country, '/country/<string:iso_code>')
 
 if __name__ == '__main__':
     app.run(debug=True)

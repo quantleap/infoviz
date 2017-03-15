@@ -16,5 +16,20 @@ def load_city_avg_temperature():
     conn.close()
 
 
+def load_country_dimension_table():
+    # load data from Excel into dataframe
+    df = pd.read_excel('./data/countries.xlsx', sheetname='export')
+
+    # filter and rename columns
+    df = df[['Code_Lower', 'Name', 'Continent', 'Population', 'Area', 'Coastline']]
+    df.columns = ['iso_code', 'country', 'continent', 'population', 'area', 'coastline']
+
+    # write to database
+    conn = sqlite3.connect('./data/climate.db')
+    df.to_sql('country', conn, if_exists='replace', index=False, index_label=['iso_code'])
+    conn.close()
+
+
 if __name__ == '__main__':
-    load_city_avg_temperature()
+    load_country_dimension_table()
+    # load_city_avg_temperature()
