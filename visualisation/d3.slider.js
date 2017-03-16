@@ -5,14 +5,13 @@
 d3.slider = function module() {
   "use strict";
 
-  var div, min = 0, max = 100, svg, svgGroup, value, classPrefix, axis, 
+  var div, min = 0, max = 100, svg, value, axis, 
   height=40, rect,
   rectHeight = 12,
   tickSize = 6,
   margin = {top: 25, right: 25, bottom: 15, left: 25}, 
   ticks = 0, tickValues, scale, tickFormat, dragger, width, 
-  range = false,
-  callbackFn, stepValues, focus;
+  range = false;
 
   function slider(selection) {
     selection.each(function() {
@@ -154,10 +153,6 @@ d3.slider = function module() {
     if (range) { 
       svg.selectAll(".d3slider-rect-value")
       .attr("width", scale(value));
-    }
-
-    if (callbackFn) {
-      callbackFn(slider);
     }
   }
 
