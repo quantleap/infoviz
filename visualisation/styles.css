@@ -1,12 +1,28 @@
 svg {
   background-color: #bbbbff;
-  border: 2px solid #888888;
 }
 
 path {
   fill:   #e0f0d4;
   stroke: #666;
   stroke-width: .5px;
+}
+
+.axis path{
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.axis line {
+    fill: none;
+    stroke: white;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+.axis text {
+	font-size: 10px;
 }
 
 .overlay {
@@ -17,12 +33,11 @@ path {
 #needhelp { 
 	font-family: Helvetica, Arial, Sans-Serif;
 	font-style: italic;
-	
 	margin: 10px 0px 10px 0px;
 }
 
 #needhelp a { 
-text-decoration: none;
+	text-decoration: none;
 }
 
 #midsection {
@@ -35,36 +50,30 @@ text-decoration: none;
 	float: left;
 }
 	
-.sidescreen{
+#sidescreen{
    display:table;
    table-layout:fixed;
    height:100%;
    padding: 0px 0px 0px 10px;
-   width: 500px; // Assuming you have already set 100% height and width to body and html
+   width: 500px;
 }
-.row{
-   display : table-row;
+#row{
+    display : table-row;
+	height: 250px;
 }
-.cell{
-   display : table-cell;
-}
-.first{
-   width : 50%;
-   background: #8080ff;
-}
-.second{
-   width : 50%;
-   background: #b3b3ff; 
-}
-.third{
-   width : 50%;
-   background: #9999ff;
-}
-.forth{
-   width : 50%;
-   background: #bbbbff;
+#row2{
+	display : table-row;
+    height: 250px;
 }
 
 #slider {
 	width:800px;
+}
+
+#first {
+	
+}
+
+#second {
+	margin: 0px 0px 0px 10px;
 }

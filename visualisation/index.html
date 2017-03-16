@@ -17,6 +17,7 @@
 	src="http://d3js.org/topojson.v1.min.js"></script>
 	<script language="javascript" type="text/javascript" src="d3.map.js"></script>
 	<script language="javascript" type="text/javascript" src="d3.slider.js"></script>
+	<script language="javascript" type="text/javascript" src="d3.linechart.js"></script>
 </head>
 
 <body>
@@ -28,14 +29,10 @@
 		<div id="map"></div>
 		
 		
-	<div class="sidescreen">
-	   <div class="row">
-		   <div class="cell first"></div>
-		   <div class="cell second"></div>
+	<div id="sidescreen">
+	   <div id="row">
 	   </div>
-	   <div class="row">
-		   <div class="cell third"></div>
-		   <div class="cell forth"></div>
+	   <div id="row2">
 	   </div>
 	</div>
 
@@ -50,4 +47,10 @@
 	// Initialize slider
 	var slider = d3.slider().min(1900).max(2020).ticks(10).tickFormat(d3.format("f")).showRange(true).value(2017);
 	d3.select('#slider').call(slider);
+	
+	// Initialize first linechart
+	var linechart = d3.linechart('#row',"linedata.csv",'first');
+	var linechart = d3.linechart('#row',"linedata.csv",'second');
+	var linechart = d3.linechart('#row2',"linedata.csv",'first');
+	var linechart = d3.linechart('#row2',"linedata.csv",'second');
 </script>
