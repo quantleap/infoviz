@@ -8,16 +8,16 @@ path {
   stroke-width: .5px;
 }
 
-.axis path{
+.line { 
+    stroke: steelblue;
+    stroke-width: 2;
     fill: none;
-    stroke: grey;
-    stroke-width: 1;
-    shape-rendering: crispEdges;
 }
 
+.axis path,
 .axis line {
     fill: none;
-    stroke: white;
+    stroke: grey;
     stroke-width: 1;
     shape-rendering: crispEdges;
 }
@@ -54,7 +54,7 @@ path {
    display:table;
    table-layout:fixed;
    height:100%;
-   padding: 0px 0px 0px 10px;
+   padding: 0px 0px 0px 5px;
    width: 500px;
 }
 #row{
@@ -75,5 +75,5 @@ path {
 }
 
 #second {
-	margin: 0px 0px 0px 10px;
+	margin: 0px 0px 0px 5px;
 }

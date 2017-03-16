@@ -10,7 +10,7 @@ d3.map = function module(year) {
 	
 	var mapDiv = d3.select('#map');
 	var width  = mapDiv.node().getBoundingClientRect().width; //800
-	var height = 500; // 0.4 * width
+	var height = 505;
 	var plotCenter = [ width/2, height/2 + 100 ];
 
 	var initialLongitude = 0;            // Initial longitude to center

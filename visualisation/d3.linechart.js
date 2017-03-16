@@ -8,7 +8,7 @@ d3.linechart = function module(position,dataSource,id) {
 	// Set the dimensions of the canvas / graph
 	var margin = {top: 30, right: 20, bottom: 30, left: 30},
 		width = 240 - margin.left - margin.right,
-		height = 240 - margin.top - margin.bottom;
+		height = 250 - margin.top - margin.bottom;
 
 	// Parse the date / time
 	var parseDate = d3.time.format("%d-%b-%y").parse;
