@@ -1,5 +1,7 @@
 .idea/
 .ipynb_checkpoints/
 *.db
-data/
+*.zip
+*.xlsx
+*.csv
 venv/
