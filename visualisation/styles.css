@@ -1,0 +1,70 @@
+svg {
+  background-color: #bbbbff;
+  border: 2px solid #888888;
+}
+
+path {
+  fill:   #e0f0d4;
+  stroke: #666;
+  stroke-width: .5px;
+}
+
+.overlay {
+	fill: none;
+	pointer-events: all;
+}
+
+#needhelp { 
+	font-family: Helvetica, Arial, Sans-Serif;
+	font-style: italic;
+	
+	margin: 10px 0px 10px 0px;
+}
+
+#needhelp a { 
+text-decoration: none;
+}
+
+#midsection {
+	width: 1350px;
+	height: 500px;
+	}
+
+#map {
+	width: 800px;
+	float: left;
+}
+	
+.sidescreen{
+   display:table;
+   table-layout:fixed;
+   height:100%;
+   padding: 0px 0px 0px 10px;
+   width: 500px; // Assuming you have already set 100% height and width to body and html
+}
+.row{
+   display : table-row;
+}
+.cell{
+   display : table-cell;
+}
+.first{
+   width : 50%;
+   background: #8080ff;
+}
+.second{
+   width : 50%;
+   background: #b3b3ff; 
+}
+.third{
+   width : 50%;
+   background: #9999ff;
+}
+.forth{
+   width : 50%;
+   background: #bbbbff;
+}
+
+#slider {
+	width:800px;
+}

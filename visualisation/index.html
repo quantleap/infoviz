@@ -1,0 +1,53 @@
+<!-- Sebastiaan Hoekstra stnr 10264523 -->
+
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+
+<head>
+	<meta charset="utf-8">
+	<title>Climate map</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	<link rel="stylesheet" type="text/css" href="d3.slider.css" />
+	<script language="javascript" type="text/javascript" 
+	src="d3/d3.v3.js"></script> <!--d3/d3.v4.js OR https://d3js.org/d3.v3.min.js-->
+	<script language="javascript" type="text/javascript" 
+	src="d3/queue.js"></script> <!--d3/d3.v4.js OR http://d3js.org/queue.v1.min.js-->
+	<script language="javascript" type="text/javascript" 
+	src="http://d3js.org/topojson.v1.min.js"></script>
+	<script language="javascript" type="text/javascript" src="d3.map.js"></script>
+	<script language="javascript" type="text/javascript" src="d3.slider.js"></script>
+</head>
+
+<body>
+	<div id="needhelp">
+	<a href="" > Need help reading this? </a>
+	</div>
+	
+	<div id="midsection">
+		<div id="map"></div>
+		
+		
+	<div class="sidescreen">
+	   <div class="row">
+		   <div class="cell first"></div>
+		   <div class="cell second"></div>
+	   </div>
+	   <div class="row">
+		   <div class="cell third"></div>
+		   <div class="cell forth"></div>
+	   </div>
+	</div>
+
+	</div>
+	
+	<div id="slider"></div>
+	
+<script>
+	// Initialize map
+	var map = d3.map(2017);
+	
+	// Initialize slider
+	var slider = d3.slider().min(1900).max(2020).ticks(10).tickFormat(d3.format("f")).showRange(true).value(2017);
+	d3.select('#slider').call(slider);
+</script>
