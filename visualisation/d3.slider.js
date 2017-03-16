@@ -112,15 +112,11 @@ d3.slider = function module() {
       // Enable dragger drag 
       var dragBehaviour = d3.behavior.drag();
       dragBehaviour.on("drag", slider.drag);
-      dragger.call(dragBehaviour);
-      
-      // Move dragger on click 
-      svg.on("mousedown", slider.click);
-	  svg.on("mouseup", function() {
-		  console.log(Math.round(value));
-		  //d3.map.year = Math.round(value);
+	  dragBehaviour.on("dragend", function() {
+		  d3.map.year = Math.round(value);
 		  d3.map(Math.round(value));
-	  }); //redraw map);
+	  });
+      dragger.call(dragBehaviour);
 	  	 
     });
   }
@@ -131,48 +127,18 @@ d3.slider = function module() {
     }
   }
 
-  slider.click = function() {
-    var pos = d3.event.offsetX || d3.event.layerX;
-    slider.move(pos);
-  }
-
   slider.drag = function() {
     var pos = d3.event.x;
     slider.move(pos+margin.left);
   }
 
   slider.move = function(pos) {
-    var l,u;
-    var newValue = scale.invert(pos - margin.left);
-    // find tick values that are closest to newValue
-    // lower bound
-    if (stepValues != undefined) {
-      l = stepValues.reduce(function(p, c, i, arr){
-        if (c < newValue) {
-          return c;
-        } else {
-          return p;
-        }
-      });
-
-      // upper bound
-      if (stepValues.indexOf(l) < stepValues.length-1) {
-        u = stepValues[stepValues.indexOf(l) + 1];
-      } else {
-        u = l;
-      }
-      // set values
-      var oldValue = value;
-      value = ((newValue-l) <= (u-newValue)) ? l : u;
-    } else {
-      var oldValue = value;
-      value = newValue;
-    }
+    value = scale.invert(pos - margin.left);
     var values = [value];
 
     // Move dragger
     svg.selectAll(".dragger").data(values)
-    .attr("transform", function(d) {
+    .attr("transform", function(d) {		
       return "translate(" + scale(d) + ")";
     });
     
