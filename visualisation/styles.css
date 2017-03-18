@@ -1,11 +1,11 @@
 svg {
-  background-color: #bbbbff;
+	background-color: #bbbbff;
 }
 
 path {
-  fill:   #e0f0d4;
-  stroke: #666;
-  stroke-width: .5px;
+	fill:   #e0f0d4;
+	stroke: #666;
+	stroke-width: .5px;
 }
 
 .line { 
@@ -30,10 +30,23 @@ path {
 	pointer-events: all;
 }
 
+.button {
+	float: left;
+    background-color: #bbbbff;
+    border: none;
+	margin: 0px 5px 0px 0px;
+	padding: 3px 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+}
+
 #needhelp { 
+	float: left;
+	width: 450px;
 	font-family: Helvetica, Arial, Sans-Serif;
 	font-style: italic;
-	margin: 10px 0px 10px 0px;
+	margin: 10px 0px 10px 10px;
 }
 
 #needhelp a { 
@@ -42,8 +55,18 @@ path {
 
 #midsection {
 	width: 1350px;
-	height: 500px;
+	height: 535px;
 	}
+	
+#btmsection {
+	width: 1350px;
+	height: 90px;
+	}	
+
+#topnav {
+	width: 1350px;
+	height: 30px;
+	}	
 
 #map {
 	width: 800px;
@@ -51,23 +74,35 @@ path {
 }
 	
 #sidescreen{
-   display:table;
-   table-layout:fixed;
-   height:100%;
-   padding: 0px 0px 0px 5px;
-   width: 500px;
+	display:table;
+	table-layout:fixed;
+	padding: 0px 0px 0px 5px;
+	width: 460px;
 }
+
+#sidenav {
+	display : table-row;
+	height: 30px;
+	}
+	
+#sideblock {
+	display : table-row;
+	height: 465px;
+	}	
+	
 #row{
     display : table-row;
-	height: 250px;
+	height: 230px;
 }
+
 #row2{
 	display : table-row;
-    height: 250px;
+    height: 230px;
 }
 
 #slider {
 	width:800px;
+	float: left;
 }
 
 #first {

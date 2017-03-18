@@ -21,24 +21,31 @@
 </head>
 
 <body>
-	<div id="needhelp">
-	<a href="" > Need help reading this? </a>
-	</div>
-	
 	<div id="midsection">
-		<div id="map"></div>
-		
-		
-	<div id="sidescreen">
-	   <div id="row">
-	   </div>
-	   <div id="row2">
-	   </div>
+		<div id="topnav">
+			<button class="button" onclick="updateData()">Explore </button>
+			<button class="button" onclick="updateData2()">Compare </button>
+		</div>
+		<div id="map"></div>	
+		<div id="sidescreen">
+			<div id="sidenav">
+				<button class="button" onclick="updateData3()">Annual </button>
+				<button class="button" onclick="updateData4()">Monthly </button>
+			</div>
+			<div id="sideblock">
+			   <div id="row">
+			   </div>
+			   <div id="row2">
+			   </div>
+			</div>
+		</div>
 	</div>
-
+	<div id="btmsection">
+		<div id="slider"></div>
+		<div id="needhelp">
+		<a href="" > Need help reading this? </a>
+		</div>
 	</div>
-	
-	<div id="slider"></div>
 	
 <script>
 	// Initialize map
