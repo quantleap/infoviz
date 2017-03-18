@@ -1,7 +1,9 @@
 // Sebastiaan Hoekstra stnr 10264523 
 
-// Map adapted from Steve Hollasch http://bl.ocks.org/hollasch/12e6627b4a8d7c3ceaac5297fa1d3169
-// Map interaction adapted from KoGor http://bl.ocks.org/KoGor/5685876
+// Partially adapted from:
+// Steve Hollasch http://bl.ocks.org/hollasch/12e6627b4a8d7c3ceaac5297fa1d3169
+// Chris Khoo// http://bl.ocks.org/khoomeister/230e1eff08ee8d6eaf35
+// KoGor http://bl.ocks.org/KoGor/5685876
 
 d3.map = function module(year) {
 	"use strict";
@@ -30,28 +32,35 @@ d3.map = function module(year) {
 		.domain(color_domain)
 		.range(["#adfcad", "#ffcb40", "#ffba00", "#ff7d73", "#ff4e40", "#ff1300"]);
 		
-	//var year = 2017;	
-	console.log(year);
-	
 	//Reading map file and data
 
 	queue()
-	  .defer(d3.json, "world-topo.json")
-	  .defer(d3.csv, "Temperatures.csv")
+	  .defer(d3.json, "worldmap/world-110m2.json")
+	  .defer(d3.tsv, "worldmap/world-country-names.tsv")
+	  .defer(d3.csv, "worldmap/Temperatures.csv")
 	  .await(ready);
 
 	//Start of Choropleth drawing
 
-	function ready(error, world, data) {
+	function ready(error, world, countyNames, tempData) {
+		if (error) throw error;
+		  
 		var tempById = {};
 		var nameById = {};
 
-		data.forEach(function(d) {
-			tempById[d.RegionCode] = +d.Temperature;
+		tempData.forEach(function(d) {
 			nameById[d.RegionCode] = d.RegionName;
+			tempById[d.RegionCode] = d.Temperature;
 			});	
 			
+		let countries = topojson.feature(world, world.objects.countries).features
 
+		countries = countries.filter(function(d) {
+			return countyNames.some(function(n) {
+				if (d.id == n.id) return d.name = n.name
+			})
+		})			
+			
 		function updateProjectionBounds() {
 			// Updates the view top left and bottom right with the current projection.
 			var yaw = projection.rotate()[0];
@@ -95,15 +104,51 @@ d3.map = function module(year) {
 		const colors = ['green', 'blue', 'red'];  
 
 		// Load map data
-		map.selectAll('path')
-			.data(topojson.feature(world, world.objects.countries).features)
-			.enter()
-			.append('path')  
-			.attr("d", path)
-			.style("fill", function(d) {
-				return color(tempById[d.properties.name.toString().concat(year.toString())]); 
+		svg.selectAll('.country')
+		.data(countries)
+		.enter()
+		.append('path')
+		.attr('class', 'country')
+		.attr({
+			'data-name': function(d) {
+			  return d.name
+			},
+			'data-x-centroid': function(d) {
+			  return path.centroid(d)[0]
+			},
+			'data-y-bottom': function(d) {
+			  return path.bounds(d)[1][1]
+			}
+		})
+		.attr('d', path)
+		.on('click', function() {
+			console.log('work')
+			let country = d3.select(this).style('fill', 'yellow')
+			let countryName = country.attr('data-name')
+			let xCentroid = country.attr('data-x-centroid')
+			let yBottom = country.attr('data-y-bottom')
+
+			nameTag.style('visibility', 'hidden')
+			nameTag.text(countryName)
+			let textWidth = nameTag.node().getComputedTextLength()
+
+			nameTag.attr({
+		   x: xCentroid - (textWidth / 2),
+			  y: Number(yBottom) + (countryName === 'Antarctica' ? -70 : 15),
 			})
-			.style("opacity", 0.8)
+			nameTag.style('visibility', 'visible')
+			console.log('in')
+		})
+		//.on('mouseout', function() {
+		//	console.log('out')
+		//	d3.select(this).style('fill', '#C0D9AF')
+		//	nameTag.style('visibility', 'hidden')
+		//})
+		//.attr('title', 'Blah')
+
+		let nameTag = svg.append('text')
+		.attr('font-family', 'Verdana')
+		.attr('font-size', '15px')
 		
 		render();
 		
@@ -114,9 +159,9 @@ d3.map = function module(year) {
 		function render() {
 			map.selectAll('path')       // Redraw all map paths
 				.attr('d', path)
-				.style("fill", function(d) {
-				return color(tempById[d.properties.name.toString().concat(year.toString())]); 
-			});
+				//.style("fill", function(d) {
+				//return color(tempById[d.properties.name.toString().concat(year.toString())]); 
+			//});
 		}
 
 		function handlePanZoom() {
