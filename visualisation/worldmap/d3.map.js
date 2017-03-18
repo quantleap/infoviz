@@ -139,13 +139,13 @@ d3.map = function module(year) {
 		.attr('font-family', 'Verdana')
 		.attr('font-size', '15px')
 		
-		renderMap(year);
+		render(year);
 		
 		// The following variables track the last processed event.
 		var translateLast = [0,0];
 		var scaleLast     = null;
 
-		function renderMap(newYear) {
+		function render(newYear) {
 			year = newYear;
 			map.selectAll('path')       // Redraw all map paths
 				.attr('d', path)
@@ -188,7 +188,7 @@ d3.map = function module(year) {
 			scaleLast = scale;
 			translateLast = translate;
 
-			renderMap();
+			render();
 		};
 	};
 

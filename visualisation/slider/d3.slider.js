@@ -107,13 +107,11 @@ d3.slider = function module() {
         return "translate(0,6)";
       });
 
-
       // Enable dragger drag 
       var dragBehaviour = d3.behavior.drag();
       dragBehaviour.on("drag", slider.drag);
 	  dragBehaviour.on("dragend", function() {
-		  d3.map.year = Math.round(value);
-		  d3.map.renderMap(Math.round(value));
+		  d3.map(Math.round(value));
 	  });
       dragger.call(dragBehaviour);
 	  	 
