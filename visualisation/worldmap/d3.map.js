@@ -42,21 +42,23 @@ d3.map = function module(year) {
 
 	//Start of Choropleth drawing
 
-	function ready(error, world, countyNames, tempData) {
+	function ready(error, world, countryNames, tempData) {
 		if (error) throw error;
 		  
 		var tempById = {};
 		var nameById = {};
 
+		countryNames.forEach(function(d){
+			nameById[d.id] = d.name;
+		});
 		tempData.forEach(function(d) {
-			nameById[d.RegionCode] = d.RegionName;
 			tempById[d.RegionCode] = d.Temperature;
 			});	
 			
 		let countries = topojson.feature(world, world.objects.countries).features
 
 		countries = countries.filter(function(d) {
-			return countyNames.some(function(n) {
+			return countryNames.some(function(n) {
 				if (d.id == n.id) return d.name = n.name
 			})
 		})			
@@ -121,30 +123,27 @@ d3.map = function module(year) {
 			}
 		})
 		.attr('d', path)
-		.on('click', function() {
-			console.log('work')
-			let country = d3.select(this).style('fill', 'yellow')
+		.style("fill", function(d) {
+				return color(tempById[nameById[d.id].toString().concat(year.toString())]);
+			})
+		.on('mousedown', function() {
+			let country = d3.select(this).style('stroke-width', '3px').style('stroke', 'white')
 			let countryName = country.attr('data-name')
 			let xCentroid = country.attr('data-x-centroid')
 			let yBottom = country.attr('data-y-bottom')
-
 			nameTag.style('visibility', 'hidden')
 			nameTag.text(countryName)
 			let textWidth = nameTag.node().getComputedTextLength()
-
 			nameTag.attr({
-		   x: xCentroid - (textWidth / 2),
-			  y: Number(yBottom) + (countryName === 'Antarctica' ? -70 : 15),
+				x: xCentroid - (textWidth / 2),
+				y: Number(yBottom) + (countryName === 'Antarctica' ? -70 : 15),
 			})
 			nameTag.style('visibility', 'visible')
-			console.log('in')
 		})
-		//.on('mouseout', function() {
-		//	console.log('out')
-		//	d3.select(this).style('fill', '#C0D9AF')
-		//	nameTag.style('visibility', 'hidden')
-		//})
-		//.attr('title', 'Blah')
+		.on('mouseup', function() {
+			let country = d3.select(this).style('stroke-width', '.5px').style('stroke', '#666')
+			nameTag.style('visibility', 'hidden')
+		})
 
 		let nameTag = svg.append('text')
 		.attr('font-family', 'Verdana')
