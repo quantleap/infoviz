@@ -18,3 +18,9 @@ six (1.10.0)
 SQLAlchemy (1.1.6)
 Werkzeug (0.12.1)
 wheel (0.29.0)
+
+NOT PART OF ANACONDA
+conda update --all
+* conda install -c conda-forge appdirs=1.4.3y
+* conda install -c anaconda flask=0.12
+* conda install -c menpo flask-restful=0.2.12

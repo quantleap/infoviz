@@ -8,37 +8,44 @@
 	<meta charset="utf-8">
 	<title>Climate map</title>
 	<link rel="stylesheet" type="text/css" href="styles.css">
-	<link rel="stylesheet" type="text/css" href="d3.slider.css" />
+	<link rel="stylesheet" type="text/css" href="slider/d3.slider.css" />
 	<script language="javascript" type="text/javascript" 
-	src="d3/d3.v3.js"></script> <!--d3/d3.v4.js OR https://d3js.org/d3.v3.min.js-->
+	src="d3/d3.v3.min.js"></script> <!--d3/d3.v4.js OR https://d3js.org/d3.v3.min.js-->
 	<script language="javascript" type="text/javascript" 
 	src="d3/queue.js"></script> <!--d3/d3.v4.js OR http://d3js.org/queue.v1.min.js-->
 	<script language="javascript" type="text/javascript" 
-	src="http://d3js.org/topojson.v1.min.js"></script>
-	<script language="javascript" type="text/javascript" src="d3.map.js"></script>
-	<script language="javascript" type="text/javascript" src="d3.slider.js"></script>
-	<script language="javascript" type="text/javascript" src="d3.linechart.js"></script>
+	src="http://d3js.org/topojson.v1.min.js"></script> <!-- http://d3js.org/topojson.v1.min.js -->
+	<script language="javascript" type="text/javascript" src="worldmap/d3.map.js"></script>
+	<script language="javascript" type="text/javascript" src="slider/d3.slider.js"></script>
+	<script language="javascript" type="text/javascript" src="linechart/d3.linechart.js"></script>
 </head>
 
 <body>
-	<div id="needhelp">
-	<a href="" > Need help reading this? </a>
-	</div>
-	
 	<div id="midsection">
-		<div id="map"></div>
-		
-		
-	<div id="sidescreen">
-	   <div id="row">
-	   </div>
-	   <div id="row2">
-	   </div>
+		<div id="topnav">
+			<button class="button" onclick="updateData()">Explore </button>
+			<button class="button" onclick="updateData2()">Compare </button>
+		</div>
+		<div id="map"></div>	
+		<div id="sidescreen">
+			<div id="sidenav">
+				<button class="button" onclick="updateData3()">Annual </button>
+				<button class="button" onclick="updateData4()">Monthly </button>
+			</div>
+			<div id="sideblock">
+			   <div id="row">
+			   </div>
+			   <div id="row2">
+			   </div>
+			</div>
+		</div>
 	</div>
-
+	<div id="btmsection">
+		<div id="slider"></div>
+		<div id="needhelp">
+		<a href="" > Need help reading this? </a>
+		</div>
 	</div>
-	
-	<div id="slider"></div>
 	
 <script>
 	// Initialize map
@@ -49,8 +56,8 @@
 	d3.select('#slider').call(slider);
 	
 	// Initialize first linechart
-	var linechart = d3.linechart('#row',"linedata.csv",'first');
-	var linechart = d3.linechart('#row',"linedata.csv",'second');
-	var linechart = d3.linechart('#row2',"linedata.csv",'first');
-	var linechart = d3.linechart('#row2',"linedata.csv",'second');
+	var linechart = d3.linechart('#row',"linechart/linedata.csv",'first');
+	var linechart = d3.linechart('#row',"linechart/linedata.csv",'second');
+	var linechart = d3.linechart('#row2',"linechart/linedata.csv",'first');
+	var linechart = d3.linechart('#row2',"linechart/linedata.csv",'second');
 </script>
