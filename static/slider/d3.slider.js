@@ -67,7 +67,7 @@ d3.slider = function module() {
       
       svg.append("g")
       .attr("transform", "translate(0," + rectHeight + ")")
-      .call(axis)
+      .call(axis);
    
       var values = [value];
       dragger = svg.selectAll(".dragger")
@@ -77,7 +77,7 @@ d3.slider = function module() {
       .attr("class", "dragger")
       .attr("transform", function(d) {
         return "translate(" + scale(d) + ")";
-      }) 
+      });
       
       var displayValue = null;
       if (tickFormat) { 
@@ -124,12 +124,12 @@ d3.slider = function module() {
     return function(d) {
       return "translate(" + scale(d) + ")";
     }
-  }
+  };
 
   slider.drag = function() {
     var pos = d3.event.x;
     slider.move(pos+margin.left);
-  }
+  };
 
   slider.move = function(pos) {
     value = scale.invert(pos - margin.left);
@@ -154,7 +154,7 @@ d3.slider = function module() {
       svg.selectAll(".d3slider-rect-value")
       .attr("width", scale(value));
     }
-  }
+  };
 
   // Getter/setter functions
   slider.min = function(_) {
@@ -173,25 +173,25 @@ d3.slider = function module() {
     if (!arguments.length) return ticks;
     ticks = _;
     return slider;
-  }
+  };
   
   slider.tickFormat = function(_) {
     if (!arguments.length) return tickFormat;
     tickFormat = _;
     return slider;
-  } 
+  };
 
   slider.value = function(_) {
     if (!arguments.length) return value;
     value = _;
     return slider;
-  } 
+  };
   
   slider.showRange = function(_) {
     if (!arguments.length) return range;
     range = _;
     return slider;
-  } 
+  };
 
   return slider;
 

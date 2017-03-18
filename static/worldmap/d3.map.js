@@ -35,9 +35,9 @@ d3.map = function module(year) {
 	//Reading map file and data
 
 	queue()
-	  .defer(d3.json, "worldmap/world-110m2.json")
-	  .defer(d3.tsv, "worldmap/world-country-names.tsv")
-	  .defer(d3.csv, "worldmap/Temperatures.csv")
+	  .defer(d3.json, "world-110m2.json")
+	  .defer(d3.tsv, "world-country-names.tsv")
+	  .defer(d3.csv, "Temperatures.csv")
 	  .await(ready);
 
 	//Start of Choropleth drawing

@@ -38,7 +38,7 @@ def load_country_temperatures(drop_staging_table=False):
     conn.execute('''insert into country_temperatures
                       select strftime('%Y', [date]) as year, iso_code, avg(avg_temp) as avg_temp
                       from staging_country_temperatures as st
-                      join dimension_country as dim on st.country = dim.country
+                      join dimension_country as dim on lower(st.country) = lower(dim.country)
                       group by year
                       ''')
 
