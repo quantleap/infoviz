@@ -33,11 +33,15 @@ def load_country_temperatures(drop_staging_table=False):
     # drop and create country temperatures table, insert staging data
     conn.execute('''drop table if exists country_temperatures''')
     conn.execute('''create table country_temperatures
-                    (date text, iso_code text, avg_temp real)''')
+                    (year text, iso_code text, avg_temp real)''')
+
     conn.execute('''insert into country_temperatures
-                      select [date], iso_code, avg_temp
-                      from staging_country_temperatures join dimension_country
-                      on staging_country_temperatures.country = dimension_country.country''')
+                      select strftime('%Y', [date]) as year, iso_code, avg(avg_temp) as avg_temp
+                      from staging_country_temperatures as st
+                      join dimension_country as dim on st.country = dim.country
+                      group by year
+                      ''')
+
     if drop_staging_table:
         conn.execute('''drop table staging_country_temperatures''')
     conn.commit()
@@ -59,12 +63,15 @@ def load_country_co2(drop_staging_table=False):
 
     # drop and create country temperatures table, insert staging data
     conn.execute('''drop table if exists country_co2_emissions''')
+
     conn.execute('''create table country_co2_emissions
                     (year text, iso_code text, co2_emission real)''')
+
     conn.execute('''insert into country_co2_emissions
                       select year, iso_code, co2_emission
                       from staging_country_co2_emissions join dimension_country
                       on staging_country_co2_emissions.country = dimension_country.country''')
+
     if drop_staging_table:
         conn.execute('''drop table staging_country_co2_emissions''')
     conn.commit()
@@ -86,7 +93,7 @@ def load_country_dimension_table():
 
 
 if __name__ == '__main__':
-    #load_country_temperatures()
-    load_country_co2()
+    load_country_temperatures()
+    #load_country_co2()
     # load_country_dimension_table()
     # load_city_avg_temperatures()

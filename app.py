@@ -51,26 +51,29 @@ class Country(Resource):
 class CountryTemperatures(Resource):
     def get(self, iso_code):
         conn = e.connect()
-        query_result = conn.execute('''select [date], avg_temp from country_temperatures where iso_code = :iso_code''',
+        query_result = conn.execute('''select year, avg_temp
+                                       from country_temperatures
+                                       where iso_code = :iso_code''',
                                     iso_code=iso_code).cursor.fetchall()
 
         return {'country': get_country_by_iso(conn, iso_code),
                 'iso_code': iso_code,
-                'temperatures': [{'date': r[0],
+                'temperatures': [{'year': r[0],
                                   'avg_temp': r[1]} for r in query_result]}
 
 
 class CountryCO2Emissions(Resource):
     def get(self, iso_code):
         conn = e.connect()
-        query_result = conn.execute('''select year, co2_emission from country_co2_emissions
+        query_result = conn.execute('''select year, co2_emission
+                                       from country_co2_emissions
                                        where iso_code = :iso_code''',
                                     iso_code=iso_code).cursor.fetchall()
 
         return {'country': get_country_by_iso(conn, iso_code),
                 'iso_code': iso_code,
                 'co2_emissions': [{'year': r[0],
-                                  'co2_emission': r[1]} for r in query_result]}
+                                   'co2_emission': r[1]} for r in query_result]}
 
 
 api.add_resource(City, '/city/<string:city>')

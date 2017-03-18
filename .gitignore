@@ -2,6 +2,6 @@
 .ipynb_checkpoints/
 *.db
 *.zip
-*.xlsx
+*.xls[x]
 *.csv
 venv/
