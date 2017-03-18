@@ -113,7 +113,7 @@ d3.slider = function module() {
       dragBehaviour.on("drag", slider.drag);
 	  dragBehaviour.on("dragend", function() {
 		  d3.map.year = Math.round(value);
-		  d3.map(Math.round(value));
+		  d3.map.renderMap(Math.round(value));
 	  });
       dragger.call(dragBehaviour);
 	  	 

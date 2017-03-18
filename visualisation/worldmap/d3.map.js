@@ -12,7 +12,7 @@ d3.map = function module(year) {
 	
 	var mapDiv = d3.select('#map');
 	var width  = mapDiv.node().getBoundingClientRect().width; //800
-	var height = 505;
+	var height = mapDiv.node().getBoundingClientRect().height; //505;
 	var plotCenter = [ width/2, height/2 + 100 ];
 
 	var initialLongitude = 0;            // Initial longitude to center
@@ -90,11 +90,6 @@ d3.map = function module(year) {
 
 		var map = svg.append('g');          // Map Group
 
-		svg.append("rect")
-			.attr("class", "overlay")
-			.attr("width", width)
-			.attr("height", height);
-
 		var zoom = d3.behavior.zoom()       // Set up zoom
 			.size([width,height])
 			.scaleExtent(scaleExtent)
@@ -103,10 +98,8 @@ d3.map = function module(year) {
 
 		svg.call(zoom);                     // Attach zoom event
 
-		const colors = ['green', 'blue', 'red'];  
-
 		// Load map data
-		svg.selectAll('.country')
+		map.selectAll('.country')
 		.data(countries)
 		.enter()
 		.append('path')
@@ -129,14 +122,11 @@ d3.map = function module(year) {
 		.on('mousedown', function() {
 			let country = d3.select(this).style('stroke-width', '3px').style('stroke', 'white')
 			let countryName = country.attr('data-name')
-			let xCentroid = country.attr('data-x-centroid')
-			let yBottom = country.attr('data-y-bottom')
 			nameTag.style('visibility', 'hidden')
 			nameTag.text(countryName)
-			let textWidth = nameTag.node().getComputedTextLength()
 			nameTag.attr({
-				x: xCentroid - (textWidth / 2),
-				y: Number(yBottom) + (countryName === 'Antarctica' ? -70 : 15),
+				x: 5,
+				y: height - 5,
 			})
 			nameTag.style('visibility', 'visible')
 		})
@@ -149,13 +139,14 @@ d3.map = function module(year) {
 		.attr('font-family', 'Verdana')
 		.attr('font-size', '15px')
 		
-		render();
+		renderMap(year);
 		
 		// The following variables track the last processed event.
 		var translateLast = [0,0];
 		var scaleLast     = null;
 
-		function render() {
+		function renderMap(newYear) {
+			year = newYear;
 			map.selectAll('path')       // Redraw all map paths
 				.attr('d', path)
 				//.style("fill", function(d) {
@@ -197,7 +188,7 @@ d3.map = function module(year) {
 			scaleLast = scale;
 			translateLast = translate;
 
-			render();
+			renderMap();
 		};
 	};
 

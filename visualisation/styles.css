@@ -59,6 +59,7 @@ path {
 	}
 	
 #btmsection {
+	padding: 5px 0px 0px 0px;
 	width: 1350px;
 	height: 90px;
 	}	
@@ -70,6 +71,7 @@ path {
 
 #map {
 	width: 800px;
+	height: 505px;
 	float: left;
 }
 	
