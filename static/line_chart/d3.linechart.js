@@ -2,7 +2,7 @@
 
 // Linechart adapted from D3noob http://bl.ocks.org/d3noob/b3ff6ae1c120eea654b5
 
-d3.linechart = function module(position,dataSource,id) {
+d3.linechart = function module(position,title,dataSource,id) {
 	"use strict";
 		
 	// Set the dimensions of the canvas / graph
@@ -37,7 +37,7 @@ d3.linechart = function module(position,dataSource,id) {
 			.attr("height", height + margin.top + margin.bottom)
 		.append("g")
 			.attr("transform", 
-				  "translate(" + margin.left + "," + margin.top + ")");
+				  "translate(" + margin.left + "," + margin.top + ")")
 
 	// Get the data
 	d3.csv(dataSource, function(error, data) {
@@ -50,10 +50,17 @@ d3.linechart = function module(position,dataSource,id) {
 		x.domain(d3.extent(data, function(d) { return d.date; }));
 		y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
-		// Add the valueline path.
+		// Add the valueline path
 		svg.append("path")
 			.attr("class", "line")
 			.attr("d", valueline(data));
+		
+		// Add the title	
+		svg.append("text")
+			.attr("x", (width / 2))             
+			.attr("y", 5 - (margin.top / 2))
+			.attr("text-anchor", "middle")  
+			.text(title);
 
 		// Add the X Axis
 		svg.append("g")

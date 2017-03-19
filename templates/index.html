@@ -47,7 +47,7 @@
 	
 <script>
 	// Initialize map
-	var map = d3.map(2017);
+	var map = d3.map(2017,[0,0],null);
 	
 	// Initialize slider
 	var slider = d3.slider().min(1900).max(2020).ticks(10).tickFormat(d3.format("f")).showRange(true).value(2017);
