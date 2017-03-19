@@ -24,6 +24,7 @@ def load_country_temperatures(drop_staging_table=False):
     logging.info('load country temperature table')
 
     # load data from csv into dataframe
+    logging.info('.. staging')
     df = pd.read_csv('./data/GlobalLandTemperatures/GlobalLandTemperaturesByCountry.csv')
 
     # filter and rename columns
@@ -35,8 +36,9 @@ def load_country_temperatures(drop_staging_table=False):
     df.to_sql('staging_country_temperatures', con, if_exists='replace', index=False, index_label='country')
 
     # load country mappings - columns: dimension, staging
+    logging.info('.. mapping')
     df = pd.read_excel('./data/GlobalLandTemperatures/GlobalLandTemperaturesByCountry_mapping.xlsx', sheetname='country mapping ')
-    df.to_sql('mapping_country_temperatures', con, if_exists='replace', index=False)
+    df.to_sql('mapping_country_temperatures', con, if_exists='replace', index=False, index_label='staging')
 
     # map countries where name does not exist in the dimension table
     cur = con.cursor()
@@ -50,25 +52,41 @@ def load_country_temperatures(drop_staging_table=False):
                            SELECT *
                            FROM mapping_country_temperatures
                            WHERE mapping_country_temperatures.staging = staging_country_temperatures.country
-                   )
-                   ''')
+                   )''')
 
-    # drop and create country temperatures table
-    cur.execute('''drop table if exists country_temperatures''')
-    cur.execute('''create table country_temperatures
+    # drop and create country MONTHLY temperatures table
+    logging.info('.. insert monthly')
+    cur.execute('''drop table if exists country_monthly_temperatures''')
+    cur.execute('''create table country_monthly_temperatures
+                    (month text, iso_code text, avg_temp real)''')
+    con.commit()
+
+    # insert staging data
+    cur.execute('''insert into country_monthly_temperatures
+                      select strftime('%Y-%m', [date]) as month, iso_code, avg_temp
+                      from staging_country_temperatures as st
+                      join dimension_country as dim on lower(st.country) = lower(dim.country)''')
+    cur.execute('''create index idx_country_monthly_temperatures on country_monthly_temperatures (iso_code)''')
+    con.commit()
+
+    # drop and create country ANNUAL temperatures table
+    logging.info('.. insert annual')
+    cur.execute('''drop table if exists country_annual_temperatures''')
+    cur.execute('''create table country_annual_temperatures
                     (year text, iso_code text, avg_temp real)''')
     con.commit()
 
     # insert staging data
-    cur.execute('''insert into country_temperatures
+    cur.execute('''insert into country_annual_temperatures
                       select strftime('%Y', [date]) as year, iso_code, avg(avg_temp) as avg_temp
                       from staging_country_temperatures as st
                       join dimension_country as dim on lower(st.country) = lower(dim.country)
-                      group by year
-                      ''')
+                      group by year''')
+    cur.execute('''create index idx_country_annual_temperatures on country_monthly_temperatures (iso_code)''')
     con.commit()
 
     if drop_staging_table:
+        logging.info('.. drop staging table')
         cur.execute('''drop table staging_country_temperatures''')
 
 
@@ -122,5 +140,5 @@ if __name__ == '__main__':
 
     load_country_dimension_table()
     load_country_temperatures()
-    #load_country_co2()
+    # load_country_co2()
     # load_city_avg_temperatures()
