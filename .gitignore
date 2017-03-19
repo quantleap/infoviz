@@ -4,7 +4,7 @@
 *.zip
 *.xls*
 venv/
-
+__pycache__
 
 # specific data files
 GlobalLandTemperatures/

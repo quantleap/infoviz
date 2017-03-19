@@ -81,7 +81,7 @@ def load_country_temperatures(drop_staging_table=False):
                       select strftime('%Y', [date]) as year, iso_code, avg(avg_temp) as avg_temp
                       from staging_country_temperatures as st
                       join dimension_country as dim on lower(st.country) = lower(dim.country)
-                      group by year''')
+                      group by year, iso_code''')
     cur.execute('''create index idx_country_annual_temperatures on country_monthly_temperatures (iso_code)''')
     con.commit()
 
