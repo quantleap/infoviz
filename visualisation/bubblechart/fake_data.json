@@ -1,0 +1,101 @@
+{
+  "country": "United Kingdom",
+
+  "iso_code": "gb",
+
+  "population": 64100000,
+
+  "temperatures": [
+  {
+    "avg_temp": 5.1,
+    "year": 1990
+  },
+  {
+    "avg_temp": 5.7,
+    "year": 1991
+  },
+  {
+    "avg_temp": 5.6,
+    "year": 1992
+  },
+  {
+    "avg_temp": 5.2,
+    "year": 1993
+  },
+  {
+    "avg_temp": 5.4,
+    "year": 1994
+  },
+  {
+    "avg_temp": 5.3,
+    "year": 1995
+  },
+  {
+    "avg_temp": 5.2,
+    "year": 1996
+  },
+  {
+    "avg_temp": 5.5,
+    "year": 1997
+  },
+  {
+    "avg_temp": 5.9,
+    "year": 1998
+  },
+  {
+    "avg_temp": 5.8,
+    "year": 1999
+  },
+  {
+    "avg_temp": 6.1,
+    "year": 2000
+  }
+  ],
+
+  "emissions": [
+  {
+    "emission": 1000,
+    "year": 1990
+  },
+  {
+    "emission": 1050,
+    "year": 1991
+  },
+  {
+    "emission": 1100,
+    "year": 1992
+  },
+  {
+    "emission": 1150,
+    "year": 1993
+  },
+  {
+    "emission": 1200,
+    "year": 1994
+  },
+  {
+    "emission": 1250,
+    "year": 1995
+  },
+  {
+    "emission": 1300,
+    "year": 1996
+  },
+  {
+    "emission": 1350,
+    "year": 1997
+  },
+  {
+    "emission": 1400,
+    "year": 1998
+  },
+  {
+    "emission": 1450,
+    "year": 1999
+  },
+  {
+    "emission": 1500,
+    "year": 2000
+  }
+  ]
+}
