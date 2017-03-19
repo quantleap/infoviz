@@ -3,5 +3,8 @@
 *.db
 *.zip
 *.xls*
-*.csv
 venv/
+
+
+# specific data files
+CAIT Country CO2 Emissions.csv

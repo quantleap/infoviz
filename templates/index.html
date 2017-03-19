@@ -12,10 +12,10 @@
 
     <script src="{{ url_for('static', filename='d3/d3.v3.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='d3/queue.js') }}"></script>
-	<script src="{{ url_for('static', filename='d3/topojson.v1.min.js') }}"></script>
-	<script src="{{ url_for('static', filename='worldmap/d3.map.js') }}"></script>
+	<script src="{{ url_for('static', filename='world_map/topojson.v1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='world_map/d3.map.js') }}"></script>
 	<script src="{{ url_for('static', filename='slider/d3.slider.js') }}"></script>
-	<script src="{{ url_for('static', filename='linechart/d3.linechart.js') }}"></script>
+	<script src="{{ url_for('static', filename='line_chart/d3.linechart.js') }}"></script>
 </head>
 
 <body>
@@ -53,9 +53,9 @@
 	var slider = d3.slider().min(1900).max(2020).ticks(10).tickFormat(d3.format("f")).showRange(true).value(2017);
 	d3.select('#slider').call(slider);
 	
-	// Initialize first linechart
-	var linechart = d3.linechart('#row',"linechart/linedata.csv",'first');
-	var linechart = d3.linechart('#row',"linechart/linedata.csv",'second');
-	var linechart = d3.linechart('#row2',"linechart/linedata.csv",'first');
-	var linechart = d3.linechart('#row2',"linechart/linedata.csv",'second');
+	// Initialize first line chart
+	var linechart = d3.linechart('#row','Absolute temperatures', 'static/line_chart/line_data.csv', 'first');
+	var linechart = d3.linechart('#row','Temperature changes', 'static/line_chart/line_data.csv', 'second');
+	var linechart = d3.linechart('#row2','Comparison per country', 'static/line_chart/line_data.csv' ,'first');
+	var linechart = d3.linechart('#row2','Extreme values', 'static/line_chart/line_data.csv', 'second');
 </script>

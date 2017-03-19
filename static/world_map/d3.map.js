@@ -26,8 +26,8 @@ d3.map = function module(year) {
 	var viewMin = [ 0, 0 ];
 	var viewMax = [ 0, 0 ];
 
-	var color_domain = [0, 10, 20, 30, 40];
-	var ext_color_domain = [0, 50, 150, 350, 750, 1500];  // todo: unused ??
+	var color_domain = [0, 10, 20, 30, 40]
+	var ext_color_domain = [0, 50, 150, 350, 750, 1500]	
 	var color = d3.scale.threshold()
 		.domain(color_domain)
 		.range(["#adfcad", "#ffcb40", "#ffba00", "#ff7d73", "#ff4e40", "#ff1300"]);
@@ -35,9 +35,9 @@ d3.map = function module(year) {
 	//Reading map file and data
 
 	queue()
-	  .defer(d3.json, "world-110m2.json")
-	  .defer(d3.tsv, "world-country-names.tsv")
-	  .defer(d3.csv, "Temperatures.csv")
+	  .defer(d3.json, "static/world_map/world-110m2.json")
+	  .defer(d3.tsv, "static/world_map/world-country-names.tsv")
+	  .defer(d3.csv, "static/world_map/Temperatures.csv")
 	  .await(ready);
 
 	//Start of Choropleth drawing
@@ -55,13 +55,13 @@ d3.map = function module(year) {
 			tempById[d.RegionCode] = d.Temperature;
 			});	
 			
-		let countries = topojson.feature(world, world.objects.countries).features;
+		let countries = topojson.feature(world, world.objects.countries).features
 
 		countries = countries.filter(function(d) {
 			return countryNames.some(function(n) {
 				if (d.id == n.id) return d.name = n.name
 			})
-		});
+		})			
 			
 		function updateProjectionBounds() {
 			// Updates the view top left and bottom right with the current projection.
@@ -86,7 +86,7 @@ d3.map = function module(year) {
 
 		var svg = mapDiv.append('svg')      // Set up map SVG element
 			.attr('width',width)
-			.attr('height',height);
+			.attr('height',height)
 
 		var map = svg.append('g');          // Map Group
 
@@ -97,8 +97,6 @@ d3.map = function module(year) {
 			.on("zoom", handlePanZoom);
 
 		svg.call(zoom);                     // Attach zoom event
-
-		const colors = ['green', 'blue', 'red'];  
 
 		// Load map data
 		map.selectAll('.country')
@@ -122,13 +120,10 @@ d3.map = function module(year) {
 				return color(tempById[nameById[d.id].toString().concat(year.toString())]);
 			})
 		.on('mousedown', function() {
-			let country = d3.select(this).style('stroke-width', '3px').style('stroke', 'white');
-			let countryName = country.attr('data-name');
-			let xCentroid = country.attr('data-x-centroid');
-			let yBottom = country.attr('data-y-bottom');
-			nameTag.style('visibility', 'hidden');
-			nameTag.text(countryName);
-			let textWidth = nameTag.node().getComputedTextLength()
+			let country = d3.select(this).style('stroke-width', '3px').style('stroke', 'white')
+			let countryName = country.attr('data-name')
+			nameTag.style('visibility', 'hidden')
+			nameTag.text(countryName)
 			nameTag.attr({
 				x: 5,
 				y: height - 5,
@@ -136,13 +131,13 @@ d3.map = function module(year) {
 			nameTag.style('visibility', 'visible')
 		})
 		.on('mouseup', function() {
-			let country = d3.select(this).style('stroke-width', '.5px').style('stroke', '#666');
+			let country = d3.select(this).style('stroke-width', '.5px').style('stroke', '#666')
 			nameTag.style('visibility', 'hidden')
-		});
+		})
 
 		let nameTag = svg.append('text')
 		.attr('font-family', 'Verdana')
-		.attr('font-size', '15px');
+		.attr('font-size', '15px')
 		
 		render(year);
 		
@@ -153,7 +148,7 @@ d3.map = function module(year) {
 		function render(newYear) {
 			year = newYear;
 			map.selectAll('path')       // Redraw all map paths
-				.attr('d', path);
+				.attr('d', path)
 				//.style("fill", function(d) {
 				//return color(tempById[d.properties.name.toString().concat(year.toString())]); 
 			//});
@@ -198,4 +193,3 @@ d3.map = function module(year) {
 	};
 
 };
-

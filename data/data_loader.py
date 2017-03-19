@@ -86,10 +86,6 @@ def load_country_dimension_table():
     # load data from Excel into dataframe
     df = pd.read_excel('./data/countries.xlsx', sheetname='export')
 
-    # filter and rename columns
-    df = df[['Code_Lower', 'Country', 'Population', 'Area', 'Coastline']]
-    df.columns = ['iso_code', 'country', 'population', 'area', 'coastline']
-
     # write to database
     con = sqlite3.connect('./data/climate.db')
 
@@ -103,6 +99,6 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
 
     load_country_dimension_table()
-    load_country_temperatures()
-    load_country_co2()
+    #load_country_temperatures()
+    #load_country_co2()
     # load_city_avg_temperatures()
