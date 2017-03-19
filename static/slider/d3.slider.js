@@ -12,11 +12,14 @@ d3.slider = function module() {
   margin = {top: 25, right: 25, bottom: 15, left: 25}, 
   ticks = 0, tickValues, scale, tickFormat, dragger, width, 
   range = false;
+ 
 
   function slider(selection) {
     selection.each(function() {
       div = d3.select(this).classed('d3slider', true);
-      width = parseInt(div.style("width"), 10)-(margin.left                                                + margin.right');
+      width = parseInt(div.style("width"), 10)-(margin.left 
+                                                + margin.right);
+	  
 	  
       value = value || min; 
       scale = d3.scale.linear().domain([min, max]).range([0, width])
