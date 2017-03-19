@@ -32,15 +32,15 @@ d3.map = function module(year) {
 		.domain(color_domain)
 		.range(["#adfcad", "#ffcb40", "#ffba00", "#ff7d73", "#ff4e40", "#ff1300"]);
 		
-	//Reading map file and data
+	// Reading map file and data
 
 	queue()
-	  .defer(d3.json, "world-110m2.json")
-	  .defer(d3.tsv, "world-country-names.tsv")
-	  .defer(d3.csv, "Temperatures.csv")
+	  .defer(d3.json, "static/world_map/world-110m2.json")
+	  .defer(d3.tsv, "static/world_map/world-country-names.tsv")
+	  .defer(d3.csv, "static/world_map/Temperatures.csv")
 	  .await(ready);
 
-	//Start of Choropleth drawing
+	// Start of Choropleth drawing
 
 	function ready(error, world, countryNames, tempData) {
 		if (error) throw error;
