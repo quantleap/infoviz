@@ -1,4 +1,7 @@
 from flask_restful import Resource
+from sqlalchemy import create_engine
+
+engine = create_engine('sqlite:///./data/climate.db')
 
 
 def get_country_by_iso(conn, iso_code):
@@ -8,7 +11,7 @@ def get_country_by_iso(conn, iso_code):
 
 class City(Resource):
     def get(self, city):
-        conn = e.connect()
+        conn = engine.connect()
         query = conn.execute('''select date, avg_temperature from city where city = :city order by date desc''',
                              city=city)
         return {'city': city, 'temperatures': [{'date': r[0],
@@ -17,17 +20,16 @@ class City(Resource):
 
 class Country(Resource):
     def get(self, iso_code):
-        conn = e.connect()
-        query_result = conn.execute('''select country, continent, population, area, coastline
+        conn = engine.connect()
+        query_result = conn.execute('''select country, population, area, coastline
                                        from dimension_country where iso_code = :iso_code''',
                                     iso_code=iso_code).cursor.fetchone()
         if query_result:
             return {'iso_code': iso_code,
                     'country': query_result[0],
-                    'continent': query_result[1],
-                    'population': query_result[2],
-                    'area': query_result[3],
-                    'coastline': query_result[4]}
+                    'population': query_result[1],
+                    'area': query_result[2],
+                    'coastline': query_result[3]}
         else:
             return {'iso_code': iso_code,
                     'country': 'unknown'}
@@ -35,7 +37,7 @@ class Country(Resource):
 
 class CountryTemperatures(Resource):
     def get(self, iso_code):
-        conn = e.connect()
+        conn = engine.connect()
         query_result = conn.execute('''select year, avg_temp
                                        from country_temperatures
                                        where iso_code = :iso_code''',
@@ -49,7 +51,7 @@ class CountryTemperatures(Resource):
 
 class CountryCO2Emissions(Resource):
     def get(self, iso_code):
-        conn = e.connect()
+        conn = engine.connect()
         query_result = conn.execute('''select year, co2_emission
                                        from country_co2_emissions
                                        where iso_code = :iso_code''',

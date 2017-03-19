@@ -1,13 +1,11 @@
 from flask import Flask
 from flask_restful import Api
-from sqlalchemy import create_engine
 from flask import render_template
 from resources import City, Country, CountryTemperatures, CountryCO2Emissions
 
+
 app = Flask(__name__)
 api = Api(app)
-
-e = create_engine('sqlite:///./data/climate.db')
 
 # HTML
 
