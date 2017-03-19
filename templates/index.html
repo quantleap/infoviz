@@ -9,9 +9,10 @@
 	<title>Climate map</title>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='slider/d3.slider.css') }}" />
-    <script type=text/javascript src="{{ url_for('static', filename='d3/d3.v3.min.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='d3/d3.v3.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='d3/queue.js') }}"></script>
-	<script src="http://d3js.org/topojson.v1.min.js"></script> <!-- http://d3js.org/topojson.v1.min.js -->
+	<script src="{{ url_for('static', filename='d3/topojson.v1.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='worldmap/d3.map.js') }}"></script>
 	<script src="{{ url_for('static', filename='slider/d3.slider.js') }}"></script>
 	<script src="{{ url_for('static', filename='linechart/d3.linechart.js') }}"></script>

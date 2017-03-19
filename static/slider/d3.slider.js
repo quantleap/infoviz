@@ -96,14 +96,14 @@ d3.slider = function module() {
       dragger.append("circle")
       .attr("class", "dragger-outer")
       .attr("r", 10)
-      .attr("transform", function(d) {
+      .attr("transform", function() {
         return "translate(0,6)";
       });
       
       dragger.append("circle")
       .attr("class", "dragger-inner")
       .attr("r", 4)
-      .attr("transform", function(d) {
+      .attr("transform", function() {
         return "translate(0,6)";
       });
 

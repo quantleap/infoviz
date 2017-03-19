@@ -1,5 +1,8 @@
 import pandas as pd
 import sqlite3
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def load_city_temperatures():
@@ -18,6 +21,8 @@ def load_city_temperatures():
 
 
 def load_country_temperatures(drop_staging_table=False):
+    logging.info('load country temperature table')
+
     # load data from csv into dataframe
     df = pd.read_csv('./data/GlobalLandTemperatures/GlobalLandTemperaturesByCountry.csv')
 
@@ -26,16 +31,16 @@ def load_country_temperatures(drop_staging_table=False):
     df.columns = ['date', 'country', 'avg_temp']
 
     # write staging data to database
-    conn = sqlite3.connect('./data/climate.db')
-    df.to_sql('staging_country_temperatures', conn, if_exists='replace', index=False)
-    conn.commit()
+    con = sqlite3.connect('./data/climate.db')
+    df.to_sql('staging_country_temperatures', con, if_exists='replace', index=False, index_label='country')
 
     # drop and create country temperatures table, insert staging data
-    conn.execute('''drop table if exists country_temperatures''')
-    conn.execute('''create table country_temperatures
+    cur = con.cursor()
+    cur.execute('''drop table if exists country_temperatures''')
+    cur.execute('''create table country_temperatures
                     (year text, iso_code text, avg_temp real)''')
 
-    conn.execute('''insert into country_temperatures
+    cur.execute('''insert into country_temperatures
                       select strftime('%Y', [date]) as year, iso_code, avg(avg_temp) as avg_temp
                       from staging_country_temperatures as st
                       join dimension_country as dim on lower(st.country) = lower(dim.country)
@@ -43,12 +48,12 @@ def load_country_temperatures(drop_staging_table=False):
                       ''')
 
     if drop_staging_table:
-        conn.execute('''drop table staging_country_temperatures''')
-    conn.commit()
-    conn.close()
+        cur.execute('''drop table staging_country_temperatures''')
 
 
 def load_country_co2(drop_staging_table=False):
+    logging.info('load country c02 emission  table')
+
     # load data from csv into dataframe
     df = pd.read_csv('./data/CAIT Country CO2 Emissions.csv', skiprows=1)
 
@@ -57,43 +62,47 @@ def load_country_co2(drop_staging_table=False):
     df.columns = ['country', 'year', 'co2_emission']
 
     # write staging data to database
-    conn = sqlite3.connect('./data/climate.db')
-    df.to_sql('staging_country_co2_emissions', conn, if_exists='replace', index=False)
-    conn.commit()
+    con = sqlite3.connect('./data/climate.db')
+    df.to_sql('staging_country_co2_emissions', con, if_exists='replace', index=False, index_label='country')
 
     # drop and create country temperatures table, insert staging data
-    conn.execute('''drop table if exists country_co2_emissions''')
+    cur = con.cursor()
+    cur.execute('''drop table if exists country_co2_emissions''')
 
-    conn.execute('''create table country_co2_emissions
+    cur.execute('''create table country_co2_emissions
                     (year text, iso_code text, co2_emission real)''')
 
-    conn.execute('''insert into country_co2_emissions
+    cur.execute('''insert into country_co2_emissions
                       select year, iso_code, co2_emission
-                      from staging_country_co2_emissions join dimension_country
-                      on staging_country_co2_emissions.country = dimension_country.country''')
+                      from staging_country_co2_emissions as st join dimension_country as dim
+                      on lower(st.country) = lower(dim.country)''')
 
     if drop_staging_table:
-        conn.execute('''drop table staging_country_co2_emissions''')
-    conn.commit()
-    conn.close()
+        cur.execute('''drop table staging_country_co2_emissions''')
 
 
 def load_country_dimension_table():
+    logging.info('load country dimension table')
     # load data from Excel into dataframe
     df = pd.read_excel('./data/countries.xlsx', sheetname='export')
 
     # filter and rename columns
-    df = df[['Code_Lower', 'Name', 'Continent', 'Population', 'Area', 'Coastline']]
-    df.columns = ['iso_code', 'country', 'continent', 'population', 'area', 'coastline']
+    df = df[['Code_Lower', 'Country', 'Population', 'Area', 'Coastline']]
+    df.columns = ['iso_code', 'country', 'population', 'area', 'coastline']
 
     # write to database
-    conn = sqlite3.connect('./data/climate.db')
-    df.to_sql('dimension_country', conn, if_exists='replace', index=False, index_label=['iso_code'])
-    conn.close()
+    con = sqlite3.connect('./data/climate.db')
+
+    # drop and create table, insert data
+    cur = con.cursor()
+    cur.execute('''drop table if exists dimension_country''')
+    df.to_sql('dimension_country', con, if_exists='replace', index=False, index_label='iso_code')
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+
+    load_country_dimension_table()
     load_country_temperatures()
-    #load_country_co2()
-    # load_country_dimension_table()
+    load_country_co2()
     # load_city_avg_temperatures()
