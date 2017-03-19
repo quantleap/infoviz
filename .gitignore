@@ -7,4 +7,5 @@ venv/
 
 
 # specific data files
+GlobalLandTemperatures/
 CAIT Country CO2 Emissions.csv
