@@ -1,0 +1,273 @@
+head{
+  display: none;
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+}
+
+body {
+  font-family: courier;
+  width: 100%;
+  height: 100%;
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+}
+
+h1 {
+  font-size: 7vmin;
+  color: white;
+  text-align: center;
+  vertical-align: center;
+  text-shadow: 1px 1px 1px black;
+  position: relative;
+  top: 40%;
+  transform: translateY(-50%);
+  margin: 0 auto;
+  padding: 0.8% 0px 0.8% 0px;
+  /*height: 10vh;*/
+  overflow: auto;
+  /*width: 80%;*/
+  /*border-radius: 10px;*/
+  background-color: rgba(50, 120, 50, 1);
+  border-top: 3vh;
+  border-bottom: 3vh;
+  border-color: rgb(50, 90, 45);
+}
+
+.title1 {
+  background-color: rgba(50, 90, 45, 1);
+  height: 20vh;
+  vertical-align: center;
+  margin: 0px 0px -25px 0px;
+  padding: 0px;
+}
+
+.page1 {
+    /* The image used */
+    background-image: url("images/treerow.jpg");
+    /* Set a specific height */
+    height: 85vh;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0px 0px 0px 0px;
+    padding: 0px;
+}
+
+
+.page1 p {
+  font-size: 3vmin;
+  position: relative;
+  top: 15%;
+  color: white;
+  background: rgba(50, 90, 45, 0.3);
+  width: 80%;
+  border: 1px solid green;
+  margin: 0 auto;
+  text-shadow: 1px 1px 1px black;
+  text-align: center;
+}
+
+.title2{
+  background-color: rgba(50, 90, 45, 1);
+  height: 20vh;
+  margin: 0px 0px -25px 0px;
+  padding: 0px;
+}
+
+.page2{
+  background-image: url("images/forest.jpg");
+  height: 85vh;
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+
+.page2 p{
+  font-size: 3vmin;
+  position: relative;
+  top: 15%;
+  color: white;
+  background: rgba(50, 90, 45, 0.3);
+  width: 60%;
+  border: 1px solid green;
+  margin: 0 auto;
+}
+
+.page2 img, h3{
+  position: relative;
+  top: 55%;
+  transform: translateY(-50%);
+  background: rgb(0, 0, 0);
+  font-z
+}
+
+.page2 h3{
+font-size: 2vmin;
+position: relative;
+color: white;
+letter-spacing: -1px;
+/*background: rgb(0, 0, 0); /* fallback color */*/
+background: rgba(0, 0, 0, 0.7);
+padding: 2px;
+margin: 0 auto;
+text-align: center;
+transform: translateY(-50%);
+top: 55%;
+}
+
+.title3{
+  background-color: rgba(50, 90, 45, 1);
+  height: 20vh;
+  margin: 0px 0px -25px 0px;
+  padding: 0px;
+}
+
+.page3{
+  background-image: url("images/forestfire.jpg");
+  height: 85vh;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+}
+
+.page3 p{
+  font-size: 3vmin;
+  position: relative;
+  top: 15%;
+  color: white;
+  background: rgba(50, 90, 45, 0.3);
+  width: 60%;
+  border: 1px solid green;
+  margin: 0 auto;
+}
+
+.page3 img{
+  font-size: 18px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.title4{
+  background-color: rgba(50, 90, 45, 1);
+  height: 20vh;
+  margin: 0px 0px -25px 0px;
+  padding: 0px;
+}
+
+.mapplaceholder img {
+  image-orientation: center;
+  width: 100%;
+  height: auto;
+}
+
+#pict1 {
+  display: block;
+  float: left;
+  position: relative;
+  left: 15%;
+  width: 25%;
+  /*max-width: 40%;*/
+  height: auto;;
+  border: 1px solid green;
+  background: rgba(50, 90, 45, 0.1);
+}
+
+#pict2 {
+  display: block;
+  float: right;
+  position: relative;
+  right: 15%;
+  width: 25%;
+  /*max-width: 40%;*/
+  height: auto;
+  border: 1px solid green;
+  background: rgba(50, 90, 45, 0.1);
+}
+
+#pict3{
+  display: block;
+  float: left;
+  position: relative;
+  left: 10%;
+  width: 30%;
+  /*max-width: 40%;*/
+  height: auto;
+  border: 1px solid green;
+  background: rgba(50, 90, 45, 0.1);
+}
+
+#pict4{
+  display: block;
+  float: right;
+  position: relative;
+  right: 10%;
+  width: 30%;
+  /*max-width: 40%;*/
+  height: auto;
+  border: 1px solid green;
+  background: rgba(50, 90, 45, 0.1);
+}
+
+#page2text{
+  vertical-align: top;
+  text-align: center;
+  position: relative;
+  text-shadow: 1px 1px 1px black;
+}
+
+.bounce,.bounce2, .bounce3{
+width:0px;
+height:0px;
+border-left:12px solid transparent;
+border-right:12px solid transparent;
+border-top:12px solid #fff;
+position: relative;
+left:50%;
+bottom:0;
+margin-top:-25px;
+margin-left:-25px;
+  /*height:50px;*/
+  /*width:50px;*/
+  /*background:red;*/
+-webkit-animation:bounce 2s infinite;
+-moz-animation:bounce 2s infinite;
+-o-animation:bounce 2s infinite;
+animation:bounce 2s infinite;
+}
+
+@-webkit-keyframes bounce {
+  0%       { bottom:0px; }
+  50%      { bottom:15px; }
+  100%     {bottom:30;}
+}
+
+ @-moz-keyframes bounce {
+  0%       { bottom:0px; }
+  50%      { bottom:15px; }
+  100%     {bottom:30;}
+}
+
+ @-o-keyframes bounce {
+  0%       { bottom:0px; }
+  50%      { bottom:15px; }
+  100%     {bottom:30;}
+}
+
+ @keyframes bounce {
+  0%       { bottom:0px; }
+  50%      { bottom:15px; }
+  100%     {bottom:30;}
+}
