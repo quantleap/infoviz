@@ -31,7 +31,7 @@ d3.map = function module(year) {
 	var color = d3.scale.threshold()
 		.domain(color_domain)
 		.range(["#adfcad", "#ffcb40", "#ffba00", "#ff7d73", "#ff4e40", "#ff1300"]);
-		
+	
 	//Reading map file and data
 
 	queue()

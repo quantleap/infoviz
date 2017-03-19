@@ -16,9 +16,8 @@ d3.slider = function module() {
   function slider(selection) {
     selection.each(function() {
       div = d3.select(this).classed('d3slider', true);
-      width = parseInt(div.style("width"), 10)-(margin.left 
-                                                + margin.right);
-
+      width = parseInt(div.style("width"), 10)-(margin.left                                                + margin.right');
+	  
       value = value || min; 
       scale = d3.scale.linear().domain([min, max]).range([0, width])
       .clamp(true);
@@ -111,7 +110,8 @@ d3.slider = function module() {
       var dragBehaviour = d3.behavior.drag();
       dragBehaviour.on("drag", slider.drag);
 	  dragBehaviour.on("dragend", function() {
-		  d3.map(Math.round(value));
+		  console.log(d3.map.translateLast);
+		  d3.map(Math.round(value),map.translateLast,map.scaleLast);
 	  });
       dragger.call(dragBehaviour);
 	  	 

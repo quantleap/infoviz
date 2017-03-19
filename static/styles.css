@@ -2,6 +2,11 @@ svg {
 	background-color: #bbbbff;
 }
 
+svg text {
+	font-family: Helvetica, Arial, Sans-Serif;
+	font-size: 12px;
+}
+
 path {
 	fill:   #e0f0d4;
 	stroke: #666;
