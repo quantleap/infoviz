@@ -1,4 +1,4 @@
-from flask.ext.restful import Resource
+from flask_restful import Resource
 
 
 def get_country_by_iso(conn, iso_code):
