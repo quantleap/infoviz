@@ -26,8 +26,8 @@ d3.map = function module(year) {
 	var viewMin = [ 0, 0 ];
 	var viewMax = [ 0, 0 ];
 
-	var color_domain = [0, 10, 20, 30, 40]
-	var ext_color_domain = [0, 50, 150, 350, 750, 1500]	
+	var color_domain = [0, 10, 20, 30, 40];
+	var ext_color_domain = [0, 50, 150, 350, 750, 1500];
 	var color = d3.scale.threshold()
 		.domain(color_domain)
 		.range(["#adfcad", "#ffcb40", "#ffba00", "#ff7d73", "#ff4e40", "#ff1300"]);
@@ -55,7 +55,7 @@ d3.map = function module(year) {
 			tempById[d.RegionCode] = d.Temperature;
 			});	
 			
-		let countries = topojson.feature(world, world.objects.countries).features
+		let countries = topojson.feature(world, world.objects.countries).features;
 
 		countries = countries.filter(function(d) {
 			return countryNames.some(function(n) {
