@@ -5,6 +5,8 @@
 *.xls*
 venv/
 __pycache__
+.DS_Store
+*.pyc
 
 # specific data files
 GlobalLandTemperatures/
