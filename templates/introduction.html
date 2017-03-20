@@ -1,10 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='introduction/introduction.css')}}" />
+  </head>
+  <body>
+    <div class="title1">
+      <h1>How Fair is Climate Change?</h1>
+    </div>
+    <div class="page1">
+      <p>Climate change is happening and impacting us all. Consequences related
+        to health, vegetation, landscape, population and hydrology all belong to
+        the risks. But who is causing climate change? And who is feeling its
+        effects the most? This project will help you to answer these questions.
+        <br /><br />
+        Enjoy! - Tom, Jenny, Sebastiaan, Dion, Koen
+      </p>
+    </div>
+    <div class="bounce"></div>
+  <div class="title2">
+    <h1>
+      The Difference in Local Change
+    </h1>
+  </div>
+  <div class="page2">
+    <p id="page2text">Temperature effects are different across the world.</p>
+    <img src="{{ url_for('static', filename='introduction/images/spidergraph.jpg')}}" id="pict1" />
+    <img src="{{ url_for('static', filename='introduction/images/spidergraph.jpg')}}" id="pict2" />
+    <!-- <h3 id="pict1text">Changing seasonality</h3> -->
+  </div>
+  <div class="bounce2"></div>
+  <div class="title3">
+    <h1>
+      The difference in CO2 emissions
+    </h1>
+  </div>
+  <div class="page3">
+    <p id="page2text">Not every country emits the same amount of CO2, is this fair
+    considering who feels the climate effects?</p>
+    <img src="{{ url_for('static', filename='introduction/images/small-undirected-graph.png')}}" id="pict3" />
+    <img src="{{ url_for('static', filename='introduction/images/small-undirected-graph.png')}}" id="pict4" />
+  </div>
+  <div class="bounce3"></div>
+  <div class="title4">
+    <h1>
+      Explore!
+    </h1>
+  </div>
+  <div class="mapplaceholder">
+      <img src="{{ url_for('static', filename='introduction/images/format.jpg')}}"/>
+  </div>
 </body>
 </html>

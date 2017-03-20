@@ -15,6 +15,11 @@ def homepage():
     return render_template('index.html')
 
 
+@app.route('/introduction')
+def introduction():
+    return render_template('introduction.html')
+
+
 # API
 api.add_resource(City, '/city/<string:city>')
 api.add_resource(Country, '/country/<string:iso_code>')
