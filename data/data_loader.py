@@ -41,6 +41,7 @@ def load_country_temperatures(drop_staging_table=False):
     df.to_sql('mapping_country_temperatures', con, if_exists='replace', index=False, index_label='staging')
 
     # map countries where name does not exist in the dimension table
+    # note: sqlite has no UPDATE SET FROM method, so a more elaborated script is used
     cur = con.cursor()
     cur.execute('''UPDATE staging_country_temperatures
                    SET
