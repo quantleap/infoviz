@@ -46,8 +46,6 @@ var margin = {top: 20, right: 20, bottom: 30, left: 40},
 //   return emissions;
 // }
 
-var population = 60000000;
-
 
 /* 
  * value accessor - returns the value to encode for a given data object.
@@ -62,7 +60,7 @@ var xValue = function(d) { return d.emission;}, // data -> value
     xMap = function(d) { return xScale(xValue(d));}, // data -> display
     xAxis = d3.svg.axis().scale(xScale).orient("bottom"); 
 
-
+// TO DO: Make scale logarithmic?
 // setup y
 var yValue = function(d) { return d.temperature;}, // data -> value
     yScale = d3.scale.linear().range([height, 0]), // value -> display
@@ -89,17 +87,35 @@ var tooltip = d3.select("body").append("div")
 // load data
 d3.csv("fake_data.csv", function(error, data) {
 
-
   // change string (from CSV) into number format
   data.forEach(function(d) {
     d.temperature = +d.temperature;
     d.emission = +d.emission;
-   console.log(d);
+   // console.log(d);
   });
 
+
+  // Determine bubble radius domain max
+  var max_r = 0;
+  data.forEach(function(d) {
+    new_r = d.emission/(d.population/100000);
+    if (new_r > max_r) {
+      max_r = new_r
+    };
+  });
+  // console.log(max_r);
+
+  // Set bubble radius range
+  var rScale = d3.scale.linear()
+    .domain([0,max_r])
+    .range([7.5,25]);
+
+
   // don't want dots overlapping axis, so add in buffer to data domain
-  xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
-  yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
+  // xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
+  // yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
+  xScale.domain([d3.min(data, xValue)-20, d3.max(data, xValue)+20+50]); // where '20' is the max of the range in rScale, 50 is for legend
+  yScale.domain([d3.min(data, yValue)-0.2, d3.max(data, yValue)+0.2]);
 
   // x-axis
   svg.append("g")
@@ -133,16 +149,17 @@ d3.csv("fake_data.csv", function(error, data) {
     .enter().append("circle")
       .attr("class", "dot")
       // .attr("r", 3.5)
-      .attr("r", function(d) { return d.emission/population*500000;})  // TO DO: add range for radius
+      .attr("r", function(d) { return rScale(d.emission/(d.population/100000));})  // Depends on how emission data and population is represented
       .attr("cx", xMap)
       .attr("cy", yMap)
-      .style("fill", function(d) { return color(cValue(d));}) 
+      .attr('fill-opacity', 0.6) ////////// TO DO: tweak value!
+      // .style("fill", function(d) { return color(cValue(d.country));}) 
+      .style("fill", function(d) { return color(d.country);}) 
       .on("mouseover", function(d) {
           tooltip.transition()
                .duration(200)
                .style("opacity", .9);
-          // tooltip.html(d["Cereal Name"] + "<br/> (" + xValue(d) 
-          tooltip.html("Country" + "<br/> (" + xValue(d) 
+          tooltip.html(d.country + "<br/> (" + xValue(d) 
 	        + ", " + yValue(d) + ")")
                .style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
@@ -153,27 +170,56 @@ d3.csv("fake_data.csv", function(error, data) {
                .style("opacity", 0);
       });
 
+
+
+var legendSize = [max_r, max_r/2, max_r/4, max_r/16];
+var legendTopPadding = 30;
+var legendPadding = 8;
+
   // draw legend
   var legend = svg.selectAll(".legend")
-      .data(color.domain())
+      // .data(color.domain())
+      // .data(data)
+      .data(legendSize)
     .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-  // draw legend colored rectangles
-  legend.append("rect")
-      .attr("x", width - 18)
-      .attr("width", 18)
-      .attr("height", 18)
-      .style("fill", color);
+// TO DO: legend should represent size (emission per capita), and not country
+  // draw legend sized bubbles
+  legend.append("circle")
+      .attr("cx", width - 18)
+      .attr("cy", function(d,i) {return (legendTopPadding + (rScale(d)+legendPadding)*i);})
+      .attr("r", function(d) { return rScale(d);})
+      .style("stroke", "black")
+      .style("fill", "none");
+
+  // // draw legend colored rectangles
+  // legend.append("rect")
+  //     .attr("x", width - 18)
+  //     .attr("width", 18)
+  //     .attr("height", 18)
+  //     // .style("fill", color);
+  //     .style("fill", function(d) { return color(d.country);});
 
   // draw legend text
   legend.append("text")
-      .attr("x", width - 24)
-      .attr("y", 9)
+      // .attr("x", width - 24)
+      .attr("x", function(d) {return (width - (24+rScale(d)));})
+      // .attr("y", 9)
+      .attr("y", function(d,i) {return (legendTopPadding + (rScale(d)+legendPadding)*i);})
       .attr("dy", ".35em")
       .style("text-anchor", "end")
-      .text(function(d) { return d;})
+      .text(function(d) {return d;})
+
+    //Create Title 
+    svg.append("text")
+    .attr("x", width - 18)
+    .attr("y", 0)
+    // .style("text-anchor", "middle")
+    .style("text-anchor", "end")
+    .text("Per capita CO2 emission:");
+
 
 });
 
