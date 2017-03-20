@@ -1,0 +1,22 @@
+body {
+		  overflow: hidden;
+		  margin: 0;
+		  font-size: 14px;
+		  font-family: Sans-Serif;
+		  position: absolute;
+		  top: 50px;
+		  left: 100px;
+		}
+
+svg {
+  background-color: #fff;
+  font-family: sans-serif;
+  font-size: 10px;}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #111;
+  shape-rendering: crispEdges;
+}
+
+

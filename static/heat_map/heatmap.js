@@ -1,4 +1,3 @@
-
 var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var colors = ["#313695", "#4575b4", "#74add1", "#abd9e9", "#e0f3f8", "#ffffbf", "#fee090", "#fdae61", "#f46d43", "#d73027", "#a50026"];
 var buckets = colors.length;
@@ -13,15 +12,22 @@ var width = 500 - margin.left - margin.right;
 var height = 500 - margin.top - margin.bottom;
 var legendWidth = 40;
 
-d3.json('heatmap.json', function(error, data) {
+d3.json('testdata.json', function(error, data) {
   if (error) throw error;
 
-  var data = data.monthlyVariance;
+  var data = data.temperatures;
+  
+  data.forEach(function (obj){
+      var date = obj.month.split("-");
+      obj["month"] = parseInt(date[1]);
+      obj["year"] = parseInt(date[0]);
+      return obj;
+      }) 
 
   var years = data.map(function(obj) {return obj.year;});
     years = years.filter(function(v, i) {return years.indexOf(v) == i;});
 
-  var temp = data.map(function(obj) {return obj.variance;});
+  var temp = data.map(function(obj) {return obj.avg_temp;});
 
   var minTemp = d3.min(temp);
   var maxTemp = d3.max(temp);
@@ -87,7 +93,7 @@ d3.json('heatmap.json', function(error, data) {
     .attr("height", gridHeight);
   
   temps.transition()
-      .style("fill", function(d) {return colorScale(d.variance);});
+      .style("fill", function(d) {return colorScale(d.avg_temp);});
 
   var legend = svg.selectAll(".legend")
     .data([minTemp].concat(colorScale.quantiles()), function(d) {return d;});
@@ -103,6 +109,7 @@ d3.json('heatmap.json', function(error, data) {
     .style("fill", function(d, i) {return colors[i];});
 
   legend.append("text")
-    .text(function(d) {return (Math.floor(d * 10) / 10);}) //changes this
+    .text(function(d) {return (Math.floor(d));})
+    .attr("class", "axis text")
     .attr("x", function(d, i) {return ((legendWidth * i) + Math.floor(legendWidth / 2) - 6 + (width - legendWidth * buckets));})
     .attr("y", height + gridHeight + 50); });
