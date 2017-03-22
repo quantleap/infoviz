@@ -2,7 +2,7 @@
 
 // Slider adapted from Sujeet Sreenivasan http://sujeetsr.github.io/d3.slider/
 
-d3.slider = function module() {
+d3.slider = function sliderModule() {
   "use strict";
 
   var div, min = 0, max = 100, svg, value, axis, 
@@ -113,8 +113,8 @@ d3.slider = function module() {
       var dragBehaviour = d3.behavior.drag();
       dragBehaviour.on("drag", slider.drag);
 	  dragBehaviour.on("dragend", function() {
-		  console.log(d3.map.translateLast);
-		  d3.map(Math.round(value),map.translateLast,map.scaleLast);
+		  //console.log(d3.map.translateLast);
+		  //d3.map(Math.round(value),map.translateLast,map.scaleLast);
 	  });
       dragger.call(dragBehaviour);
 	  	 

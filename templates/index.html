@@ -22,8 +22,8 @@
 <body>
 	<div id="midsection">
 		<div id="topnav">
-			<button class="button" onclick="updateData()">Explore </button>
-			<button class="button" onclick="updateData2()">Compare </button>
+			<button class="button" onclick="switchToMap(2017)">Explore </button>
+			<button class="button" onclick="switchToBubble()">Compare </button>
 		</div>
 		<div id="map"></div>	
 		<div id="sidescreen">
@@ -47,6 +47,16 @@
 	</div>
 	
 <script>
+function switchToMap(year){
+	var map = d3.map(year,[0,0],null);
+}
+function switchToBubble(year){
+	var bubblechart = d3.bubblechart();
+}
+</script>
+
+	
+<script>
 	// Initialize map
 	var map = d3.map(2017,[0,0],null);
 	
@@ -60,5 +70,5 @@
 	//var linechart = d3.linechart('#row2','Comparison per country', '/country/nl/annual_temperatures' ,'first');
 	
 	// Initialize first line chart
-	var bubblechart = d3.bubblechart() 
+	//var bubblechart = d3.bubblechart();
 </script>

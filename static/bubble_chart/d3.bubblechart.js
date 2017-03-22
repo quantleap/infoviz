@@ -5,9 +5,14 @@
 d3.bubblechart = function module() {
 	"use strict";
 	
-	var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 800 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+	d3.select("svg").remove();
+	
+	var margin = {top: 20, right: 20, bottom: 30, left: 40};
+	var mapDiv = d3.select('#map');
+	var width  = mapDiv.node().getBoundingClientRect().width
+	- margin.left - margin.right; //800
+	var height = mapDiv.node().getBoundingClientRect().height
+	-  margin.top - margin.bottom; //505;
 
 
 	// calculate total emissions in 10 years
@@ -50,7 +55,7 @@ d3.bubblechart = function module() {
 		color = d3.scale.category10();
 
 	// add the graph canvas to the body of the webpage
-	var svg = d3.select("body").append("svg")
+	var svg = mapDiv.append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 	  .append("g")
@@ -95,7 +100,7 @@ d3.bubblechart = function module() {
 	  // yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
 	  xScale.domain([d3.min(data, xValue)-20, d3.max(data, xValue)+20+50]); // where '20' is the max of the range in rScale, 50 is for legend
 	  yScale.domain([d3.min(data, yValue)-0.2, d3.max(data, yValue)+0.2]);
-
+		
 	  // x-axis
 	  svg.append("g")
 		  .attr("class", "x axis")
