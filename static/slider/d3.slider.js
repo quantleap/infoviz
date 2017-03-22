@@ -2,7 +2,7 @@
 
 // Slider adapted from Sujeet Sreenivasan http://sujeetsr.github.io/d3.slider/
 
-d3.slider = function module() {
+d3.slider = function sliderModule() {
   "use strict";
 
   var div, min = 0, max = 100, svg, value, axis, 
@@ -112,12 +112,12 @@ d3.slider = function module() {
       // Enable dragger drag 
       var dragBehaviour = d3.behavior.drag();
       dragBehaviour.on("drag", slider.drag);
-	  dragBehaviour.on("dragend", function() {
-		  console.log(d3.map.translateLast);
-		  d3.map(Math.round(value),map.translateLast,map.scaleLast);
-	  });
+	  // dragBehaviour.on("dragend", function() {
+		 //  console.log(d3.map.translateLast);
+		 //  d3.map(Math.round(value),map.translateLast,map.scaleLast);
+	  // });
       dragger.call(dragBehaviour);
-	  	 
+
     });
   }
 
@@ -130,6 +130,8 @@ d3.slider = function module() {
   slider.drag = function() {
     var pos = d3.event.x;
     slider.move(pos+margin.left);
+    console.log(slider.get_max_value()); // TO DO: add 2nd dragger
+
   };
 
   slider.move = function(pos) {
@@ -145,6 +147,8 @@ d3.slider = function module() {
     var displayValue = null;
     if (tickFormat) { 
       displayValue = tickFormat(value);
+      min = displayValue;
+      // console.log(displayValue); //Shows year
     } else {
       displayValue = d3.format(",.0f")(value);
     }
@@ -193,6 +197,10 @@ d3.slider = function module() {
     range = _;
     return slider;
   };
+
+  slider.get_max_value = function() {
+    if (!arguments.length) return Math.round(value);
+  }
 
   return slider;
 
