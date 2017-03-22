@@ -51,10 +51,10 @@ function switchToMap(year){
 function switchToBubble(year){
 	var bubblechart = d3.bubblechart();
 }
-function switchToChart(year){
+function switchToChart(iso){
 	let low = slider.get_min_value();
 	let high = slider.get_max_value();
-	var linechart = d3.linechart('#row','Absolute temperatures', '/country/nl/annual_temperatures'.concat('?begin=').concat(low).concat('&end=').concat(high), 'first');
+	var linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(iso).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first');
 }
 function switchToHeatmap(){
 	var heatmap = d3.heatmap('heatmap');
@@ -65,15 +65,17 @@ function switchToHeatmap(){
 <script>
 	let low = 1975 ;
 	let high = 2017;
+	let cntry = 'nl';
+	
 	// Initialize map
-	var map = d3.map(high,[0,0],null);
+	var map = d3.map(cntry);
 	
 	// Initialize slider
 	var slider = d3.slider().min(1900).max(2020).ticks(10).tickFormat(d3.format("f")).showRange(true).minPos(low).maxPos(high);
 	d3.select('#slider').call(slider);
 	
 	// Initialize first line chart
-	var linechart = d3.linechart('#row','Absolute temperatures', '/country/nl/annual_temperatures'.concat('?begin=').concat(low).concat('&end=').concat(high), 'first');
+	var linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(cntry).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first');
 	//var linechart = d3.linechart('#row','Temperature changes', '/country/nl/annual_temperatures', 'second');
 	//var linechart = d3.linechart('#row2','Comparison per country', '/country/nl/annual_temperatures' ,'first');
 </script>

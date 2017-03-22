@@ -153,7 +153,7 @@ d3.slider = function sliderModule() {
 		  let low = slider.get_min_value();
 		  let high = slider.get_max_value();
 		  var url = '/country/nl/annual_temperatures'.concat('?begin=').concat(low).concat('&end=').concat(high);
-		  console.log(url);		  
+		  //console.log(url);		  
 		  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');
 		   //console.log(slider.get_max_value());
 		 //  d3.map(Math.round(minPos),map.translateLast,map.scaleLast);
