@@ -112,10 +112,10 @@ d3.slider = function sliderModule() {
       // Enable dragger drag 
       var dragBehaviour = d3.behavior.drag();
       dragBehaviour.on("drag", slider.drag);
-	  dragBehaviour.on("dragend", function() {
+	  //dragBehaviour.on("dragend", function() {
 		  //console.log(d3.map.translateLast);
 		  //d3.map(Math.round(value),map.translateLast,map.scaleLast);
-	  });
+	  //});
       dragger.call(dragBehaviour);
 	  	 
     });
