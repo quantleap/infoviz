@@ -49,7 +49,8 @@ class CountryMonthlyTemperatures(Resource):
                                        from country_monthly_temperatures
                                        where iso_code = :iso_code and
                                          (cast(substr(month, 1, 4) as real) >= :begin or :begin is null) AND
-                                         (cast(substr(month, 1, 4) as real) <= :end or :end is null)''',
+                                         (cast(substr(month, 1, 4) as real) <= :end or :end is null)
+                                       order by month desc''',
                                     iso_code=iso_code,
                                     begin=args['begin'],
                                     end=args['end']).cursor.fetchall()
@@ -71,7 +72,8 @@ class CountryAnnualTemperatures(Resource):
                                        from country_annual_temperatures
                                        where iso_code = :iso_code and
                                          (year >= :begin or :begin is null) AND
-                                         (year <= :end or :end is null)''',
+                                         (year <= :end or :end is null)
+                                       order by year desc''',
                                     iso_code=iso_code,
                                     begin=args['begin'],
                                     end=args['end']).cursor.fetchall()
@@ -98,7 +100,8 @@ class CountryIndicators(Resource):
                                        from country_annual_indicators
                                        where iso_code = :iso_code and
                                          (year >= :begin or :begin is null) AND
-                                         (year <= :end or :end is null)''',
+                                         (year <= :end or :end is null)
+                                       order by year desc''',
                                     iso_code=iso_code,
                                     begin=args['begin'],
                                     end=args['end']).cursor.fetchall()
@@ -109,6 +112,3 @@ class CountryIndicators(Resource):
                                 'population': r[1],
                                 'co2_emission_total': r[2],
                                 'co2_emission_per_capita': r[3]} for r in query_result]}
-
-
-
