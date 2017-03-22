@@ -17,6 +17,8 @@
 	<script src="{{ url_for('static', filename='slider/d3.slider.js') }}"></script>
 	<script src="{{ url_for('static', filename='line_chart/d3.linechart.js') }}"></script>
 	<script src="{{ url_for('static', filename='bubble_chart/d3.bubblechart.js') }}"></script>
+	<script src="{{ url_for('static', 
+	filename='heat_map/d3.heatmap.js') }}"></script>
 </head>
 
 <body>
@@ -28,14 +30,10 @@
 		<div id="map"></div>	
 		<div id="sidescreen">
 			<div id="sidenav">
-				<button class="button" onclick="updateData3()">Annual </button>
-				<button class="button" onclick="updateData4()">Monthly </button>
+				<button class="button" onclick="switchToChart()">Annual </button>
+				<button class="button" onclick="switchToHeatmap()">Monthly </button>
 			</div>
 			<div id="sideblock">
-			   <div id="row">
-			   </div>
-			   <div id="row2">
-			   </div>
 			</div>
 		</div>
 	</div>
@@ -53,22 +51,29 @@ function switchToMap(year){
 function switchToBubble(year){
 	var bubblechart = d3.bubblechart();
 }
+function switchToChart(year){
+	let low = slider.get_min_value();
+	let high = slider.get_max_value();
+	var linechart = d3.linechart('#row','Absolute temperatures', '/country/nl/annual_temperatures'.concat('?begin=').concat(low).concat('&end=').concat(high), 'first');
+}
+function switchToHeatmap(){
+	var heatmap = d3.heatmap('heatmap');
+}
 </script>
 
 	
 <script>
+	let low = 1975 ;
+	let high = 2017;
 	// Initialize map
-	var map = d3.map(2017,[0,0],null);
+	var map = d3.map(high,[0,0],null);
 	
 	// Initialize slider
-	var slider = d3.slider().min(1900).max(2020).ticks(10).tickFormat(d3.format("f")).showRange(true).value(2017);
+	var slider = d3.slider().min(1900).max(2020).ticks(10).tickFormat(d3.format("f")).showRange(true).minPos(low).maxPos(high);
 	d3.select('#slider').call(slider);
 	
 	// Initialize first line chart
-	var linechart = d3.linechart('#row','Absolute temperatures', '/country/nl/annual_temperatures', 'first');
+	var linechart = d3.linechart('#row','Absolute temperatures', '/country/nl/annual_temperatures'.concat('?begin=').concat(low).concat('&end=').concat(high), 'first');
 	//var linechart = d3.linechart('#row','Temperature changes', '/country/nl/annual_temperatures', 'second');
 	//var linechart = d3.linechart('#row2','Comparison per country', '/country/nl/annual_temperatures' ,'first');
-	
-	// Initialize first line chart
-	//var bubblechart = d3.bubblechart();
 </script>

@@ -19,8 +19,7 @@ d3.slider = function sliderModule() {
       div = d3.select(this).classed('d3slider', true);
       width = parseInt(div.style("width"), 10)-(margin.left 
                                                 + margin.right);
-	  
-	  
+	   
       minPos = minPos || min;
 	  maxPos = maxPos || min;	  
       scale = d3.scale.linear().domain([min, max]).range([0, width])
@@ -150,12 +149,27 @@ d3.slider = function sliderModule() {
       // Enable dragger drag 
       var minDragBehaviour = d3.behavior.drag();
       minDragBehaviour.on("drag", slider.dragMin);
+	  minDragBehaviour.on("dragend", function() {
+		  let low = slider.get_min_value();
+		  let high = slider.get_max_value();
+		  var url = '/country/nl/annual_temperatures'.concat('?begin=').concat(low).concat('&end=').concat(high);
+		  console.log(url);		  
+		  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');
+		   //console.log(slider.get_max_value());
+		 //  d3.map(Math.round(minPos),map.translateLast,map.scaleLast);
+	   });
+	   
 	  var maxDragBehaviour = d3.behavior.drag();
       maxDragBehaviour.on("drag", slider.dragMax);
-	  // dragBehaviour.on("dragend", function() {
-		 //  console.log(d3.map.translateLast);
+	  maxDragBehaviour.on("dragend", function() {
+		  let low = slider.get_min_value();
+		  let high = slider.get_max_value();
+		  var url = '/country/nl/annual_temperatures'.concat('?begin=').concat(low).concat('&end=').concat(high);
+		  console.log(url);		  
+		  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');
+		   //console.log(slider.get_max_value());
 		 //  d3.map(Math.round(minPos),map.translateLast,map.scaleLast);
-	  // });
+	   });
 
       minDragger.call(minDragBehaviour);
 	  maxDragger.call(maxDragBehaviour);
@@ -172,13 +186,11 @@ d3.slider = function sliderModule() {
   slider.dragMin = function() {
     var pos = d3.event.x;
     slider.moveMin(pos+margin.left);
-    //console.log(slider.get_max_value()); // TO DO: add 2nd dragger
   };
   
   slider.dragMax = function() {
     var pos = d3.event.x;
     slider.moveMax(pos+margin.left);
-    //console.log(slider.get_max_value()); // TO DO: add 2nd dragger
   };
 
   slider.moveMin = function(pos) {
@@ -187,14 +199,12 @@ d3.slider = function sliderModule() {
 		minPos = maxPos - 1;
 	}
 	
-
     // Move dragger
     svg.selectAll(".minDragger").data([minPos])
     .attr("transform", function(d) {		
       return "translate(" + scale(d) + ")";
     });
 	
-	// Move dragger
     svg.selectAll(".minDragger").data([minPos])
     .attr("transform", function(d) {		
       return "translate(" + scale(d) + ")";
@@ -204,7 +214,6 @@ d3.slider = function sliderModule() {
     if (tickFormat) { 
       displayValue = tickFormat(minPos);
       min = displayValue;
-      // console.log(displayValue); //Shows year
     } else {
       displayValue = d3.format(",.0f")(minPos);
     }
@@ -230,7 +239,6 @@ slider.moveMax = function(pos) {
       return "translate(" + scale(d) + ")";
     });
 	
-	// Move dragger
     svg.selectAll(".maxDragger").data([maxPos])
     .attr("transform", function(d) {		
       return "translate(" + scale(d) + ")";
@@ -240,7 +248,6 @@ slider.moveMax = function(pos) {
     if (tickFormat) { 
       displayValue = tickFormat(maxPos);
       min = displayValue;
-      // console.log(displayValue); //Shows year
     } else {
       displayValue = d3.format(",.0f")(maxPos);
     }
