@@ -2,7 +2,7 @@
 
 // Partially adapted from http://bl.ocks.org/mbostock/3887118 and http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
 
-d3.bubblechart = function module() {
+d3.bubblechart = function bubbleModule() {
 	"use strict";
 	
 	d3.select("svg").remove();
