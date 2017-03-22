@@ -40,11 +40,19 @@ class Country(Resource):
 
 class CountryMonthlyTemperatures(Resource):
     def get(self, iso_code):
+        parser.add_argument('begin', type=int, location='args')
+        parser.add_argument('end', type=int, location='args')
+        args = parser.parse_args()
+
         conn = engine.connect()
         query_result = conn.execute('''select month, avg_temp
                                        from country_monthly_temperatures
-                                       where iso_code = :iso_code''',
-                                    iso_code=iso_code).cursor.fetchall()
+                                       where iso_code = :iso_code and
+                                         (cast(substr(month, 1, 4) as real) >= :begin or :begin is null) AND
+                                         (cast(substr(month, 1, 4) as real) <= :end or :end is null)''',
+                                    iso_code=iso_code,
+                                    begin=args['begin'],
+                                    end=args['end']).cursor.fetchall()
 
         return {'country': get_country_by_iso(conn, iso_code),
                 'iso_code': iso_code,
@@ -76,18 +84,31 @@ class CountryAnnualTemperatures(Resource):
                                   } for r in query_result]}
 
 
-class CountryCO2Emissions(Resource):
+class CountryIndicators(Resource):
     def get(self, iso_code):
+        parser.add_argument('begin', type=int, location='args')
+        parser.add_argument('end', type=int, location='args')
+        args = parser.parse_args()
+
         conn = engine.connect()
-        query_result = conn.execute('''select year, co2_emission
-                                       from country_co2_emissions
-                                       where iso_code = :iso_code''',
-                                    iso_code=iso_code).cursor.fetchall()
+        query_result = conn.execute('''select year,
+                                              population,
+                                              co2_emission_total,
+                                              co2_emission_per_capita
+                                       from country_annual_indicators
+                                       where iso_code = :iso_code and
+                                         (year >= :begin or :begin is null) AND
+                                         (year <= :end or :end is null)''',
+                                    iso_code=iso_code,
+                                    begin=args['begin'],
+                                    end=args['end']).cursor.fetchall()
 
         return {'country': get_country_by_iso(conn, iso_code),
                 'iso_code': iso_code,
-                'co2_emissions': [{'year': r[0],
-                                   'co2_emission': r[1]} for r in query_result]}
+                'indicators': [{'year': r[0],
+                                'population': r[1],
+                                'co2_emission_total': r[2],
+                                'co2_emission_per_capita': r[3]} for r in query_result]}
 
 
 

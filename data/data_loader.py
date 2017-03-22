@@ -28,7 +28,6 @@ def extract_country_temperatures(con):
     df.columns = ['date', 'country', 'avg_temp']
 
     # write staging data to database
-    con = sqlite3.connect('./data/climate.db')
     df.to_sql('staging_country_temperatures', con, if_exists='replace', index=False, index_label='country')
 
 
