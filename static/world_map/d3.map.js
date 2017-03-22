@@ -7,6 +7,8 @@
 
 d3.map = function mapModule(year) {
 	"use strict";
+	
+	year = 2017;
 
 	d3.select("svg").remove();
 	
