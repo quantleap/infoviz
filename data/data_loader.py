@@ -92,8 +92,17 @@ def load_country_temperatures_annual(con):
     cur.execute('''create index idx_year_country_annual_temperatures on country_annual_temperatures (year)''')
     con.commit()
 
-    # update yoy changes
-    cur.execute('''''')
+    # update y-o-y changes of avg temp
+    cur.execute('''UPDATE country_annual_temperatures
+                   SET yoy_change_avg_tmp = (select country_annual_temperatures.avg_temp - t2.avg_temp
+                     FROM country_annual_temperatures as t2
+                     WHERE t2.iso_code = country_annual_temperatures.iso_code AND
+                           t2.year < country_annual_temperatures.year and
+                           country_annual_temperatures.year - t2.year = 1
+                     ORDER BY t2.year desc
+                     LIMIT 1
+                    )''')
+    con.commit()
 
 
 def import_country_temperatures(con, drop_staging_table=False):
