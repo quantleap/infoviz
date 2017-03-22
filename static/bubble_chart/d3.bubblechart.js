@@ -5,7 +5,7 @@
 d3.bubblechart = function bubbleModule() {
 	"use strict";
 	
-	d3.select("svg").remove();
+	d3.select("#map").selectAll("*").remove();
 	
 	var margin = {top: 20, right: 20, bottom: 30, left: 40};
 	var mapDiv = d3.select('#map');
