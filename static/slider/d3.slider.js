@@ -183,6 +183,10 @@ d3.slider = function sliderModule() {
 
   slider.moveMin = function(pos) {
     minPos = scale.invert(pos - margin.left);
+	if (minPos > maxPos) {
+		minPos = maxPos - 1;
+	}
+	
 
     // Move dragger
     svg.selectAll(".minDragger").data([minPos])
@@ -216,6 +220,9 @@ d3.slider = function sliderModule() {
   
 slider.moveMax = function(pos) {
     maxPos = scale.invert(pos - margin.left);
+	if (maxPos < minPos) {
+		maxPos = minPos + 1;
+	}
 
     // Move dragger
     svg.selectAll(".maxDragger").data([maxPos])
