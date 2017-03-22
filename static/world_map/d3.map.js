@@ -47,9 +47,11 @@ d3.map = function module(year) {
 		  
 		var tempById = {};
 		var nameById = {};
+		var isoById = {};
 
 		countryNames.forEach(function(d){
 			nameById[d.id] = d.name;
+			isoById[d.id] = d.iso_code;
 		});
 		tempData.forEach(function(d) {
 			tempById[d.RegionCode] = d.Temperature;
@@ -108,6 +110,9 @@ d3.map = function module(year) {
 			'data-name': function(d) {
 			  return d.name
 			},
+			'data-iso': function(d) {
+			  return d.iso_code
+			},
 			'data-x-centroid': function(d) {
 			  return path.centroid(d)[0]
 			},
@@ -129,6 +134,12 @@ d3.map = function module(year) {
 				y: height - 5,
 			})
 			nameTag.style('visibility', 'visible')
+			let iso = country.attr('data-iso')
+			console.log(iso)
+			console.log(countryName)
+			console.log('/country/'.concat(iso.concat('/annual_temperatures')))
+			d3.linechart('#row','Absolute temperatures', '/country/'.concat(iso.concat('/annual_temperatures')), 'first');
+			
 		})
 		.on('mouseup', function() {
 			let country = d3.select(this).style('stroke-width', '.5px').style('stroke', '#666')

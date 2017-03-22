@@ -4,6 +4,8 @@
 
 d3.linechart = function module(position,title,url,id) {
 	"use strict";
+	
+	d3.select('#'.concat(id)).remove();
 		
 	// Set the dimensions
 	var margin = {top: 30, right: 20, bottom: 30, left: 30},

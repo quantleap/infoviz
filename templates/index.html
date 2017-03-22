@@ -16,6 +16,7 @@
 	<script src="{{ url_for('static', filename='world_map/d3.map.js') }}"></script>
 	<script src="{{ url_for('static', filename='slider/d3.slider.js') }}"></script>
 	<script src="{{ url_for('static', filename='line_chart/d3.linechart.js') }}"></script>
+	<script src="{{ url_for('static', filename='bubble_chart/d3.bubblechart.js') }}"></script>
 </head>
 
 <body>
@@ -55,7 +56,9 @@
 	
 	// Initialize first line chart
 	var linechart = d3.linechart('#row','Absolute temperatures', '/country/nl/annual_temperatures', 'first');
-	var linechart = d3.linechart('#row','Temperature changes', '/country/nl/annual_temperatures', 'second');
-	var linechart = d3.linechart('#row2','Comparison per country', '/country/nl/annual_temperatures' ,'first');
-	var linechart = d3.linechart('#row2','Extreme values', '/country/nl/annual_temperatures', 'second');
+	//var linechart = d3.linechart('#row','Temperature changes', '/country/nl/annual_temperatures', 'second');
+	//var linechart = d3.linechart('#row2','Comparison per country', '/country/nl/annual_temperatures' ,'first');
+	
+	// Initialize first line chart
+	var bubblechart = d3.bubblechart() 
 </script>
