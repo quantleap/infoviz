@@ -52,7 +52,7 @@ class CountryMonthlyTemperatures(Resource):
 class CountryAnnualTemperatures(Resource):
     def get(self, iso_code):
         conn = engine.connect()
-        query_result = conn.execute('''select year, avg_temp
+        query_result = conn.execute('''select year, avg_temp, yoy_change_avg_tmp
                                        from country_annual_temperatures
                                        where iso_code = :iso_code''',
                                     iso_code=iso_code).cursor.fetchall()
@@ -60,7 +60,9 @@ class CountryAnnualTemperatures(Resource):
         return {'country': get_country_by_iso(conn, iso_code),
                 'iso_code': iso_code,
                 'temperatures': [{'year': r[0],
-                                  'avg_temp': r[1]} for r in query_result]}
+                                  'avg_temp': r[1],
+                                  'yoy_change_avg_temp': r[2]
+                                  } for r in query_result]}
 
 
 class CountryCO2Emissions(Resource):

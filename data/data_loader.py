@@ -79,7 +79,7 @@ def load_country_temperatures_annual(con):
     cur = con.cursor()
     cur.execute('''drop table if exists country_annual_temperatures''')
     cur.execute('''create table country_annual_temperatures
-                    (year text, iso_code text, avg_temp real)''')
+                    (year text, iso_code text, avg_temp real, yoy_change_avg_tmp real)''')
     con.commit()
 
     # insert staging data
@@ -88,8 +88,12 @@ def load_country_temperatures_annual(con):
                       from staging_country_temperatures as st
                       join dimension_country as dim on lower(st.country) = lower(dim.country)
                       group by year, iso_code''')
-    cur.execute('''create index idx_country_annual_temperatures on country_monthly_temperatures (iso_code)''')
+    cur.execute('''create index idx_iso_code_country_annual_temperatures on country_annual_temperatures (iso_code)''')
+    cur.execute('''create index idx_year_country_annual_temperatures on country_annual_temperatures (year)''')
     con.commit()
+
+    # update yoy changes
+    cur.execute('''''')
 
 
 def import_country_temperatures(con, drop_staging_table=False):
