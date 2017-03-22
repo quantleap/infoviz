@@ -296,9 +296,13 @@ slider.moveMax = function(pos) {
     range = _;
     return slider;
   };
+  
+  slider.get_min_value = function() {
+    if (!arguments.length) return Math.round(minPos);
+  }
 
   slider.get_max_value = function() {
-    if (!arguments.length) return Math.round(minPos);
+    if (!arguments.length) return Math.round(maxPos);
   }
 
   return slider;
