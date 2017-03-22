@@ -2,7 +2,7 @@
 
 // Linechart adapted from D3noob http://bl.ocks.org/d3noob/b3ff6ae1c120eea654b5
 
-d3.linechart = function module(position,title,dataSource,id) {
+d3.linechart = function module(position,title,url,id) {
 	"use strict";
 		
 	// Set the dimensions
@@ -41,7 +41,6 @@ d3.linechart = function module(position,title,dataSource,id) {
 				  "translate(" + margin.left + "," + margin.top + ")");
 
 	// Get the data
-	var url = "/country/nl/annual_temperatures";
 	d3.json(url, function(error, data) {
 		data.temperatures.forEach(function(d) {
 			d.year = parseDate(d.year);

@@ -54,8 +54,8 @@
 	d3.select('#slider').call(slider);
 	
 	// Initialize first line chart
-	var linechart = d3.linechart('#row','Absolute temperatures', 'static/line_chart/line_data.csv', 'first');
-	var linechart = d3.linechart('#row','Temperature changes', 'static/line_chart/line_data.csv', 'second');
-	var linechart = d3.linechart('#row2','Comparison per country', 'static/line_chart/line_data.csv' ,'first');
-	var linechart = d3.linechart('#row2','Extreme values', 'static/line_chart/line_data.csv', 'second');
+	var linechart = d3.linechart('#row','Absolute temperatures', '/country/nl/annual_temperatures', 'first');
+	var linechart = d3.linechart('#row','Temperature changes', '/country/nl/annual_temperatures', 'second');
+	var linechart = d3.linechart('#row2','Comparison per country', '/country/nl/annual_temperatures' ,'first');
+	var linechart = d3.linechart('#row2','Extreme values', '/country/nl/annual_temperatures', 'second');
 </script>
