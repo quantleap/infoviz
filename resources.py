@@ -2,6 +2,9 @@ from flask_restful import Resource
 from sqlalchemy import create_engine
 
 engine = create_engine('sqlite:///./data/climate.db')
+from flask_restful import reqparse
+
+parser = reqparse.RequestParser()
 
 
 def get_country_by_iso(conn, iso_code):
@@ -51,11 +54,19 @@ class CountryMonthlyTemperatures(Resource):
 
 class CountryAnnualTemperatures(Resource):
     def get(self, iso_code):
+        parser.add_argument('begin', type=int, location='args')
+        parser.add_argument('end', type=int, location='args')
+        args = parser.parse_args()
+
         conn = engine.connect()
         query_result = conn.execute('''select year, avg_temp, yoy_change_avg_tmp
                                        from country_annual_temperatures
-                                       where iso_code = :iso_code''',
-                                    iso_code=iso_code).cursor.fetchall()
+                                       where iso_code = :iso_code and
+                                         (year >= :begin or :begin is null) AND
+                                         (year <= :end or :end is null)''',
+                                    iso_code=iso_code,
+                                    begin=args['begin'],
+                                    end=args['end']).cursor.fetchall()
 
         return {'country': get_country_by_iso(conn, iso_code),
                 'iso_code': iso_code,
