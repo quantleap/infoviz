@@ -52,7 +52,9 @@ d3.linechart = function module(position,title,url,id) {
 		// Scale the range of the data
 		x.domain(d3.extent(data.temperatures, function(d) { 
 		return d.year; }));
-		y.domain([0, d3.max(data.temperatures, function(d) { 
+		y.domain([d3.min(data.temperatures, function(d) { 
+		return d.avg; }), 
+		d3.max(data.temperatures, function(d) { 
 		return d.avg; })]);
 
 		// Add the valueline path
