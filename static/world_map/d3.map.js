@@ -5,7 +5,7 @@
 // Chris Khoo// http://bl.ocks.org/khoomeister/230e1eff08ee8d6eaf35
 // KoGor http://bl.ocks.org/KoGor/5685876
 
-d3.map = function module(year) {
+d3.map = function mapModule(year) {
 	"use strict";
 
 	d3.select("svg").remove();
@@ -47,12 +47,11 @@ d3.map = function module(year) {
 		  
 		var tempById = {};
 		var nameById = {};
-		var isoById = {};
 
 		countryNames.forEach(function(d){
 			nameById[d.id] = d.name;
-			isoById[d.id] = d.iso_code;
 		});
+		
 		tempData.forEach(function(d) {
 			tempById[d.RegionCode] = d.Temperature;
 			});	
@@ -61,7 +60,7 @@ d3.map = function module(year) {
 
 		countries = countries.filter(function(d) {
 			return countryNames.some(function(n) {
-				if (d.id == n.id) return d.name = n.name
+				if (d.id == n.id) return d.name = n.name, d.iso_code = n.iso_code
 			})
 		})			
 			
@@ -127,23 +126,17 @@ d3.map = function module(year) {
 		.on('mousedown', function() {
 			let country = d3.select(this).style('stroke-width', '3px').style('stroke', 'white')
 			let countryName = country.attr('data-name')
-			nameTag.style('visibility', 'hidden')
 			nameTag.text(countryName)
 			nameTag.attr({
 				x: 5,
 				y: height - 5,
 			})
-			nameTag.style('visibility', 'visible')
 			let iso = country.attr('data-iso')
-			console.log(iso)
-			console.log(countryName)
-			console.log('/country/'.concat(iso.concat('/annual_temperatures')))
 			d3.linechart('#row','Absolute temperatures', '/country/'.concat(iso.concat('/annual_temperatures')), 'first');
 			
 		})
 		.on('mouseup', function() {
 			let country = d3.select(this).style('stroke-width', '.5px').style('stroke', '#666')
-			nameTag.style('visibility', 'hidden')
 		})
 
 		let nameTag = svg.append('text')

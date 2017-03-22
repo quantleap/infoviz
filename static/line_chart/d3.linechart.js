@@ -2,7 +2,7 @@
 
 // Linechart adapted from D3noob http://bl.ocks.org/d3noob/b3ff6ae1c120eea654b5
 
-d3.linechart = function module(position,title,url,id) {
+d3.linechart = function lineModule(position,title,url,id) {
 	"use strict";
 	
 	d3.select('#'.concat(id)).remove();
@@ -52,7 +52,9 @@ d3.linechart = function module(position,title,url,id) {
 		// Scale the range of the data
 		x.domain(d3.extent(data.temperatures, function(d) { 
 		return d.year; }));
-		y.domain([0, d3.max(data.temperatures, function(d) { 
+		y.domain([d3.min(data.temperatures, function(d) { 
+		return d.avg; }), 
+		d3.max(data.temperatures, function(d) { 
 		return d.avg; })]);
 
 		// Add the valueline path

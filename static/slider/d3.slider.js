@@ -112,10 +112,17 @@ d3.slider = function sliderModule() {
       // Enable dragger drag 
       var dragBehaviour = d3.behavior.drag();
       dragBehaviour.on("drag", slider.drag);
+<<<<<<< HEAD
 	  // dragBehaviour.on("dragend", function() {
 		 //  console.log(d3.map.translateLast);
 		 //  d3.map(Math.round(value),map.translateLast,map.scaleLast);
 	  // });
+=======
+	  //dragBehaviour.on("dragend", function() {
+		  //console.log(d3.map.translateLast);
+		  //d3.map(Math.round(value),map.translateLast,map.scaleLast);
+	  //});
+>>>>>>> 10950c97bac642bd2d43236423dc3ac3638a1755
       dragger.call(dragBehaviour);
 
     });
