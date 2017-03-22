@@ -5,12 +5,12 @@
 d3.slider = function sliderModule() {
   "use strict";
 
-  var div, min = 0, max = 100, svg, value, axis, 
+  var div, min = 0, max = 100, svg, minPos, maxPos, axis, 
   height=40, rect,
   rectHeight = 12,
   tickSize = 6,
   margin = {top: 25, right: 25, bottom: 15, left: 25}, 
-  ticks = 0, tickValues, scale, tickFormat, dragger, width, 
+  ticks = 0, tickValues, scale, tickFormat, minDragger, maxDragger, width, 
   range = false;
  
 
@@ -21,7 +21,8 @@ d3.slider = function sliderModule() {
                                                 + margin.right);
 	  
 	  
-      value = value || min; 
+      minPos = minPos || min;
+	  maxPos = maxPos || min;	  
       scale = d3.scale.linear().domain([min, max]).range([0, width])
       .clamp(true);
       
@@ -44,8 +45,9 @@ d3.slider = function sliderModule() {
       if (range) {
         svg.append("rect")
         .attr("class", "d3slider-rect-value")
-        .attr("width", scale(value))
-        .attr("height", rectHeight);
+        .attr("width", scale(maxPos)-scale(minPos))
+        .attr("height", rectHeight)
+		.attr("transform", "translate(" + scale(minPos) + ")");
       }
       
       // Axis      
@@ -71,38 +73,74 @@ d3.slider = function sliderModule() {
       .attr("transform", "translate(0," + rectHeight + ")")
       .call(axis);
    
-      var values = [value];
-      dragger = svg.selectAll(".dragger")
-      .data(values)
+      maxDragger = svg.selectAll(".maxDragger")
+      .data([maxPos])
       .enter()
       .append("g")
-      .attr("class", "dragger")
+      .attr("class", "maxDragger")
       .attr("transform", function(d) {
         return "translate(" + scale(d) + ")";
       });
       
       var displayValue = null;
       if (tickFormat) { 
-        displayValue = tickFormat(value);
+        displayValue = tickFormat(maxPos);
       } else {
-        displayValue = d3.format(",.0f")(value);
+        displayValue = d3.format(",.0f")(maxPos);
       }
       
-      dragger.append("text")
+      maxDragger.append("text")
       .attr("x", 0)
       .attr("y", -15)
       .attr("text-anchor", "middle")
       .attr("class", "draggertext")
       .text(displayValue);
 
-      dragger.append("circle")
+      maxDragger.append("circle")
       .attr("class", "dragger-outer")
       .attr("r", 10)
       .attr("transform", function() {
         return "translate(0,6)";
       });
       
-      dragger.append("circle")
+      maxDragger.append("circle")
+      .attr("class", "dragger-inner")
+      .attr("r", 4)
+      .attr("transform", function() {
+        return "translate(0,6)";
+      });
+	  
+	  minDragger = svg.selectAll(".minDragger")
+      .data([minPos])
+      .enter()
+      .append("g")
+      .attr("class", "minDragger")
+      .attr("transform", function(d) {
+        return "translate(" + scale(d) + ")";
+      });
+
+      var displayValue2 = null;
+      if (tickFormat) { 
+        displayValue2 = tickFormat(minPos);
+      } else {
+        displayValue2 = d3.format(",.0f")(minPos);
+      }
+	  
+	   minDragger.append("text")
+      .attr("x", 0)
+      .attr("y", -15)
+      .attr("text-anchor", "middle")
+      .attr("class", "draggertext")
+      .text(displayValue2);
+       
+      minDragger.append("circle")
+      .attr("class", "dragger-outer")
+      .attr("r", 10)
+      .attr("transform", function() {
+        return "translate(0,6)";
+      });
+      
+      minDragger.append("circle")
       .attr("class", "dragger-inner")
       .attr("r", 4)
       .attr("transform", function() {
@@ -114,10 +152,10 @@ d3.slider = function sliderModule() {
       dragBehaviour.on("drag", slider.drag);
 	  // dragBehaviour.on("dragend", function() {
 		 //  console.log(d3.map.translateLast);
-		 //  d3.map(Math.round(value),map.translateLast,map.scaleLast);
+		 //  d3.map(Math.round(minPos),map.translateLast,map.scaleLast);
 	  // });
 
-      dragger.call(dragBehaviour);
+      minDragger.call(dragBehaviour);
 
     });
   }
@@ -131,34 +169,40 @@ d3.slider = function sliderModule() {
   slider.drag = function() {
     var pos = d3.event.x;
     slider.move(pos+margin.left);
-    console.log(slider.get_max_value()); // TO DO: add 2nd dragger
+    //console.log(slider.get_max_value()); // TO DO: add 2nd dragger
 
   };
 
   slider.move = function(pos) {
-    value = scale.invert(pos - margin.left);
-    var values = [value];
+    minPos = scale.invert(pos - margin.left);
 
     // Move dragger
-    svg.selectAll(".dragger").data(values)
+    svg.selectAll(".minDragger").data([minPos])
+    .attr("transform", function(d) {		
+      return "translate(" + scale(d) + ")";
+    });
+	
+	// Move dragger
+    svg.selectAll(".minDragger").data([minPos])
     .attr("transform", function(d) {		
       return "translate(" + scale(d) + ")";
     });
     
     var displayValue = null;
     if (tickFormat) { 
-      displayValue = tickFormat(value);
+      displayValue = tickFormat(minPos);
       min = displayValue;
       // console.log(displayValue); //Shows year
     } else {
-      displayValue = d3.format(",.0f")(value);
+      displayValue = d3.format(",.0f")(minPos);
     }
-    svg.selectAll(".dragger").select("text")
+    svg.selectAll(".minDragger").select("text")
     .text(displayValue);
    
     if (range) { 
       svg.selectAll(".d3slider-rect-value")
-      .attr("width", scale(value));
+	  .attr("transform", "translate(" + scale(minPos) + ")")
+      .attr("width", scale(maxPos)-scale(minPos));
     }
   };
 
@@ -187,9 +231,15 @@ d3.slider = function sliderModule() {
     return slider;
   };
 
-  slider.value = function(_) {
-    if (!arguments.length) return value;
-    value = _;
+  slider.minPos = function(_) {
+    if (!arguments.length) return minPos;
+    minPos = _;
+    return slider;
+  };
+
+  slider.maxPos = function(_) {
+    if (!arguments.length) return maxPos;
+    maxPos = _;
     return slider;
   };
   
@@ -200,7 +250,7 @@ d3.slider = function sliderModule() {
   };
 
   slider.get_max_value = function() {
-    if (!arguments.length) return Math.round(value);
+    if (!arguments.length) return Math.round(minPos);
   }
 
   return slider;
