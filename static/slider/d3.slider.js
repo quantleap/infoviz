@@ -148,14 +148,17 @@ d3.slider = function sliderModule() {
       });
 
       // Enable dragger drag 
-      var dragBehaviour = d3.behavior.drag();
-      dragBehaviour.on("drag", slider.drag);
+      var minDragBehaviour = d3.behavior.drag();
+      minDragBehaviour.on("drag", slider.dragMin);
+	  var maxDragBehaviour = d3.behavior.drag();
+      maxDragBehaviour.on("drag", slider.dragMax);
 	  // dragBehaviour.on("dragend", function() {
 		 //  console.log(d3.map.translateLast);
 		 //  d3.map(Math.round(minPos),map.translateLast,map.scaleLast);
 	  // });
 
-      minDragger.call(dragBehaviour);
+      minDragger.call(minDragBehaviour);
+	  maxDragger.call(maxDragBehaviour);
 
     });
   }
@@ -166,14 +169,19 @@ d3.slider = function sliderModule() {
     }
   };
 
-  slider.drag = function() {
+  slider.dragMin = function() {
     var pos = d3.event.x;
-    slider.move(pos+margin.left);
+    slider.moveMin(pos+margin.left);
     //console.log(slider.get_max_value()); // TO DO: add 2nd dragger
-
+  };
+  
+  slider.dragMax = function() {
+    var pos = d3.event.x;
+    slider.moveMax(pos+margin.left);
+    //console.log(slider.get_max_value()); // TO DO: add 2nd dragger
   };
 
-  slider.move = function(pos) {
+  slider.moveMin = function(pos) {
     minPos = scale.invert(pos - margin.left);
 
     // Move dragger
@@ -197,6 +205,39 @@ d3.slider = function sliderModule() {
       displayValue = d3.format(",.0f")(minPos);
     }
     svg.selectAll(".minDragger").select("text")
+    .text(displayValue);
+   
+    if (range) { 
+      svg.selectAll(".d3slider-rect-value")
+	  .attr("transform", "translate(" + scale(minPos) + ")")
+      .attr("width", scale(maxPos)-scale(minPos));
+    }
+  };
+  
+slider.moveMax = function(pos) {
+    maxPos = scale.invert(pos - margin.left);
+
+    // Move dragger
+    svg.selectAll(".maxDragger").data([maxPos])
+    .attr("transform", function(d) {		
+      return "translate(" + scale(d) + ")";
+    });
+	
+	// Move dragger
+    svg.selectAll(".maxDragger").data([maxPos])
+    .attr("transform", function(d) {		
+      return "translate(" + scale(d) + ")";
+    });
+    
+    var displayValue = null;
+    if (tickFormat) { 
+      displayValue = tickFormat(maxPos);
+      min = displayValue;
+      // console.log(displayValue); //Shows year
+    } else {
+      displayValue = d3.format(",.0f")(maxPos);
+    }
+    svg.selectAll(".maxDragger").select("text")
     .text(displayValue);
    
     if (range) { 
