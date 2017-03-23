@@ -129,6 +129,7 @@ d3.map = function mapModule(currentCountryName) {
 			let countryName = country.attr('data-name')
 			textpos.text(countryName)
 			let iso = country.attr('data-iso')
+			currentCountryName = countryName;
 			currentCountryISO = iso;
 			switchToChart(iso);
 			//d3.linechart('#row','Absolute temperatures', '/country/'.concat(iso.concat('/annual_temperatures')), 'first');

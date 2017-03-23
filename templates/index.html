@@ -77,7 +77,7 @@ function switchToHeatmap(){
 	var high = 2017;
 	
 	// Initialize map
-	var map = d3.map();
+	var map = d3.map(currentCountryName);
 	
 	// Initialize slider
 	var slider = d3.slider().min(1900).max(2020).ticks(10).tickFormat(d3.format("f")).showRange(true).minPos(low).maxPos(high);
