@@ -177,7 +177,7 @@ d3.slider = function sliderModule() {
 			//d3.map(Math.round(minPos),map.translateLast,map.scaleLast);
 		  }; 
 		  if (navCompare) {
-			//d3.bubblechart();			  
+			var bubblechart = d3.bubblechart(low,high);			  
 		  };
 		  if (navAnnual) {
 			  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');
