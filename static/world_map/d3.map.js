@@ -122,7 +122,7 @@ d3.map = function mapModule(currentCountryName) {
 		})
 		.attr('d', path)
 		.style("fill", function(d) {
-				return color(tempById[nameById[d.id].toString().concat(year.toString())]);
+				return color(tempById[nameById[d.id].toString().concat('2017')]);
 			})
 		.on('mousedown', function() {
 			let country = d3.select(this).style('stroke-width', '3px').style('stroke', 'white')
