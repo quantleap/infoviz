@@ -66,7 +66,7 @@ function switchToChart(){
 }
 function switchToHeatmap(){
 	low = slider.get_min_value(), high = slider.get_max_value();
-	var heatmap = d3.heatmap('heatmap',low,high);
+	var heatmap = d3.heatmap(currentCountryISO,low,high);
 	navAnnual = false; navMonthly = true;	
 }
 </script>
