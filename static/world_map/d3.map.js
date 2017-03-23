@@ -5,12 +5,11 @@
 // Chris Khoo// http://bl.ocks.org/khoomeister/230e1eff08ee8d6eaf35
 // KoGor http://bl.ocks.org/KoGor/5685876
 
-d3.map = function mapModule(year) {
+d3.map = function mapModule(currentCountryName) {
 	"use strict";
 	
-	year = 2017;
-
 	d3.select("svg").remove();
+	d3.select("#countryname").remove();
 	
 	var mapDiv = d3.select('#map');
 	var width  = mapDiv.node().getBoundingClientRect().width; //800
@@ -130,7 +129,7 @@ d3.map = function mapModule(year) {
 			let countryName = country.attr('data-name')
 			textpos.text(countryName)
 			let iso = country.attr('data-iso')
-			currentCountry = iso;
+			currentCountryISO = iso;
 			switchToChart(iso);
 			//d3.linechart('#row','Absolute temperatures', '/country/'.concat(iso.concat('/annual_temperatures')), 'first');
 			
@@ -142,21 +141,21 @@ d3.map = function mapModule(year) {
 		let textpos = d3.select('#sidenav')
 		.append('div')
 		.append('text')
+		.attr('id', 'countryname')
 		.attr('font-family', 'Verdana')
 		.attr('font-size', '15px')
 		.attr('margin','0px 5px 0px 0px')
 		.attr('padding', '3px 5px');
 		
-		textpos.text('The Netherlands');
+		textpos.text(currentCountryName);
 		
-		render(year);
+		render();
 		
 		// The following variables track the last processed event.
 		var translateLast = [0,0];
 		var scaleLast     = null;
 
-		function render(newYear) {
-			year = newYear;
+		function render() {
 			map.selectAll('path')       // Redraw all map paths
 				.attr('d', path)
 				//.style("fill", function(d) {
