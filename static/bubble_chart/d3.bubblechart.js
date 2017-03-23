@@ -2,7 +2,7 @@
 
 // Partially adapted from http://bl.ocks.org/mbostock/3887118 and http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
 
-d3.bubblechart = function bubbleModule() {
+d3.bubblechart = function bubbleModule(year_low, year_high) {
 	"use strict";
 	
 	d3.select("#map").selectAll("*").remove();
@@ -18,10 +18,17 @@ d3.bubblechart = function bubbleModule() {
 	// TO DO: add list of countries to obtain data for
 	// TO DO: add (dynamic) data read in from slider ('yearmin', 'yearmax')
 	// get data from database
-	var url = "/country/nl/annual_temperatures";
-		d3.json(url, function (json) {
-			//console.log(json.temperatures[0].avg_temp)  // average temperature year 1743
-		});
+	// var url = "/country/nl/annual_temperatures";
+	// 	d3.json(url, function (json) {
+	// 		//console.log(json.temperatures[0].avg_temp)  // average temperature year 1743
+	// 	});
+
+	var url = 'country/'.concat(id).concat('/monthly_temperatures')
+				 .concat('?begin=').concat(year_low).concat('&end=').concat(year_high);
+	d3.json(url, function (json) {
+		console.log(json.temperatures[0]);
+		// console.log(url);
+	});
 
 	/* 
 	 * value accessor - returns the value to encode for a given data object.
