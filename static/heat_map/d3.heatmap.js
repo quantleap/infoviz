@@ -2,7 +2,7 @@
 
 // Slider adapted from 
 
-d3.heatmap = function heatmapModule(id) {
+d3.heatmap = function heatmapModule(id, min_year, max_year) {
 	"use strict";
   
  	d3.select('#sideblock').selectAll("*").remove();
@@ -43,11 +43,11 @@ d3.heatmap = function heatmapModule(id) {
 	  var minTemp = d3.min(temp);
 	  var maxTemp = d3.max(temp);
 
-	  var minYear = d3.min(years);
-	  var maxYear = d3.max(years);
+	  //var minYear = d3.min(years);
+	  //var maxYear = d3.max(years);
 
-	  var minDate = new Date(minYear, 0);
-	  var maxDate = new Date(maxYear, 0);
+	  var minDate = new Date(min_year, 0);
+	  var maxDate = new Date(max_year, 0);
 
 	  var gridWidth = width / years.length;
 	  var gridHeight = height / month.length;
