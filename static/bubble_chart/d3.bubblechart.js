@@ -1,4 +1,4 @@
-// Dion Tjerdi
+// Dion Oosterman
 
 // Partially adapted from http://bl.ocks.org/mbostock/3887118 and http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
 
@@ -15,16 +15,9 @@ d3.bubblechart = function bubbleModule() {
 	-  margin.top - margin.bottom; //505;
 
 
-	// calculate total emissions in 10 years
-	// var emissions = function(d) {
-	//   emissions = 0;
-	//   for (i = 0; i < 10; i++) {
-	//     emissions += d.emissions[i].emission;
-	//   }
-	//   return emissions;
-	// }
-
-	// Get data from database
+	// TO DO: add list of countries to obtain data for
+	// TO DO: add (dynamic) data read in from slider ('yearmin', 'yearmax')
+	// get data from database
 	var url = "/country/nl/annual_temperatures";
 		d3.json(url, function (json) {
 			//console.log(json.temperatures[0].avg_temp)  // average temperature year 1743
@@ -37,13 +30,13 @@ d3.bubblechart = function bubbleModule() {
 	 * axis - sets up axis
 	 */ 
 
+	// TO DO: make scale logarithmic?
 	// setup x 
 	var xValue = function(d) { return d.emission;}, // data -> value
 		xScale = d3.scale.linear().range([0, width]), // value -> display
 		xMap = function(d) { return xScale(xValue(d));}, // data -> display
-		xAxis = d3.svg.axis().scale(xScale).orient("bottom"); 
+		xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(7, ",.1s").tickSize(6, 0);
 
-	// TO DO: Make scale logarithmic?
 	// setup y
 	var yValue = function(d) { return d.temperature;}, // data -> value
 		yScale = d3.scale.linear().range([height, 0]), // value -> display
@@ -69,7 +62,6 @@ d3.bubblechart = function bubbleModule() {
 
 	// load data
 	d3.csv("static/bubble_chart/fake_data.csv", function(error, data) {
-
 	  // change string (from CSV) into number format
 	  data.forEach(function(d) {
 		d.temperature = +d.temperature;
@@ -100,7 +92,7 @@ d3.bubblechart = function bubbleModule() {
 	  // yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
 	  xScale.domain([d3.min(data, xValue)-20, d3.max(data, xValue)+20+50]); // where '20' is the max of the range in rScale, 50 is for legend
 	  yScale.domain([d3.min(data, yValue)-0.2, d3.max(data, yValue)+0.2]);
-		
+
 	  // x-axis
 	  svg.append("g")
 		  .attr("class", "x axis")
@@ -124,7 +116,7 @@ d3.bubblechart = function bubbleModule() {
 		  .attr("y", 6)
 		  .attr("dy", ".71em")
 		  .style("text-anchor", "end")
-		  .text("Temperature change (10 years)");
+		  .text("Temperature change (10 years)");  // TO DO: make 'years' dynamic
 
 
 	  // draw dots
@@ -162,14 +154,11 @@ d3.bubblechart = function bubbleModule() {
 
 	  // draw legend
 	  var legend = svg.selectAll(".legend")
-		  // .data(color.domain())
-		  // .data(data)
 		  .data(legendSize)
 		.enter().append("g")
 		  .attr("class", "legend")
 		  .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-	// TO DO: legend should represent size (emission per capita), and not country
 	  // draw legend sized bubbles
 	  legend.append("circle")
 		  .attr("cx", width - 18)
@@ -177,14 +166,6 @@ d3.bubblechart = function bubbleModule() {
 		  .attr("r", function(d) { return rScale(d);})
 		  .style("stroke", "black")
 		  .style("fill", "none");
-
-	  // // draw legend colored rectangles
-	  // legend.append("rect")
-	  //     .attr("x", width - 18)
-	  //     .attr("width", 18)
-	  //     .attr("height", 18)
-	  //     // .style("fill", color);
-	  //     .style("fill", function(d) { return color(d.country);});
 
 	  // draw legend text
 	  legend.append("text")
@@ -196,7 +177,7 @@ d3.bubblechart = function bubbleModule() {
 		  .style("text-anchor", "end")
 		  .text(function(d) {return d;})
 
-		//Create Title 
+		//create legend title 
 		svg.append("text")
 		.attr("x", width - 18)
 		.attr("y", 0)
