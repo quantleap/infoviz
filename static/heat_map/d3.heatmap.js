@@ -21,9 +21,11 @@ d3.heatmap = function heatmapModule(id, min_year, max_year) {
 	var sideDiv = d3.select('#sideblock');
 	var width = sideDiv.node().getBoundingClientRect().width - margin.left - margin.right;
 	var height = 10 + sideDiv.node().getBoundingClientRect().height - margin.top - margin.bottom;
-	var legendWidth = 40;
-
-	d3.json('static/heat_map/testdata.json', function(error, data) {
+	var legendWidth = 38;
+	
+	var url = 'country/'.concat(id).concat('/monthly_temperatures').concat('?begin=').concat(min_year).concat('&end=').concat(max_year);
+	
+	d3.json(url, function(error, data) {
 	  if (error) throw error;
 
 	  var data = data.temperatures;
@@ -43,20 +45,18 @@ d3.heatmap = function heatmapModule(id, min_year, max_year) {
 	  var minTemp = d3.min(temp);
 	  var maxTemp = d3.max(temp);
 
-	  //var minYear = d3.min(years);
-	  //var maxYear = d3.max(years);
+	  var minYear = d3.min(years);
+	  var maxYear = d3.max(years);
 
-	  var minDate = new Date(min_year, 0);
-	  var maxDate = new Date(max_year, 0);
+	  var minDate = new Date(minYear, 0);
+	  var maxDate = new Date(maxYear, 0);
 
 	  var gridWidth = width / years.length;
 	  var gridHeight = height / month.length;
 
-
 	  var colorScale = d3.scale.quantile()
 		.domain([minTemp, maxTemp])
 		.range(colors);
-
 
 	  var svg = sideDiv.append("svg")
 		.attr("id",id)
@@ -64,8 +64,6 @@ d3.heatmap = function heatmapModule(id, min_year, max_year) {
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
 
 	  var monthLabels = svg.selectAll(".monthLabel")
 		.data(month)
@@ -77,7 +75,6 @@ d3.heatmap = function heatmapModule(id, min_year, max_year) {
 		.style("text-anchor", "end")
 		.attr("transform", "translate(-6," + gridHeight / 1.5 + ")");
 
-
 	  var xScale = d3.time.scale()
 		.domain([minDate, maxDate])
 		.range([0, width]);
@@ -85,7 +82,7 @@ d3.heatmap = function heatmapModule(id, min_year, max_year) {
 	  var xAxis = d3.svg.axis()
 		.scale(xScale)
 		.orient("bottom")
-		.ticks(d3.time.years, 20);
+		.ticks(10)
 
 	  svg.append("g")
 		.attr("class", "axis")
@@ -114,7 +111,7 @@ d3.heatmap = function heatmapModule(id, min_year, max_year) {
 		.append("g");
 
 	  legend.append("rect")
-		.attr("x", function(d, i) {return legendWidth * i + (width - legendWidth * buckets);})
+		.attr("x", function(d, i) {return legendWidth * i + (width - legendWidth * buckets)+10;})
 		.attr("y", height + 50)
 		.attr("width", legendWidth)
 		.attr("height", gridHeight / 2)
@@ -123,6 +120,7 @@ d3.heatmap = function heatmapModule(id, min_year, max_year) {
 	  legend.append("text")
 		.text(function(d) {return (Math.floor(d));})
 		.attr("class", "axis text")
-		.attr("x", function(d, i) {return ((legendWidth * i) + Math.floor(legendWidth / 2) - 6 + (width - legendWidth * buckets));})
-		.attr("y", height + gridHeight + 50); });
+		.attr("x", function(d, i) {return ((legendWidth * i) + (width - legendWidth * buckets)+35);})
+		.attr("y", height + gridHeight + 50)
+		.style("text-anchor", "end"); });
 }
