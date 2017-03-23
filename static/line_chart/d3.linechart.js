@@ -5,7 +5,20 @@
 d3.linechart = function lineModule(position,title,url,id) {
 	"use strict";
 	
-	d3.select('#'.concat(id)).remove();
+	console.log(url);
+	
+ 	d3.select('#sideblock').selectAll("*").remove();
+	
+	//Build the rows
+	var data = [{ 'class' : 'row'},{ 'class' : 'row2'}]
+	var side = d3.select('#sideblock')
+	.selectAll('div')
+	.data(data).enter()
+	.append('div')
+		.attr('id', function (d) { return d.class; })
+		.style('display', 'table-row')
+		.style('height','230px')
+
 		
 	// Set the dimensions
 	var margin = {top: 30, right: 20, bottom: 30, left: 30},

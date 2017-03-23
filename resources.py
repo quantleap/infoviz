@@ -2,6 +2,9 @@ from flask_restful import Resource
 from sqlalchemy import create_engine
 
 engine = create_engine('sqlite:///./data/climate.db')
+from flask_restful import reqparse
+
+parser = reqparse.RequestParser()
 
 
 def get_country_by_iso(conn, iso_code):
@@ -37,11 +40,20 @@ class Country(Resource):
 
 class CountryMonthlyTemperatures(Resource):
     def get(self, iso_code):
+        parser.add_argument('begin', type=int, location='args')
+        parser.add_argument('end', type=int, location='args')
+        args = parser.parse_args()
+
         conn = engine.connect()
         query_result = conn.execute('''select month, avg_temp
                                        from country_monthly_temperatures
-                                       where iso_code = :iso_code''',
-                                    iso_code=iso_code).cursor.fetchall()
+                                       where iso_code = :iso_code and
+                                         (cast(substr(month, 1, 4) as real) >= :begin or :begin is null) AND
+                                         (cast(substr(month, 1, 4) as real) <= :end or :end is null)
+                                       order by month desc''',
+                                    iso_code=iso_code,
+                                    begin=args['begin'],
+                                    end=args['end']).cursor.fetchall()
 
         return {'country': get_country_by_iso(conn, iso_code),
                 'iso_code': iso_code,
@@ -51,30 +63,52 @@ class CountryMonthlyTemperatures(Resource):
 
 class CountryAnnualTemperatures(Resource):
     def get(self, iso_code):
+        parser.add_argument('begin', type=int, location='args')
+        parser.add_argument('end', type=int, location='args')
+        args = parser.parse_args()
+
         conn = engine.connect()
-        query_result = conn.execute('''select year, avg_temp
+        query_result = conn.execute('''select year, avg_temp, yoy_change_avg_tmp
                                        from country_annual_temperatures
-                                       where iso_code = :iso_code''',
-                                    iso_code=iso_code).cursor.fetchall()
+                                       where iso_code = :iso_code and
+                                         (year >= :begin or :begin is null) AND
+                                         (year <= :end or :end is null)
+                                       order by year desc''',
+                                    iso_code=iso_code,
+                                    begin=args['begin'],
+                                    end=args['end']).cursor.fetchall()
 
         return {'country': get_country_by_iso(conn, iso_code),
                 'iso_code': iso_code,
                 'temperatures': [{'year': r[0],
-                                  'avg_temp': r[1]} for r in query_result]}
+                                  'avg_temp': r[1],
+                                  'yoy_change_avg_temp': r[2]
+                                  } for r in query_result]}
 
 
-class CountryCO2Emissions(Resource):
+class CountryIndicators(Resource):
     def get(self, iso_code):
+        parser.add_argument('begin', type=int, location='args')
+        parser.add_argument('end', type=int, location='args')
+        args = parser.parse_args()
+
         conn = engine.connect()
-        query_result = conn.execute('''select year, co2_emission
-                                       from country_co2_emissions
-                                       where iso_code = :iso_code''',
-                                    iso_code=iso_code).cursor.fetchall()
+        query_result = conn.execute('''select year,
+                                              population,
+                                              co2_emission_total,
+                                              co2_emission_per_capita
+                                       from country_annual_indicators
+                                       where iso_code = :iso_code and
+                                         (year >= :begin or :begin is null) AND
+                                         (year <= :end or :end is null)
+                                       order by year desc''',
+                                    iso_code=iso_code,
+                                    begin=args['begin'],
+                                    end=args['end']).cursor.fetchall()
 
         return {'country': get_country_by_iso(conn, iso_code),
                 'iso_code': iso_code,
-                'co2_emissions': [{'year': r[0],
-                                   'co2_emission': r[1]} for r in query_result]}
-
-
-
+                'indicators': [{'year': r[0],
+                                'population': r[1],
+                                'co2_emission_total': r[2],
+                                'co2_emission_per_capita': r[3]} for r in query_result]}

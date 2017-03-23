@@ -5,12 +5,12 @@
 // Chris Khoo// http://bl.ocks.org/khoomeister/230e1eff08ee8d6eaf35
 // KoGor http://bl.ocks.org/KoGor/5685876
 
-d3.map = function mapModule(year) {
+d3.map = function mapModule(currentSelection) {
 	"use strict";
-	
-	year = 2017;
 
 	d3.select("svg").remove();
+	
+	var year=2017;
 	
 	var mapDiv = d3.select('#map');
 	var width  = mapDiv.node().getBoundingClientRect().width; //800
@@ -19,6 +19,7 @@ d3.map = function mapModule(year) {
 
 	var initialLongitude = 0;            // Initial longitude to center
 	var latitudeBounds = [ -80, 84 ];      // Maximum latitude to display
+	var currentSelection;
 		
 	var projection = d3.geo.mercator()
 		.rotate([-initialLongitude, 0])    // Rotate the initial longitude to center
@@ -40,42 +41,41 @@ d3.map = function mapModule(year) {
 	  .defer(d3.json, "static/world_map/world-110m2.json")
 	  .defer(d3.tsv, "static/world_map/world-country-names.tsv")
 	  .defer(d3.csv, "static/world_map/Temperatures.csv")
-	  .await(ready);
+	  //.defer(d3.json, "/country/nl/annual_temperatures")
+	  .await(map.ready);
 
 	//Start of Choropleth drawing
-
-	function ready(error, world, countryNames, tempData) {
-		if (error) throw error;
-		  
-		var tempById = {};
-		var nameById = {};
-
-		countryNames.forEach(function(d){
-			nameById[d.id] = d.name;
-		});
+  function map(selection) {
+    selection.each(function() {
 		
-		tempData.forEach(function(d) {
-			tempById[d.RegionCode] = d.Temperature;
-			});	
+		map.ready = function(error, world, countryNames, tempData) {
+			if (error) throw error;
+			  
+			var tempById = {};
+			var nameById = {};
+
+			countryNames.forEach(function(d){
+				nameById[d.id] = d.name;
+			});
 			
-		let countries = topojson.feature(world, world.objects.countries).features;
-
-		countries = countries.filter(function(d) {
-			return countryNames.some(function(n) {
-				if (d.id == n.id) return d.name = n.name, d.iso_code = n.iso_code
-			})
-		})			
+			//tempData.temperatures.forEach(function(d) {
+			//	//d.year = parseDate(d.year);
+			//	tempById[currentSelection] = +d.yoy_change_avg_temp;
+			// });
 			
-		function updateProjectionBounds() {
-			// Updates the view top left and bottom right with the current projection.
-			var yaw = projection.rotate()[0];
-			var longitudeHalfRotation = 180.0 - 1e-6;
+			tempData.forEach(function(d) {
+				tempById[d.RegionCode] = d.Temperature;
+				});	
+				
+			let countries = topojson.feature(world, world.objects.countries).features;
 
-			viewMin = projection([-yaw - longitudeHalfRotation, latitudeBounds[1]]);
-			viewMax = projection([-yaw + longitudeHalfRotation, latitudeBounds[0]]);
-		}
-
-		updateProjectionBounds();
+			countries = countries.filter(function(d) {
+				return countryNames.some(function(n) {
+					if (d.id == n.id) return d.name = n.name, d.iso_code = n.iso_code
+				});
+			});		
+			
+		map.updateProjectionBounds();
 
 		// Set up the scale extent and initial scale for the projection.
 		var s = width / (viewMax[0] - viewMin[0]);
@@ -97,7 +97,7 @@ d3.map = function mapModule(year) {
 			.size([width,height])
 			.scaleExtent(scaleExtent)
 			.scale(projection.scale())
-			.on("zoom", handlePanZoom);
+			.on("zoom", map.handlePanZoom);
 
 		svg.call(zoom);                     // Attach zoom event
 
@@ -129,12 +129,8 @@ d3.map = function mapModule(year) {
 			let country = d3.select(this).style('stroke-width', '3px').style('stroke', 'white')
 			let countryName = country.attr('data-name')
 			nameTag.text(countryName)
-			nameTag.attr({
-				x: 5,
-				y: height - 5,
-			})
 			let iso = country.attr('data-iso')
-			currentCountry = iso;
+			currentSelection = iso;
 			switchToChart(iso);
 			//d3.linechart('#row','Absolute temperatures', '/country/'.concat(iso.concat('/annual_temperatures')), 'first');
 			
@@ -146,14 +142,31 @@ d3.map = function mapModule(year) {
 		let nameTag = svg.append('text')
 		.attr('font-family', 'Verdana')
 		.attr('font-size', '15px')
+		.text('The Netherlands')
+		.attr({
+				x: 5,
+				y: height - 5,
+			})
 		
-		render(year);
+		map.render(year);
 		
-		// The following variables track the last processed event.
-		var translateLast = [0,0];
-		var scaleLast     = null;
+		};
+		
+		});
+		
+		}
+		
+		map.updateProjectionBounds = function() {
+			// Updates the view top left and bottom right with the current projection.
+			var yaw = projection.rotate()[0];
+			var longitudeHalfRotation = 180.0 - 1e-6;
 
-		function render(newYear) {
+			viewMin = projection([-yaw - longitudeHalfRotation, latitudeBounds[1]]);
+			viewMax = projection([-yaw + longitudeHalfRotation, latitudeBounds[0]]);
+		}
+		
+
+		map.render = function(newYear) {
 			year = newYear;
 			map.selectAll('path')       // Redraw all map paths
 				.attr('d', path)
@@ -162,7 +175,11 @@ d3.map = function mapModule(year) {
 			//});
 		}
 
-		function handlePanZoom() {
+		// The following variables track the last processed event.
+		var translateLast = [0,0];
+		var scaleLast     = null;
+		
+		map.handlePanZoom = function() {
 			// Handle pan and zoom events
 
 			var scale = zoom.scale();
@@ -181,7 +198,7 @@ d3.map = function mapModule(year) {
 				projection.rotate ([longitude, 0, 0]);
 
 				// Use the Y translation to translate projection, clamped by min/max
-				updateProjectionBounds();
+				map.updateProjectionBounds();
 
 				if (viewMin[1] + delta[1] > 0)
 					delta[1] = -viewMin[1];
@@ -196,8 +213,7 @@ d3.map = function mapModule(year) {
 			scaleLast = scale;
 			translateLast = translate;
 
-			render();
-		};
-	};
-
-};
+			map.render();
+		
+ }
+}

@@ -106,17 +106,7 @@ path {
 #sideblock {
 	display : table-row;
 	height: 465px;
-	}	
-	
-#row{
-    display : table-row;
-	height: 230px;
-}
-
-#row2{
-	display : table-row;
-    height: 230px;
-}
+	}		
 
 #slider {
 	width:800px;
