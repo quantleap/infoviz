@@ -5,6 +5,8 @@
 d3.linechart = function lineModule(position,title,url,id) {
 	"use strict";
 	
+	console.log(url);
+	
  	d3.select('#sideblock').selectAll("*").remove();
 	
 	//Build the rows
