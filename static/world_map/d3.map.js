@@ -19,6 +19,7 @@ d3.map = function mapModule(year) {
 
 	var initialLongitude = 0;            // Initial longitude to center
 	var latitudeBounds = [ -80, 84 ];      // Maximum latitude to display
+	var currentSelection;
 		
 	var projection = d3.geo.mercator()
 		.rotate([-initialLongitude, 0])    // Rotate the initial longitude to center
@@ -134,7 +135,9 @@ d3.map = function mapModule(year) {
 				y: height - 5,
 			})
 			let iso = country.attr('data-iso')
-			d3.linechart('#row','Absolute temperatures', '/country/'.concat(iso.concat('/annual_temperatures')), 'first');
+			currentSelection = iso;
+			switchToChart(iso);
+			//d3.linechart('#row','Absolute temperatures', '/country/'.concat(iso.concat('/annual_temperatures')), 'first');
 			
 		})
 		.on('mouseup', function() {

@@ -153,11 +153,18 @@ d3.slider = function sliderModule() {
 		  let low = slider.get_min_value();
 		  let high = slider.get_max_value();
 		  var url = '/country/nl/annual_temperatures'.concat('?begin=').concat(low).concat('&end=').concat(high);
-		  //console.log(url);		  
-		  //var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');
-      var heatmap = d3.heatmap('nl', low, high);
-		   //console.log(slider.get_max_value());
-		 //  d3.map(Math.round(minPos),map.translateLast,map.scaleLast);
+		  if (navExplore) {
+			//d3.map(Math.round(minPos),map.translateLast,map.scaleLast);
+		  }; 
+		  if (navCompare) {
+			//d3.bubblechart();			  
+		  };
+		  if (navAnnual) {
+			  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');
+		  };	
+		  if (navMonthly) {
+			  var heatmap = d3.heatmap('nl', low, high);
+		  };		  
 	   });
 	   
 	  var maxDragBehaviour = d3.behavior.drag();
@@ -165,12 +172,19 @@ d3.slider = function sliderModule() {
 	  maxDragBehaviour.on("dragend", function() {
 		  let low = slider.get_min_value();
 		  let high = slider.get_max_value();
-		  var url = '/country/nl/annual_temperatures'.concat('?begin=').concat(low).concat('&end=').concat(high);
-		  console.log(url);		  
-		  //var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');
-      var heatmap = d3.heatmap('nl', low, high);
-		   //console.log(slider.get_max_value());
-		 //  d3.map(Math.round(minPos),map.translateLast,map.scaleLast);
+		  var url = '/country/nl/annual_temperatures'.concat('?begin=').concat(low).concat('&end=').concat(high);	  
+		  if (navExplore) {
+			//d3.map(Math.round(minPos),map.translateLast,map.scaleLast);
+		  }; 
+		  if (navCompare) {
+			//d3.bubblechart();			  
+		  };
+		  if (navAnnual) {
+			  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');
+		  };	
+		  if (navMonthly) {
+			  var heatmap = d3.heatmap('nl', low, high);
+		  };		  
 	   });
 
       minDragger.call(minDragBehaviour);

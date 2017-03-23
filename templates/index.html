@@ -45,19 +45,28 @@
 	</div>
 	
 <script>
+var navExplore = true;
+var navCompare = false;
+var navAnnual = true;
+var navMonthly = false;
+
 function switchToMap(year){
 	var map = d3.map(year,[0,0],null);
+	navExplore = true; navCompare = false;
 }
 function switchToBubble(year){
 	var bubblechart = d3.bubblechart();
+	navExplore = false; navCompare = true;
 }
 function switchToChart(iso){
 	let low = slider.get_min_value();
 	let high = slider.get_max_value();
 	var linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(iso).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first');
+	navAnnual = true; navMonthly = false;
 }
 function switchToHeatmap(){
 	var heatmap = d3.heatmap('heatmap');
+	navAnnual = false; navMonthly = true;	
 }
 </script>
 
