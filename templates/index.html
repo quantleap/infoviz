@@ -46,11 +46,12 @@
 	
 <script>
 var navExplore = true, navCompare = false, navAnnual = true, navMonthly = false;
-var currentCountry = 'nl';
+var currentCountryISO = 'nl';
+var currentCountryName = 'The Netherlands'
 
 
-function switchToMap(year){
-	var map = d3.map(year,[0,0],null);
+function switchToMap(currentCountryName){
+	var map = d3.map();
 	navExplore = true; navCompare = false;
 }
 function switchToBubble(year){
@@ -60,7 +61,7 @@ function switchToBubble(year){
 }
 function switchToChart(){
 	low = slider.get_min_value(), high = slider.get_max_value();
-	var linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountry).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first');
+	var linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first');
 	navAnnual = true; navMonthly = false;
 }
 function switchToHeatmap(){
@@ -74,17 +75,16 @@ function switchToHeatmap(){
 <script>
 	var low = 1975 ;
 	var high = 2017;
-	let cntry = 'nl';
 	
 	// Initialize map
-	var map = d3.map(cntry);
+	var map = d3.map();
 	
 	// Initialize slider
 	var slider = d3.slider().min(1900).max(2020).ticks(10).tickFormat(d3.format("f")).showRange(true).minPos(low).maxPos(high);
 	d3.select('#slider').call(slider);
 	
 	// Initialize first line chart
-	var linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(cntry).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first');
+	var linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first');
 	//var linechart = d3.linechart('#row','Temperature changes', '/country/nl/annual_temperatures', 'second');
 	//var linechart = d3.linechart('#row2','Comparison per country', '/country/nl/annual_temperatures' ,'first');
 </script>
