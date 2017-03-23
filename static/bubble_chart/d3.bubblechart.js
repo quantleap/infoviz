@@ -15,23 +15,59 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 	-  margin.top - margin.bottom; //505;
 
 
-	// TO DO: add list of countries to obtain data for
+	// TO DO: add list of countries to obtain data for --> top 5 countries highest emission, top 5 countries highest temp increase
 	// TO DO: add (dynamic) data read in from slider ('yearmin', 'yearmax')
-	// get data from database
-	// var url = "/country/nl/annual_temperatures";
-	// 	d3.json(url, function (json) {
-	// 		//console.log(json.temperatures[0].avg_temp)  // average temperature year 1743
-	// 	});
+	/*
+	var data = {};
+	var countries = ['nl', 'gb', 'us', 'bd', 'au', 'sd', 'ru', 'no']
+	for (var i=0; i<countries.length; i++) {
+		var country_id = countries[i];
+		data[country_id] = {'temperature':undefined,
+							'co2':undefined
+						};
+		data[country_id].temperature = i;  // TO DO: make difference between 'year_high' and 'year_low'
+		data[country_id].co2 = i*1000;  // TO DO: make sum from 'year_low' to 'year_high'
+	}
+	console.log(data.gb);
+	*/
 
-	var id = 'nl'; //
+// EXAMPLE URL: http://127.0.0.1:5000/country/nl/annual_temperatures?begin=1975&end=2017
+	function getTemp(country_id, year_low, year_high) {
+    	// code to be executed
+    	var url = 'country/'.concat(country_id).concat('/annual_temperatures')
+				 .concat('?begin=').concat(year_low).concat('&end=').concat(year_high);
+		d3.json(url, function (json) {
+			var temp_max = json.temperatures.slice(0)[0].avg_temp;  // first index (most recent year)
+			var temp_min = json.temperatures.slice(-1)[0].avg_temp;  // last index (oldest year)
+		});
 
-	var url = 'country/'.concat(id).concat('/annual_temperatures')
+		return (temp_max - temp_min);
+	};
+
+// EXAMPLE URL: http://127.0.0.1:5000/country/nl/indicators?begin=1975&end=2017
+	function getCO2(country_id, year_low, year_high) {
+		// code to be executed
+		var url = 'country/'.concat(country_id).concat('/indicators')
+				 .concat('?begin=').concat(year_low).concat('&end=').concat(year_high);
+		d3.json(url, function (json) {
+			// for (var i=0; i<json.indicators.length; i++) {
+			// TO DO: sum CO2 emissions
+			// var emission = json.indicators.[0].co2_emission_total;  // emission in one year
+			// };
+		});
+
+		// return co2_total;
+	};
+	
+
+	var country_id = 'nl';
+	// query temperature data from database FOR A SINGLE COUNTRY
+	var url = 'country/'.concat(country_id).concat('/annual_temperatures')
 				 .concat('?begin=').concat(year_low).concat('&end=').concat(year_high);
 	d3.json(url, function (json) {
-		// console.log(json.temperatures[-1].year);
-
-		var highest = Object.keys(json.temperatures).sort().pop();
-		console.log(highest);
+		// console.log(url);
+		console.log(json.temperatures.slice(0)[0].avg_temp);  // first index (most recent year)
+		console.log(json.temperatures.slice(-1)[0].avg_temp);  // last index (oldest year)
 	});
 
 	/* 
@@ -115,7 +151,7 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 		  .attr("x", width)
 		  .attr("y", -6)
 		  .style("text-anchor", "end")
-		  .text("Emissions (megatons)");
+		  .text("Emissions (Kiloton)");
 
 	  // y-axis
 	  svg.append("g")
@@ -127,7 +163,8 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 		  .attr("y", 6)
 		  .attr("dy", ".71em")
 		  .style("text-anchor", "end")
-		  .text("Temperature change (10 years)");  // TO DO: make 'years' dynamic
+		  // .text("Temperature change (10 years)");  // TO DO: make 'years' dynamic
+		  .text("Temperature change (" + year_low + " - " + year_high + ")");  // TO DO: make 'years' dynamic
 
 
 	  // draw dots
@@ -194,7 +231,7 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 		.attr("y", 0)
 		// .style("text-anchor", "middle")
 		.style("text-anchor", "end")
-		.text("Per capita CO2 emission:");
+		// .text("Per capita CO2 emission:");
 
 
 	});
