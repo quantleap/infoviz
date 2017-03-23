@@ -100,7 +100,7 @@ d3.map = function mapModule(year) {
 			.on("zoom", handlePanZoom);
 
 		svg.call(zoom);                     // Attach zoom event
-
+		
 		// Load map data
 		map.selectAll('.country')
 		.data(countries)
@@ -128,11 +128,7 @@ d3.map = function mapModule(year) {
 		.on('mousedown', function() {
 			let country = d3.select(this).style('stroke-width', '3px').style('stroke', 'white')
 			let countryName = country.attr('data-name')
-			nameTag.text(countryName)
-			nameTag.attr({
-				x: 5,
-				y: height - 5,
-			})
+			textpos.text(countryName)
 			let iso = country.attr('data-iso')
 			currentCountry = iso;
 			switchToChart(iso);
@@ -142,10 +138,16 @@ d3.map = function mapModule(year) {
 		.on('mouseup', function() {
 			let country = d3.select(this).style('stroke-width', '.5px').style('stroke', '#666')
 		})
-
-		let nameTag = svg.append('text')
+		
+		let textpos = d3.select('#sidenav')
+		.append('div')
+		.append('text')
 		.attr('font-family', 'Verdana')
 		.attr('font-size', '15px')
+		.attr('margin','0px 5px 0px 0px')
+		.attr('padding', '3px 5px');
+		
+		textpos.text('The Netherlands');
 		
 		render(year);
 		
