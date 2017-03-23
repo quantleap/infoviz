@@ -23,11 +23,15 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 	// 		//console.log(json.temperatures[0].avg_temp)  // average temperature year 1743
 	// 	});
 
-	var url = 'country/'.concat(id).concat('/monthly_temperatures')
+	var id = 'nl'; //
+
+	var url = 'country/'.concat(id).concat('/annual_temperatures')
 				 .concat('?begin=').concat(year_low).concat('&end=').concat(year_high);
 	d3.json(url, function (json) {
-		console.log(json.temperatures[0]);
-		// console.log(url);
+		// console.log(json.temperatures[-1].year);
+
+		var highest = Object.keys(json.temperatures).sort().pop();
+		console.log(highest);
 	});
 
 	/* 
