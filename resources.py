@@ -112,3 +112,23 @@ class CountryIndicators(Resource):
                                 'population': r[1],
                                 'co2_emission_total': r[2],
                                 'co2_emission_per_capita': r[3]} for r in query_result]}
+
+
+class TemperatureComparison(Resource):
+    def get(self, begin_year, end_year):
+        conn = engine.connect()
+        query_result = conn.execute('''select country, t1.iso_code, t1.avg_temp as begin_temp, t2.avg_temp as end_temp,
+                                      (t2.avg_temp-t1.avg_temp) as temp_increase
+                                       from country_annual_temperatures as t1
+                                       join country_annual_temperatures as t2
+                                       on t1.iso_code = t2.iso_code
+                                       join dimension_country as dim_country on dim_country.iso_code = t1.iso_code
+                                       where t1.year=:begin and t2.year=:end
+                                       ORDER BY t1.iso_code''', begin=begin_year, end=end_year).cursor.fetchall()
+
+        return [{'country': r[0],
+                  'iso_code': r[1],
+                  'avg_temp_begin': r[2],
+                  'avg_temp_end': r[3],
+                  'temp_increase': r[4]} for r in query_result]
+

@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 from flask import render_template
-from resources import City, Country, CountryAnnualTemperatures, CountryMonthlyTemperatures, CountryIndicators
+from resources import *
 
 app = Flask(__name__)
 api = Api(app)
@@ -25,6 +25,8 @@ api.add_resource(Country, '/country/<string:iso_code>')
 api.add_resource(CountryAnnualTemperatures, '/country/<string:iso_code>/annual_temperatures')
 api.add_resource(CountryMonthlyTemperatures, '/country/<string:iso_code>/monthly_temperatures')
 api.add_resource(CountryIndicators, '/country/<string:iso_code>/indicators')
+api.add_resource(TemperatureComparison, '/temp_comparison/<string:begin_year>/<string:end_year>')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
