@@ -131,9 +131,12 @@ d3.map = function mapModule(currentCountryName) {
 			let iso = country.attr('data-iso')
 			currentCountryName = countryName;
 			currentCountryISO = iso;
-			switchToChart(iso);
-			//d3.linechart('#row','Absolute temperatures', '/country/'.concat(iso.concat('/annual_temperatures')), 'first');
-			
+		  if (navAnnual) {
+			  switchToChart();
+		  };	
+		  if (navMonthly) {
+			  switchToHeatmap();
+		  };	
 		})
 		.on('mouseup', function() {
 			let country = d3.select(this).style('stroke-width', '.5px').style('stroke', '#666')

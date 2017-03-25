@@ -18,6 +18,7 @@ d3.linechart = function lineModule(position,title,url,id) {
 		.style('height','230px')
 
 		
+	// Set the dimensions.avg
 	// Set the dimensions
 	var margin = {top: 30, right: 20, bottom: 30, left: 30},
 		width = 225 - margin.left - margin.right,
@@ -58,6 +59,7 @@ d3.linechart = function lineModule(position,title,url,id) {
 		data.temperatures.forEach(function(d) {
 			d.year = parseDate(d.year);
 			d.avg = +d.avg_temp;
+			d.yoy = +d.yoy_change_avg_temp;
 		});
 
 		// Scale the range of the data

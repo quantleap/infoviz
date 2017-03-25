@@ -6,7 +6,7 @@ d3.heatmap = function heatmapModule(id, min_year, max_year) {
 	"use strict";
   
  	d3.select('#sideblock').selectAll("*").remove();
-  
+	
 	var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 	var colors = ["#313695", "#4575b4", "#74add1", "#abd9e9", "#e0f3f8", "#ffffbf", "#fee090", "#fdae61", "#f46d43", "#d73027", "#a50026"];
 	var buckets = colors.length;
