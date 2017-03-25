@@ -1,5 +1,7 @@
 from flask_restful import Resource
 from sqlalchemy import create_engine
+import pandas as pd
+import numpy as np
 
 engine = create_engine('sqlite:///./data/climate.db')
 from flask_restful import reqparse
@@ -124,11 +126,36 @@ class TemperatureComparison(Resource):
                                        on t1.iso_code = t2.iso_code
                                        join dimension_country as dim_country on dim_country.iso_code = t1.iso_code
                                        where t1.year=:begin and t2.year=:end
-                                       ORDER BY t1.iso_code''', begin=begin_year, end=end_year).cursor.fetchall()
+                                       ORDER BY t1.iso_code''',
+                                    begin=begin_year, end=end_year).cursor.fetchall()
 
         return [{'country': r[0],
-                  'iso_code': r[1],
-                  'avg_temp_begin': r[2],
-                  'avg_temp_end': r[3],
-                  'temp_increase': r[4]} for r in query_result]
+                 'iso_code': r[1],
+                 'avg_temp_begin': r[2],
+                 'avg_temp_end': r[3],
+                 'temp_increase': r[4]} for r in query_result]
+
+
+class YearOnYearChangeDistribution(Resource):
+    def get(self, begin_year, end_year, iso_code):
+        conn = engine.connect()
+        sql = '''select t1.iso_code, (t2.avg_temp-t1.avg_temp) as temp_increase from country_annual_temperatures as t1
+                 join country_annual_temperatures as t2
+                 on t1.iso_code = t2.iso_code
+                 where t1.year={} and t2.year={}
+                 order by t1.iso_code asc'''.format(begin_year, end_year)
+
+        df = pd.read_sql(sql, conn)
+        country_temp_increase = df[df['iso_code'] == 'nl']['temp_increase'].values[0]
+        distro = np.histogram(df['temp_increase'].values, range=(-3, 3), bins=np.linspace(-3.0, 3.0, 13), density=False)
+
+        return {'country': get_country_by_iso(conn, iso_code),
+                'iso_code': iso_code,
+                'country_temp_increase': country_temp_increase,
+                'histogram': [{'count': int(distro[0][idx]),
+                               'lbound': float(distro[1][idx]),
+                               'ubound': float(distro[1][idx+1])} for idx in range(len(distro[0]))]}
+
+
+
 
