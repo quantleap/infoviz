@@ -75,12 +75,12 @@ function switchToHeatmap(){
 	
 <script>
 	var low = 1975 ;
-	var high = 2013;
+	var high = 2012;
 	var translateLast = [0,0];
 	var scaleLast = null;
 	
 	// Initialize map
-	var map = d3.map(currentCountryName);
+	var map = d3.map(low,high);
 	
 	// Initialize slider
 	var slider = d3.slider().min(1900).max(2020).ticks(10).tickFormat(d3.format("f")).showRange(true).minPos(low).maxPos(high);
@@ -88,7 +88,5 @@ function switchToHeatmap(){
 	
 	// Initialize first line chart
 	var linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first','avg');
-	var linechart2 = d3.linechart('#row','Temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'second','yoy');	
-	//var linechart = d3.linechart('#row','Temperature changes', '/country/nl/annual_temperatures', 'second');
-	//var linechart = d3.linechart('#row2','Comparison per country', '/country/nl/annual_temperatures' ,'first');
+	var linechart2 = d3.linechart('#row','Temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'second','yoy');
 </script>
