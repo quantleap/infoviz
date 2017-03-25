@@ -154,10 +154,10 @@ d3.slider = function sliderModule() {
 		  let high = slider.get_max_value();
 		  var url = '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high);	
 		  if (navExplore) {
-			//d3.map(Math.round(minPos),map.translateLast,map.scaleLast);
+			  var map = d3.map(low,high);
 		  }; 
 		  if (navCompare) {
-			var bubblechart = d3.bubblechart(low,high);		  
+			  var bubblechart = d3.bubblechart(low,high);		  
 		  };
 		  if (navAnnual) {
 			  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');
@@ -174,10 +174,10 @@ d3.slider = function sliderModule() {
 		  let high = slider.get_max_value();
 		  var url = '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high);	  
 		  if (navExplore) {
-			//d3.map(Math.round(minPos),map.translateLast,map.scaleLast);
+			  var map = d3.map(low,high);
 		  }; 
 		  if (navCompare) {
-			var bubblechart = d3.bubblechart(low,high);			  
+			  var bubblechart = d3.bubblechart(low,high);			  
 		  };
 		  if (navAnnual) {
 			  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');

@@ -50,11 +50,12 @@ var currentCountryISO = 'nl';
 var currentCountryName = 'The Netherlands'
 
 
-function switchToMap(currentCountryName){
-	var map = d3.map();
+function switchToMap(){
+	low = slider.get_min_value(), high = slider.get_max_value();
+	var map = d3.map(low,high);
 	navExplore = true; navCompare = false;
 }
-function switchToBubble(year){
+function switchToBubble(){
 	low = slider.get_min_value(), high = slider.get_max_value();
 	var bubblechart = d3.bubblechart(low,high);
 	navExplore = false; navCompare = true;

@@ -5,7 +5,7 @@
 // Chris Khoo// http://bl.ocks.org/khoomeister/230e1eff08ee8d6eaf35
 // KoGor http://bl.ocks.org/KoGor/5685876
 
-d3.map = function mapModule(currentCountryName) {
+d3.map = function mapModule(low,high) {
 	"use strict";
 	
 	d3.select("svg").remove();
@@ -27,8 +27,8 @@ d3.map = function mapModule(currentCountryName) {
 	var viewMin = [ 0, 0 ];
 	var viewMax = [ 0, 0 ];
 
-	var color_domain = [0, 10, 20, 30, 40];
-	var ext_color_domain = [0, 50, 150, 350, 750, 1500];
+	var color_domain = [-5, -2.5, 0, 2.5, 5];
+	//var ext_color_domain = [0, 50, 150, 350, 750, 1500];
 	var color = d3.scale.threshold()
 		.domain(color_domain)
 		.range(["#adfcad", "#ffcb40", "#ffba00", "#ff7d73", "#ff4e40", "#ff1300"]);
@@ -38,7 +38,8 @@ d3.map = function mapModule(currentCountryName) {
 	queue()
 	  .defer(d3.json, "static/world_map/world-110m2.json")
 	  .defer(d3.tsv, "static/world_map/world-country-names.tsv")
-	  .defer(d3.csv, "static/world_map/Temperatures.csv")
+	  .defer(d3.json, "temp_comparison/".concat(low).concat("/").concat(high))
+	  //.defer(d3.csv, "static/world_map/Temperatures.csv")
 	  .await(ready);
 
 	//Start of Choropleth drawing
@@ -54,8 +55,13 @@ d3.map = function mapModule(currentCountryName) {
 		});
 		
 		tempData.forEach(function(d) {
-			tempById[d.RegionCode] = d.Temperature;
-			});	
+			tempById[d.iso_code] = +d.temp_increase;
+		 });
+		 console.log(tempById['nl']);
+		
+		//tempData.forEach(function(d) {
+		//	tempById[d.RegionCode] = d.Temperature;
+		//	});	
 			
 		let countries = topojson.feature(world, world.objects.countries).features;
 
@@ -162,9 +168,9 @@ d3.map = function mapModule(currentCountryName) {
 		function render() {
 			map.selectAll('path')       // Redraw all map paths
 				.attr('d', path)
-				//.style("fill", function(d) {
-				//return color(tempById[d.properties.name.toString().concat(year.toString())]); 
-			//});
+				.style("fill", function(d) {
+				return color(tempById[d.iso_code]); 
+			});
 		}
 
 		function handlePanZoom() {
