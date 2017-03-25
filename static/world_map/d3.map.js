@@ -28,11 +28,12 @@ d3.map = function mapModule(low,high) {
 	var viewMax = [ 0, 0 ];
 
 	var color_domain = [-2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5];
-	//var ext_color_domain = [0, 50, 150, 350, 750, 1500];
+	var ext_color_domain = [-3,-2,-1,0,1,2,3]
+	var legend_labels = ["< -3", "-2+", "-1+", "0+", "1+", "2+", "> 3"]
 	var color = d3.scale.threshold()
 		.domain(color_domain)
-		.range(
-	["#313695", "#4575b4", "#74add1", "#abd9e9", "#e0f3f8", "#ffffbf", "#fee090", "#fdae61", "#f46d43", "#d73027", "#a50026"]);
+		.range(["#313695", "#4575b4", "#74add1", "#abd9e9", "#e0f3f8", "#ffffbf", "#fee090", "#fdae61", "#f46d43", "#d73027", "#a50026"]);
+	
 	//Reading map file and data
 
 	queue()
@@ -158,6 +159,28 @@ d3.map = function mapModule(low,high) {
 		.attr('padding', '3px 5px');
 		
 		textpos.text(currentCountryName);
+		
+		  //Adding legend
+
+		  var legend = svg.selectAll("g.legend")
+		  .data(ext_color_domain)
+		  .enter().append("g")
+		  .attr("class", "legend");
+
+		  var ls_w = 20, ls_h = 20;
+
+		  legend.append("rect")
+		  .attr("x", 20)
+		  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+		  .attr("width", ls_w)
+		  .attr("height", ls_h)
+		  .style("fill", function(d, i) { return color(d); })
+		  .style("opacity", 0.8);
+
+		  legend.append("text")
+		  .attr("x", 50)
+		  .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 4;})
+		  .text(function(d, i){ return legend_labels[i]; });
 		
 		render();
 		
