@@ -5,7 +5,9 @@
 d3.heatmap = function heatmapModule(id, min_year, max_year) {
 	"use strict";
   
- 	d3.select('#sideblock').selectAll("*").remove();
+ 	d3.select('#sideblock').select('#row').remove();
+	d3.select('#sideblock').select('#row2').remove();
+	d3.select('#sideblock').selectAll("#heatmap").remove();
 	
 	var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 	var colors = ["#313695", "#4575b4", "#74add1", "#abd9e9", "#e0f3f8", "#ffffbf", "#fee090", "#fdae61", "#f46d43", "#d73027", "#a50026"];
@@ -59,7 +61,7 @@ d3.heatmap = function heatmapModule(id, min_year, max_year) {
 		.range(colors);
 
 	  var svg = sideDiv.append("svg")
-		.attr("id",id)
+		.attr("id",'heatmap')
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")

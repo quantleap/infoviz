@@ -5,7 +5,12 @@
 d3.linechart = function lineModule(position,title,url,id) {
 	"use strict";
 	
- 	d3.select('#sideblock').selectAll("*").remove();
+	//d3.select('#sideblock').selectAll("*").remove();
+	if (id == 'first'){
+ 	d3.select('#sideblock').select('#row').selectAll("#first").remove();}
+	if (id == 'second') {
+	d3.select('#sideblock').select('#row').selectAll("#second").remove();}
+	d3.select('#sideblock').selectAll("#heatmap").remove();
 	
 	//Build the rows
 	var data = [{ 'class' : 'row'},{ 'class' : 'row2'}]

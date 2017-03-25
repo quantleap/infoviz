@@ -58,7 +58,7 @@ d3.map = function mapModule(low,high) {
 		tempData.forEach(function(d) {
 			tempById[d.iso_code] = +d.temp_increase;
 		 });
-		 console.log(tempById['nl']);
+		 //console.log(tempById['nl']);
 		
 		//tempData.forEach(function(d) {
 		//	tempById[d.RegionCode] = d.Temperature;
@@ -182,11 +182,14 @@ d3.map = function mapModule(low,high) {
 		  .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 4;})
 		  .text(function(d, i){ return legend_labels[i]; });
 		
+		//handlePanZoom();
 		render();
 		
+		//console.log(translateLast);
+		//console.log(scaleLast);
 		// The following variables track the last processed event.
-		var translateLast = [0,0];
-		var scaleLast     = null;
+		//translateLast = [0,0];
+		//scaleLast     = null;
 
 		function render() {
 			map.selectAll('path')       // Redraw all map paths
@@ -201,6 +204,10 @@ d3.map = function mapModule(low,high) {
 
 			var scale = zoom.scale();
 			var translate = zoom.translate();
+			//console.log(scale);
+			//console.log(translate);
+			//console.log(scaleLast);
+			//console.log(translateLast);
 			
 			// If the scaling changes, ignore translation (otherwise touch zooms are weird).
 			var delta = [ translate[0] - translateLast[0], translate[1] - translateLast[1] ];

@@ -161,6 +161,7 @@ d3.slider = function sliderModule() {
 		  };
 		  if (navAnnual) {
 			  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');
+			  var linechart2 = d3.linechart('#row','Temperature changes', url , 'second');
 		  };	
 		  if (navMonthly) {
 			  var heatmap = d3.heatmap(currentCountryISO, low, high);
@@ -174,15 +175,20 @@ d3.slider = function sliderModule() {
 		  let high = slider.get_max_value();
 		  var url = '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high);	  
 		  if (navExplore) {
+			  //switchToMap();
 			  var map = d3.map(low,high);
 		  }; 
 		  if (navCompare) {
+			  //switchToBubble();
 			  var bubblechart = d3.bubblechart(low,high);			  
 		  };
 		  if (navAnnual) {
+			  //switchToChart();
 			  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');
+			  var linechart2 = d3.linechart('#row','Temperature changes', url , 'second');
 		  };	
 		  if (navMonthly) {
+			  //switchToHeatmap();
 			  var heatmap = d3.heatmap(currentCountryISO, low, high);
 		  };		  
 	   });
