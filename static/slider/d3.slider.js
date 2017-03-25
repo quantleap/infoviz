@@ -160,8 +160,8 @@ d3.slider = function sliderModule() {
 			  var bubblechart = d3.bubblechart(low,high);		  
 		  };
 		  if (navAnnual) {
-			  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');
-			  var linechart2 = d3.linechart('#row','Temperature changes', url , 'second');
+			  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first','avg');
+			  var linechart2 = d3.linechart('#row','Temperature changes', url , 'second','yoy');
 		  };	
 		  if (navMonthly) {
 			  var heatmap = d3.heatmap(currentCountryISO, low, high);
@@ -184,8 +184,8 @@ d3.slider = function sliderModule() {
 		  };
 		  if (navAnnual) {
 			  //switchToChart();
-			  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first');
-			  var linechart2 = d3.linechart('#row','Temperature changes', url , 'second');
+			  var linechart = d3.linechart('#row','Absolute temperatures', url , 'first','avg');
+			  var linechart2 = d3.linechart('#row','Temperature changes', url , 'second','yoy');
 		  };	
 		  if (navMonthly) {
 			  //switchToHeatmap();

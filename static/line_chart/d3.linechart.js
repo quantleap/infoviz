@@ -2,7 +2,7 @@
 
 // Linechart adapted from D3noob http://bl.ocks.org/d3noob/b3ff6ae1c120eea654b5
 
-d3.linechart = function lineModule(position,title,url,id) {
+d3.linechart = function lineModule(position,title,url,id,type) {
 	"use strict";
 	
 	//d3.select('#sideblock').selectAll("*").remove();
@@ -22,8 +22,6 @@ d3.linechart = function lineModule(position,title,url,id) {
 		.style('display', 'table-row')
 		.style('height','230px')
 
-		
-	// Set the dimensions.avg
 	// Set the dimensions
 	var margin = {top: 30, right: 20, bottom: 30, left: 30},
 		width = 225 - margin.left - margin.right,
@@ -44,10 +42,16 @@ d3.linechart = function lineModule(position,title,url,id) {
 		.orient("left").ticks(5);
 
 	// Define the line
-	var valueline = d3.svg.line()
-		.x(function(d) { return x(d.year); })
-		.y(function(d) { return y(d.avg); })
-		.defined(function(d) { return d.avg; });
+	if (type == 'avg') {
+		var valueline = d3.svg.line()
+			.x(function(d) { return x(d.year); })
+			.y(function(d) { return y(d.avg); })
+			.defined(function(d) { return d.avg; }); }
+	if (type == 'yoy') {
+		var valueline = d3.svg.line()
+			.x(function(d) { return x(d.year); })
+			.y(function(d) { return y(d.yoy); })
+			.defined(function(d) { return d.yoy; }); }			
 		
 	// Adds the svg canvas
 	var svg = d3.select(position)
@@ -70,10 +74,14 @@ d3.linechart = function lineModule(position,title,url,id) {
 		// Scale the range of the data
 		x.domain(d3.extent(data.temperatures, function(d) { 
 		return d.year; }));
+		if (type == 'avg') {
 		y.domain([d3.min(data.temperatures, function(d) { 
-		return d.avg; }), 
-		d3.max(data.temperatures, function(d) { 
-		return d.avg; })]);
+		return d.avg; }), d3.max(data.temperatures, function(d) { 
+		return d.avg; })]); }
+		if (type == 'yoy') {
+		y.domain([d3.min(data.temperatures, function(d) { 
+		return d.yoy; }), d3.max(data.temperatures, function(d) { 
+		return d.yoy; })]); }
 
 		// Add the valueline path
 		svg.append("path")

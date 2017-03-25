@@ -47,7 +47,7 @@
 <script>
 var navExplore = true, navCompare = false, navAnnual = true, navMonthly = false;
 var currentCountryISO = 'nl';
-var currentCountryName = 'The Netherlands'
+var currentCountryName = 'Netherlands'
 
 function switchToMap(){
 	low = slider.get_min_value(), high = slider.get_max_value();
@@ -61,9 +61,8 @@ function switchToBubble(){
 }
 function switchToChart(){
 	low = slider.get_min_value(), high = slider.get_max_value();
-	linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first');
-	linechart2 = d3.linechart('#row','Temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'second');
-	//linechart2 = d3.linechart('#row','Temperature changes', "temp_comparison/".concat(low).concat("/").concat(high), 'second');
+	linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first','avg');
+	linechart2 = d3.linechart('#row','Temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'second','yoy');
 	navAnnual = true; navMonthly = false;
 }
 function switchToHeatmap(){
@@ -76,7 +75,7 @@ function switchToHeatmap(){
 	
 <script>
 	var low = 1975 ;
-	var high = 2017;
+	var high = 2013;
 	var translateLast = [0,0];
 	var scaleLast = null;
 	
@@ -88,8 +87,8 @@ function switchToHeatmap(){
 	d3.select('#slider').call(slider);
 	
 	// Initialize first line chart
-	var linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first');
-	var linechart2 = d3.linechart('#row','Temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'second');	
+	var linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first','avg');
+	var linechart2 = d3.linechart('#row','Temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'second','yoy');	
 	//var linechart = d3.linechart('#row','Temperature changes', '/country/nl/annual_temperatures', 'second');
 	//var linechart = d3.linechart('#row2','Comparison per country', '/country/nl/annual_temperatures' ,'first');
 </script>
