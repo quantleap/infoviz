@@ -27,12 +27,12 @@ d3.map = function mapModule(low,high) {
 	var viewMin = [ 0, 0 ];
 	var viewMax = [ 0, 0 ];
 
-	var color_domain = [-5, -2.5, 0, 2.5, 5];
+	var color_domain = [-2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5];
 	//var ext_color_domain = [0, 50, 150, 350, 750, 1500];
 	var color = d3.scale.threshold()
 		.domain(color_domain)
-		.range(["#adfcad", "#ffcb40", "#ffba00", "#ff7d73", "#ff4e40", "#ff1300"]);
-	
+		.range(
+	["#313695", "#4575b4", "#74add1", "#abd9e9", "#e0f3f8", "#ffffbf", "#fee090", "#fdae61", "#f46d43", "#d73027", "#a50026"]);
 	//Reading map file and data
 
 	queue()
