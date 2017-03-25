@@ -138,6 +138,16 @@ class TemperatureComparison(Resource):
 
 class YearOnYearChangeDistribution(Resource):
     def get(self, begin_year, end_year, iso_code):
+        # parse querystring arguments
+        parser.add_argument('lbound', type=float, location='args')
+        parser.add_argument('ubound', type=float, location='args')
+        parser.add_argument('bins', type=float, location='args')
+        args = parser.parse_args()
+
+        lbound = args['lbound'] or -3.0
+        ubound = args['ubound'] or 3.0
+        bins = args['bins'] or 12
+
         conn = engine.connect()
         sql = '''select t1.iso_code, (t2.avg_temp-t1.avg_temp) as temp_increase from country_annual_temperatures as t1
                  join country_annual_temperatures as t2
@@ -147,14 +157,15 @@ class YearOnYearChangeDistribution(Resource):
 
         df = pd.read_sql(sql, conn)
         country_temp_increase = df[df['iso_code'] == 'nl']['temp_increase'].values[0]
-        distro = np.histogram(df['temp_increase'].values, range=(-3, 3), bins=np.linspace(-3.0, 3.0, 13), density=False)
+        histo = np.histogram(df['temp_increase'].values, range=(lbound, ubound), bins=np.linspace(lbound, ubound, bins+1)
+                             , density=False)
 
         return {'country': get_country_by_iso(conn, iso_code),
                 'iso_code': iso_code,
                 'country_temp_increase': country_temp_increase,
-                'histogram': [{'count': int(distro[0][idx]),
-                               'lbound': float(distro[1][idx]),
-                               'ubound': float(distro[1][idx+1])} for idx in range(len(distro[0]))]}
+                'histogram': [{'count': int(histo[0][idx]),
+                               'lbound': float(histo[1][idx]),
+                               'ubound': float(histo[1][idx+1])} for idx in range(len(histo[0]))]}
 
 
 
