@@ -7,7 +7,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Climate map</title>
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}" />
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='slider/d3.slider.css') }}" />
 
     <script src="{{ url_for('static', filename='d3/d3.v3.min.js') }}"></script>
@@ -16,46 +16,74 @@
 	<script src="{{ url_for('static', filename='world_map/d3.map.js') }}"></script>
 	<script src="{{ url_for('static', filename='slider/d3.slider.js') }}"></script>
 	<script src="{{ url_for('static', filename='line_chart/d3.linechart.js') }}"></script>
+	<script src="{{ url_for('static', filename='bubble_chart/d3.bubblechart.js') }}"></script>
+	<script src="{{ url_for('static', 
+	filename='heat_map/d3.heatmap.js') }}"></script>
 </head>
 
 <body>
 	<div id="midsection">
 		<div id="topnav">
-			<button class="button" onclick="updateData()">Explore </button>
-			<button class="button" onclick="updateData2()">Compare </button>
+			<button class="button" onclick="switchToMap(2017)">Explore </button>
+			<button class="button" onclick="switchToBubble()">Compare </button>
 		</div>
 		<div id="map"></div>	
 		<div id="sidescreen">
 			<div id="sidenav">
-				<button class="button" onclick="updateData3()">Annual </button>
-				<button class="button" onclick="updateData4()">Monthly </button>
+				<button class="button" onclick="switchToChart()">Annual </button>
+				<button class="button" onclick="switchToHeatmap()">Monthly </button>
 			</div>
 			<div id="sideblock">
-			   <div id="row">
-			   </div>
-			   <div id="row2">
-			   </div>
 			</div>
 		</div>
 	</div>
 	<div id="btmsection">
 		<div id="slider"></div>
-		<div id="needhelp">
-		<a href="" > Need help reading this? </a>
-		</div>
 	</div>
 	
 <script>
+var navExplore = true, navCompare = false, navAnnual = true, navMonthly = false;
+var currentCountryISO = 'nl';
+var currentCountryName = 'Netherlands'
+
+function switchToMap(){
+	low = slider.get_min_value(), high = slider.get_max_value();
+	map = d3.map(low,high);
+	navExplore = true; navCompare = false;
+}
+function switchToBubble(){
+	low = slider.get_min_value(), high = slider.get_max_value();
+	var bubblechart = d3.bubblechart(low,high);
+	navExplore = false; navCompare = true;
+}
+function switchToChart(){
+	low = slider.get_min_value(), high = slider.get_max_value();
+	linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first','avg');
+	linechart2 = d3.linechart('#row','Temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'second','yoy');
+	navAnnual = true; navMonthly = false;
+}
+function switchToHeatmap(){
+	low = slider.get_min_value(), high = slider.get_max_value();
+	var heatmap = d3.heatmap(currentCountryISO,low,high);
+	navAnnual = false; navMonthly = true;	
+}
+</script>
+
+	
+<script>
+	var low = 1975 ;
+	var high = 2012;
+	var translateLast = [0,0];
+	var scaleLast = null;
+	
 	// Initialize map
-	var map = d3.map(2017,[0,0],null);
+	var map = d3.map(low,high);
 	
 	// Initialize slider
-	var slider = d3.slider().min(1900).max(2020).ticks(10).tickFormat(d3.format("f")).showRange(true).value(2017);
+	var slider = d3.slider().min(1900).max(2020).ticks(10).tickFormat(d3.format("f")).showRange(true).minPos(low).maxPos(high);
 	d3.select('#slider').call(slider);
 	
 	// Initialize first line chart
-	var linechart = d3.linechart('#row','Absolute temperatures', 'static/line_chart/line_data.csv', 'first');
-	var linechart = d3.linechart('#row','Temperature changes', 'static/line_chart/line_data.csv', 'second');
-	var linechart = d3.linechart('#row2','Comparison per country', 'static/line_chart/line_data.csv' ,'first');
-	var linechart = d3.linechart('#row2','Extreme values', 'static/line_chart/line_data.csv', 'second');
+	var linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'first','avg');
+	var linechart2 = d3.linechart('#row','Temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'second','yoy');
 </script>

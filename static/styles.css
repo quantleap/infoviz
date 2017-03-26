@@ -2,7 +2,7 @@ svg {
 	background-color: #bbbbff;
 }
 
-svg text {
+text {
 	font-family: Helvetica, Arial, Sans-Serif;
 	font-size: 12px;
 }
@@ -15,7 +15,7 @@ path {
 
 .line { 
     stroke: steelblue;
-    stroke-width: 2;
+    stroke-width: 1;
     fill: none;
 }
 
@@ -44,6 +44,17 @@ path {
     text-align: center;
     text-decoration: none;
     font-size: 14px;
+}
+
+.dot {
+  stroke: #000;
+}
+
+.tooltip {
+  position: absolute;
+  width: 200px;
+  height: 28px;
+  pointer-events: none;
 }
 
 #needhelp { 
@@ -95,17 +106,7 @@ path {
 #sideblock {
 	display : table-row;
 	height: 465px;
-	}	
-	
-#row{
-    display : table-row;
-	height: 230px;
-}
-
-#row2{
-	display : table-row;
-    height: 230px;
-}
+	}		
 
 #slider {
 	width:800px;

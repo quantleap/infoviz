@@ -37,7 +37,7 @@ var margin = {top: 20, right: 20, bottom: 30, left: 40},
     height = 500 - margin.top - margin.bottom;
 
 
-// calculate emissions
+// calculate total emissions in 10 years
 // var emissions = function(d) {
 //   emissions = 0;
 //   for (i = 0; i < 10; i++) {
@@ -46,6 +46,11 @@ var margin = {top: 20, right: 20, bottom: 30, left: 40},
 //   return emissions;
 // }
 
+// Get data from database
+var url = "/country/nl/annual_temperatures";
+    d3.json(url, function (json) {
+        console.log(json.temperatures[0].avg_temp)  // average temperature year 1743
+    });
 
 /* 
  * value accessor - returns the value to encode for a given data object.

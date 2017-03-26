@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def load_city_temperatures():
+def load_city_temperatures(con):
     # load data from csv into dataframe
     df = pd.read_csv('./data/GlobalLandTemperatures/GlobalLandTemperaturesByMajorCity.csv')
 
@@ -14,17 +14,13 @@ def load_city_temperatures():
     df.columns = ['date', 'city', 'avg_temperature']
 
     # write staging data to database
-    conn = sqlite3.connect('./data/climate.db')
-    df.to_sql('staging_city', conn, if_exists='replace', index=False, index_label=['date', 'city'])
-    conn.commit()
-    conn.close()
+    df.to_sql('staging_city', con, if_exists='replace', index=False, index_label=['date', 'city'])
+    con.commit()
 
 
-def load_country_temperatures(drop_staging_table=False):
-    logging.info('load country temperature table')
-
+def extract_country_temperatures(con):
     # load data from csv into dataframe
-    logging.info('.. staging')
+    logging.info('.. extracting')
     df = pd.read_csv('./data/GlobalLandTemperatures/GlobalLandTemperaturesByCountry.csv')
 
     # filter and rename columns
@@ -32,15 +28,17 @@ def load_country_temperatures(drop_staging_table=False):
     df.columns = ['date', 'country', 'avg_temp']
 
     # write staging data to database
-    con = sqlite3.connect('./data/climate.db')
     df.to_sql('staging_country_temperatures', con, if_exists='replace', index=False, index_label='country')
 
+
+def transform_country_temperatures(con):
     # load country mappings - columns: dimension, staging
-    logging.info('.. mapping')
+    logging.info('.. transforming (mapping countries)')
     df = pd.read_excel('./data/GlobalLandTemperatures/GlobalLandTemperaturesByCountry_mapping.xlsx', sheetname='country mapping ')
     df.to_sql('mapping_country_temperatures', con, if_exists='replace', index=False, index_label='staging')
 
     # map countries where name does not exist in the dimension table
+    # note: sqlite has no UPDATE SET FROM method, so a more elaborated script is used
     cur = con.cursor()
     cur.execute('''UPDATE staging_country_temperatures
                    SET
@@ -53,9 +51,13 @@ def load_country_temperatures(drop_staging_table=False):
                            FROM mapping_country_temperatures
                            WHERE mapping_country_temperatures.staging = staging_country_temperatures.country
                    )''')
+    con.commit()
 
+
+def load_country_temperatures_monthly(con):
     # drop and create country MONTHLY temperatures table
-    logging.info('.. insert monthly')
+    logging.info('.. loading monthly')
+    cur = con.cursor()
     cur.execute('''drop table if exists country_monthly_temperatures''')
     cur.execute('''create table country_monthly_temperatures
                     (month text, iso_code text, avg_temp real)''')
@@ -69,11 +71,14 @@ def load_country_temperatures(drop_staging_table=False):
     cur.execute('''create index idx_country_monthly_temperatures on country_monthly_temperatures (iso_code)''')
     con.commit()
 
+
+def load_country_temperatures_annual(con):
     # drop and create country ANNUAL temperatures table
-    logging.info('.. insert annual')
+    logging.info('.. loading annual')
+    cur = con.cursor()
     cur.execute('''drop table if exists country_annual_temperatures''')
     cur.execute('''create table country_annual_temperatures
-                    (year text, iso_code text, avg_temp real)''')
+                    (year text, iso_code text, avg_temp real, yoy_change_avg_tmp real)''')
     con.commit()
 
     # insert staging data
@@ -82,26 +87,46 @@ def load_country_temperatures(drop_staging_table=False):
                       from staging_country_temperatures as st
                       join dimension_country as dim on lower(st.country) = lower(dim.country)
                       group by year, iso_code''')
-    cur.execute('''create index idx_country_annual_temperatures on country_monthly_temperatures (iso_code)''')
+    cur.execute('''create index idx_iso_code_country_annual_temperatures on country_annual_temperatures (iso_code)''')
+    cur.execute('''create index idx_year_country_annual_temperatures on country_annual_temperatures (year)''')
     con.commit()
+
+    # update y-o-y changes of avg temp
+    cur.execute('''UPDATE country_annual_temperatures
+                   SET yoy_change_avg_tmp = (select country_annual_temperatures.avg_temp - t2.avg_temp
+                     FROM country_annual_temperatures as t2
+                     WHERE t2.iso_code = country_annual_temperatures.iso_code AND
+                           t2.year < country_annual_temperatures.year and
+                           country_annual_temperatures.year - t2.year = 1
+                     ORDER BY t2.year desc
+                     LIMIT 1
+                    )''')
+    con.commit()
+
+
+def import_country_temperatures(con, drop_staging_table=False):
+    logging.info('import country temperature table')
+    extract_country_temperatures(con)
+    transform_country_temperatures(con)
+    load_country_temperatures_monthly(con)
+    load_country_temperatures_annual(con)
 
     if drop_staging_table:
         logging.info('.. drop staging table')
+        cur = con.cursor()
         cur.execute('''drop table staging_country_temperatures''')
 
 
-def load_country_co2(drop_staging_table=False):
+def load_country_co2(con, drop_staging_table=False):
     logging.info('load country c02 emission  table')
 
     # load data from csv into dataframe
     df = pd.read_csv('./data/CAIT Country CO2 Emissions.csv', skiprows=1)
 
     # filter and rename columns
-    # df = df[['dt', 'Country', 'AverageTemperature']]
     df.columns = ['country', 'year', 'co2_emission']
 
     # write staging data to database
-    con = sqlite3.connect('./data/climate.db')
     df.to_sql('staging_country_co2_emissions', con, if_exists='replace', index=False, index_label='country')
 
     # drop and create country temperatures table, insert staging data
@@ -120,14 +145,11 @@ def load_country_co2(drop_staging_table=False):
         cur.execute('''drop table staging_country_co2_emissions''')
 
 
-def load_country_dimension_table():
-    logging.info('load country dimension table')
+def import_country_dimension_table(con):
+    logging.info('import country dimension table')
 
     # load data from Excel into dataframe
     df = pd.read_excel('./data/countries.xlsx', sheetname='export')
-
-    # write to database
-    con = sqlite3.connect('./data/climate.db')
 
     # drop and create table, insert data
     cur = con.cursor()
@@ -135,10 +157,14 @@ def load_country_dimension_table():
     df.to_sql('dimension_country', con, if_exists='replace', index=False, index_label=['iso_code', 'country'])
     con.commit()
 
+
+def load_data():
+    con = sqlite3.connect('./data/climate.db')
+    import_country_dimension_table(con)
+    import_country_temperatures(con)
+    # load_country_co2(con)
+    # load_city_avg_temperatures(con)
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-
-    load_country_dimension_table()
-    load_country_temperatures()
-    # load_country_co2()
-    # load_city_avg_temperatures()
+    load_data()

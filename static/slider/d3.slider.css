@@ -49,13 +49,15 @@
   stroke: #bbb;
 }
 
-.dragger rect {
+.dragger rect,
+.dragger2 rect {
   fill: #71ACE3;
   stroke: none;
   z-index: 3;
 }
 
-.dragger line {
+.dragger line,
+.dragger2 line {
   stroke: #aa0000;
   fill: none;
 }
