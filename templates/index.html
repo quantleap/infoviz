@@ -80,7 +80,7 @@ function switchToHeatmap(){
 	var map = d3.map(low,high);
 	
 	// Initialize slider
-	var slider = d3.slider().min(1900).max(2020).ticks(10).tickFormat(d3.format("f")).showRange(true).minPos(low).maxPos(high);
+	var slider = d3.slider().min(1900).max(2013).ticks(10).tickFormat(d3.format("f")).showRange(true).minPos(low).maxPos(high);
 	d3.select('#slider').call(slider);
 	
 	// Initialize first line chart
