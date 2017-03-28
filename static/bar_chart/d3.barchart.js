@@ -19,7 +19,7 @@ d3.barchart = function barModule(position,title,url,id,type) {
 		.range([height, 0]);
 
 	var x = d3.scale.ordinal()
-		.rangeRoundBands([0, width], .2);
+		.rangeRoundBands([0, width], .05);
 
 	var l,h;
 	if (type == 'yoy') {
