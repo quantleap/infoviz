@@ -162,7 +162,7 @@ d3.slider = function sliderModule() {
 		  if (navAnnual) {
 			  var linechart = d3.linechart('#row','Absolute temperatures', url , 'abstemp','avg');
 			  var barchart = d3.barchart('#row2','Annual temperature change', url , 'tempchangebar','yoy');
-			  var comparison = d3.barchart('#row3','Country comparison over annual temperature change', '/temp_change_distribution/'.concat(low).concat('/').concat(high).concat('/').concat(currentCountryISO).concat('?bins=10&lbound=-3&ubound=3'), 'countrycomparison','cmp');
+			  var comparison = d3.barchart('#row3','Histogram of countries over annual temperature change', '/temp_change_distribution/'.concat(low).concat('/').concat(high).concat('/').concat(currentCountryISO).concat('?bins=10&lbound=-3&ubound=3'), 'countrycomparison','cmp');
 		  };	
 		  if (navMonthly) {
 			  var heatmap = d3.heatmap(currentCountryISO, low, high);
@@ -187,7 +187,7 @@ d3.slider = function sliderModule() {
 			  //switchToChart();
 			  var linechart = d3.linechart('#row','Absolute temperatures', url , 'abstemp','avg');
 			  var barchart = d3.barchart('#row2','Annual temperature change', url , 'tempchangebar','yoy');	
-			  var comparison = d3.barchart('#row3','Country comparison over annual temperature change', '/temp_change_distribution/'.concat(low).concat('/').concat(high).concat('/').concat(currentCountryISO).concat('?bins=10&lbound=-3&ubound=3'), 'countrycomparison','cmp');
+			  var comparison = d3.barchart('#row3','Histogram of countries over annual temperature change', '/temp_change_distribution/'.concat(low).concat('/').concat(high).concat('/').concat(currentCountryISO).concat('?bins=10&lbound=-3&ubound=3'), 'countrycomparison','cmp');
 		  };	
 		  if (navMonthly) {
 			  //switchToHeatmap();
