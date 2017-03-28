@@ -239,6 +239,35 @@ parralax scrolling effect*/
   text-shadow: 1px 1px 1px black;
 }
 
+#pict3{
+  left:10%;
+}
+
+#page2text{
+  vertical-align: top;
+  text-align: center;
+  position: relative;
+  text-shadow: 1px 1px 1px black;
+}
+
+.bounce,.bounce2, .bounce3{
+width:0px;
+height:0px;
+border-left:12px solid transparent;
+border-right:12px solid transparent;
+border-top:12px solid #fff;
+position: relative;
+left:50%;
+bottom:0;
+margin-top:-25px;
+margin-left:-25px;
+-webkit-animation:bounce 2s infinite;
+-moz-animation:bounce 2s infinite;
+-o-animation:bounce 2s infinite;
+animation:bounce 2s infinite;
+}
+
+
 .bounce,.bounce2, .bounce3{
 width:0px;
 height:0px;
