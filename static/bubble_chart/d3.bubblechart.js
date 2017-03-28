@@ -131,7 +131,7 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 	  .attr("x", width)
 	  .attr("y", -6)
 	  .style("text-anchor", "end")
-	  .text("Emissions (kiloton)")
+	  .text("Country Total CO2 Emissions (ton)")
 
   // y-axis
   svg.append("g")
@@ -212,7 +212,7 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 	.attr("x", width - 18)
 	.attr("y", 0)
 	.style("text-anchor", "end")
-	.text("Per capita CO2 emission (kiloton):");
+	.text("Per capita CO2 emission (ton):");
 
 	};
 }
