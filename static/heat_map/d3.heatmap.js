@@ -125,5 +125,13 @@ d3.heatmap = function heatmapModule(id, min_year, max_year) {
 		.attr("class", "axis text")
 		.attr("x", function(d, i) {return ((legendWidth * i) + (width - legendWidth * buckets)+35);})
 		.attr("y", height + gridHeight + 50)
-		.style("text-anchor", "end"); });
+		.style("text-anchor", "end"); 
+		
+	  legend.append("text")
+		.text("Absolute temperature (°Celsius)")
+		.attr("class", "text")
+		.attr("x", legendWidth +190)
+		.attr("y", height + gridHeight + 70);
+		
+		});
 }
