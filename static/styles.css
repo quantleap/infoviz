@@ -209,7 +209,6 @@ divs of the images for page 2*/
 .mapplaceholder img {
   image-orientation: center;
   width: 100%;
-  height: auto;
 }
 
 #pict1, {
@@ -312,6 +311,17 @@ animation:bounce 2s infinite;
   100%     {bottom:30;}
 }
 
+
+.mapplaceholder{
+    height: 85vh;
+    background-color: #dbdbdb;
+}
+
+#includedContent{
+  position: relative;
+  top: 5%;
+  left: 15%;
+}
 
  svg {
 	background-color: #e8e8e8;
