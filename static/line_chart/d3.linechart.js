@@ -6,26 +6,26 @@ d3.linechart = function lineModule(position,title,url,id,type) {
 	"use strict";
 	
 	//d3.select('#sideblock').selectAll("*").remove();
-	if (id == 'first'){
- 	d3.select('#sideblock').select('#row').selectAll("#first").remove();}
-	if (id == 'second') {
-	d3.select('#sideblock').select('#row').selectAll("#second").remove();}
+	if (position == "#row") {
+		d3.select('#sideblock').selectAll('#abstemp').remove();}
+	if (position == "#row2") {	
+		d3.select('#sideblock').selectAll('#tempchangebar').remove();}
 	d3.select('#sideblock').selectAll("#heatmap").remove();
 	
 	//Build the rows
-	var data = [{ 'class' : 'row'},{ 'class' : 'row2'}]
+	var data = [{ 'id' : 'row'},{ 'id' : 'row2'},{ 'id' : 'row3'}]
 	var side = d3.select('#sideblock')
 	.selectAll('div')
 	.data(data).enter()
 	.append('div')
-		.attr('id', function (d) { return d.class; })
+		.attr('id', function (d) { return d.id; })
 		.style('display', 'table-row')
-		.style('height','230px')
+		.style('height','155px')
 
 	// Set the dimensions
 	var margin = {top: 30, right: 20, bottom: 30, left: 30},
-		width = 225 - margin.left - margin.right,
-		height = 235 - margin.top - margin.bottom;
+		width = 475 - margin.left - margin.right,
+		height = 155 - margin.top - margin.bottom;
 
 	// Parse the date
 	var parseDate = d3.time.format("%Y").parse;

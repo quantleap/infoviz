@@ -12,8 +12,8 @@ d3.map = function mapModule(low,high) {
 	d3.select("#countryname").remove();
 	
 	var mapDiv = d3.select('#map');
-	var width  = mapDiv.node().getBoundingClientRect().width; //800
-	var height = mapDiv.node().getBoundingClientRect().height; //505;
+	var width  = mapDiv.node().getBoundingClientRect().width;
+	var height = mapDiv.node().getBoundingClientRect().height;
 	var plotCenter = [ width/2, height/2 + 100 ];
 
 	var initialLongitude = 0;            // Initial longitude to center
@@ -40,7 +40,6 @@ d3.map = function mapModule(low,high) {
 	  .defer(d3.json, "static/world_map/world-110m2.json")
 	  .defer(d3.tsv, "static/world_map/world-country-names.tsv")
 	  .defer(d3.json, "temp_comparison/".concat(low).concat("/").concat(high))
-	  //.defer(d3.csv, "static/world_map/Temperatures.csv")
 	  .await(ready);
 
 	//Start of Choropleth drawing
@@ -57,12 +56,7 @@ d3.map = function mapModule(low,high) {
 		
 		tempData.forEach(function(d) {
 			tempById[d.iso_code] = +d.temp_increase;
-		 });
-		 //console.log(tempById['nl']);
-		
-		//tempData.forEach(function(d) {
-		//	tempById[d.RegionCode] = d.Temperature;
-		//	});	
+		 });	
 			
 		let countries = topojson.feature(world, world.objects.countries).features;
 
@@ -184,12 +178,6 @@ d3.map = function mapModule(low,high) {
 		
 		//handlePanZoom();
 		render();
-		
-		//console.log(translateLast);
-		//console.log(scaleLast);
-		// The following variables track the last processed event.
-		//translateLast = [0,0];
-		//scaleLast     = null;
 
 		function render() {
 			map.selectAll('path')       // Redraw all map paths
@@ -204,10 +192,6 @@ d3.map = function mapModule(low,high) {
 
 			var scale = zoom.scale();
 			var translate = zoom.translate();
-			//console.log(scale);
-			//console.log(translate);
-			//console.log(scaleLast);
-			//console.log(translateLast);
 			
 			// If the scaling changes, ignore translation (otherwise touch zooms are weird).
 			var delta = [ translate[0] - translateLast[0], translate[1] - translateLast[1] ];
