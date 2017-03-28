@@ -2,10 +2,9 @@ from flask_restful import Resource
 from sqlalchemy import create_engine
 import pandas as pd
 import numpy as np
-
-engine = create_engine('sqlite:///./data/climate.db')
 from flask_restful import reqparse
 
+engine = create_engine('sqlite:///./data/climate.db')
 parser = reqparse.RequestParser()
 
 
@@ -172,7 +171,7 @@ class YearOnYearChangeDistribution(Resource):
                  order by t1.iso_code asc'''.format(begin_year, end_year)
 
         df = pd.read_sql(sql, conn)
-        country_temp_increase = df[df['iso_code'] == 'nl']['temp_increase'].values[0]
+        country_temp_increase = df[df['iso_code'] == iso_code]['temp_increase'].values[0]
         histo = np.histogram(df['temp_increase'].values, range=(lbound, ubound), bins=np.linspace(lbound, ubound, bins+1)
                              , density=False)
 
