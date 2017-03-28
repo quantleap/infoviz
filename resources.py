@@ -136,6 +136,22 @@ class TemperatureComparison(Resource):
                  'temp_increase': r[4]} for r in query_result]
 
 
+class CO2Comparison(Resource):
+    def get(self, begin_year, end_year):
+        conn = engine.connect()
+        query_result = conn.execute('''select A.iso_code, sum(co2_emission_total) as period_co2_emission, B.population as population_end_year
+                                       from country_annual_indicators as A
+                                       join ( select iso_code, population
+                                              from country_annual_indicators
+                                              where year=:end) as B on A.iso_code = B.iso_code
+                                       where year>=:begin and year<=:end
+                                       group by A.iso_code''', begin=begin_year, end=end_year).cursor.fetchall()
+
+        return [{'iso_code': r[0],
+                 'period_co2_emission': r[1],
+                 'population_end_year': r[2]} for r in query_result]
+
+
 class YearOnYearChangeDistribution(Resource):
     def get(self, begin_year, end_year, iso_code):
         # parse querystring arguments

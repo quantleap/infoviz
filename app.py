@@ -26,6 +26,7 @@ api.add_resource(CountryAnnualTemperatures, '/country/<string:iso_code>/annual_t
 api.add_resource(CountryMonthlyTemperatures, '/country/<string:iso_code>/monthly_temperatures')
 api.add_resource(CountryIndicators, '/country/<string:iso_code>/indicators')
 api.add_resource(TemperatureComparison, '/temp_comparison/<string:begin_year>/<string:end_year>')
+api.add_resource(CO2Comparison, '/co2_comparison/<string:begin_year>/<string:end_year>')
 api.add_resource(YearOnYearChangeDistribution,
                  '/temp_change_distribution/<string:begin_year>/<string:end_year>/<string:iso_code>')
 
