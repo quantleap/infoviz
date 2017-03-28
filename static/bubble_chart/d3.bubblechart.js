@@ -25,7 +25,7 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 		if (error) throw error;
 
 		var countries = ["us", "cn", "fr", "de", "it", "ca", "jp", "gb", "ru"]; // G8 countries
-		var country_names = ["United States", "Canada", "France", "Germany", "Germany", "Italy", "Canada", "Japan", "United Kingdom", "Russian Federation"];
+		var country_names = ["United States", "China", "France", "Germany", "Germany", "Italy", "Canada", "Japan", "United Kingdom", "Russian Federation"];
 		var temps = {};
 		var co2 = {};
 		var co2_percap = {};
@@ -67,7 +67,7 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 	// setup x 
 	var xValue = function(d) { return d.co2;}, // data -> value
 		// xScale = d3.scale.linear().range([0, width]), // value -> display
-		xScale = d3.scale.log().base(Math.E).range([0, width]),
+		xScale = d3.scale.log().base(Math.E).range([35, width-100]),
 		xMap = function(d) { return xScale(xValue(d));}, // data -> display
 		xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(7, ",.1s").tickSize(6, 0);
 
@@ -111,10 +111,10 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 
 
   // don't want dots overlapping axis, so add in buffer to data domain
-  // xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
-  // yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
-  xScale.domain([d3.min(dataset, xValue)-20, d3.max(dataset, xValue)+20+50]); // where '20' is the max of the range in rScale, 50 is for legend
-  yScale.domain([d3.min(dataset, yValue)-0.2, d3.max(dataset, yValue)+0.2]);
+  xScale.domain([d3.min(dataset, xValue)-1, d3.max(dataset, xValue)+1]);
+  yScale.domain([d3.min(dataset, yValue)-1, d3.max(dataset, yValue)+1]);
+  // xScale.domain([d3.min(dataset, xValue)-20, d3.max(dataset, xValue)+20+50]); // where '20' is the max of the range in rScale, 50 is for legend
+  // yScale.domain([d3.min(dataset, yValue)-0.2, d3.max(dataset, yValue)+0.2]);
 
   // x-axis
   svg.append("g")
@@ -127,7 +127,7 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 	  .attr("x", width)
 	  .attr("y", -6)
 	  .style("text-anchor", "end")
-	  .text("Emissions (Kiloton)")
+	  .text("Emissions (kiloton)")
 
   // y-axis
   svg.append("g")
@@ -139,7 +139,9 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 	  .attr("y", 6)
 	  .attr("dy", ".71em")
 	  .style("text-anchor", "end")
-	  .text("Temperature change (" + year_low + " - " + year_high + ")");  // TO DO: add 'degree celsius'?
+	  // .text("Temperature change " + year_low + " - " + year_high + " (°Celsius)");
+	  .text("Temperature change (°Celsius)");
+
 
 
   // draw dots
@@ -158,7 +160,8 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 		  tooltip.transition()
 			   .duration(200)
 			   .style("opacity", .9);
-	   	tooltip.html(d.country_name + "<br/> (" + parseInt(xValue(d))
+	   	// tooltip.html(d.country_name + "<br/> (" + parseInt(xValue(d))
+	   	tooltip.html(d.country_name + "<br/> (" + parseInt(xValue(d)).toLocaleString()
 			+ ", " + Number(Math.round(yValue(d)+'e2')+'e-2') + ")")
 			   .style("left", (d3.event.pageX + 5) + "px")
 			   .style("top", (d3.event.pageY - 28) + "px");
@@ -204,9 +207,8 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 	svg.append("text")
 	.attr("x", width - 18)
 	.attr("y", 0)
-	// .style("text-anchor", "middle")
 	.style("text-anchor", "end")
-	.text("Per capita CO2 emission:");
+	.text("Per capita CO2 emission (kiloton):");
 
 	};
 }
