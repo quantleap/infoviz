@@ -1,6 +1,6 @@
 // Sebastiaan Hoekstra stnr 10264523 
 
-// Linechart adapted from D3noob http://bl.ocks.org/d3noob/b3ff6ae1c120eea654b5
+// barchart adapted from  Datafunk https://bl.ocks.org/datafunk/8a17b5f476a40a08ed17
 
 d3.barchart = function barModule(position,title,url,id,type) {
 

@@ -60,7 +60,6 @@ function switchToBubble(){
 function switchToChart(){
 	low = slider.get_min_value(), high = slider.get_max_value();
 	linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'abstemp','avg');
-	//linechart2 = d3.linechart('#row2','Temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'tempchange','yoy');
 	var barchart = d3.barchart('#row2','Temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'tempchangebar','yoy');	
 	navAnnual = true; navMonthly = false;
 }
@@ -87,6 +86,5 @@ function switchToHeatmap(){
 	
 	// Initialize first line chart
 	var linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'abstemp','avg');
-	//var linechart2 = d3.linechart('#row2','Temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'tempchange','yoy');
 	var barchart = d3.barchart('#row2','Temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'tempchangebar','yoy');	
 </script>
