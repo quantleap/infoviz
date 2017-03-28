@@ -1,8 +1,8 @@
-head{
+/*head{
   display: none;
   margin: 0px 0px 0px 0px;
   padding: 0px;
-}
+}*/
 
 body {
   font-family: courier;
@@ -282,7 +282,7 @@ animation:bounce 2s infinite;
 
 
  svg {
-	background-color: #bbbbff;
+	background-color: #e8e8e8;
 }
 
 text {
@@ -328,7 +328,6 @@ path {
 
 .button {
 	float: left;
-    background-color: #bbbbff;
     border: none;
 	margin: 0px 5px 0px 0px;
 	padding: 3px 5px;
@@ -350,6 +349,7 @@ path {
   font-size: 14px;
 }
 
+/*
 #needhelp {
 	float: left;
 	width: 450px;
@@ -361,7 +361,7 @@ path {
 #needhelp a {
 	text-decoration: none;
 }
-
+*/
 #midsection {
 	width: 1350px;
 	height: 535px;

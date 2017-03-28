@@ -167,7 +167,7 @@ d3.barchart = function barModule(position,title,url,id,type) {
 			svg.append("g")
 				.attr("class", "y axis")
 				.append("text")
-				.text("Frequency")
+				.text("Count")
 				.attr("transform", "translate(-20, -10)")
 				svg.append("g")
 				.attr("class", "x axis")
