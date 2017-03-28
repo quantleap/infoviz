@@ -60,8 +60,8 @@ function switchToBubble(){
 function switchToChart(){
 	low = slider.get_min_value(), high = slider.get_max_value();
 	linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'abstemp','avg');
-	var barchart = d3.barchart('#row2','Yearly temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'tempchangebar','yoy');	
-	var comparison = d3.barchart('#row3','Country comparison', '/temp_change_distribution/'.concat(low).concat('/').concat(high).concat('/').concat(currentCountryISO).concat('?bins=10&lbound=-3&ubound=3'), 'countrycomparison','cmp');
+	var barchart = d3.barchart('#row2','Annual temperature change', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'tempchangebar','yoy');	
+	var comparison = d3.barchart('#row3','Country comparison over annual temperature change', '/temp_change_distribution/'.concat(low).concat('/').concat(high).concat('/').concat(currentCountryISO).concat('?bins=10&lbound=-3&ubound=3'), 'countrycomparison','cmp');
 	navAnnual = true; navMonthly = false;
 }
 function switchToHeatmap(){
@@ -87,6 +87,6 @@ function switchToHeatmap(){
 	
 	// Initialize first line chart
 	var linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'abstemp','avg');
-	var barchart = d3.barchart('#row2','Yearly temperature changes', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'tempchangebar','yoy');
-	var comparison = d3.barchart('#row3','Country comparison', '/temp_change_distribution/'.concat(low).concat('/').concat(high).concat('/').concat(currentCountryISO).concat('?bins=10&lbound=-3&ubound=3'), 'countrycomparison','cmp');
+	var barchart = d3.barchart('#row2','Annual temperature change', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'tempchangebar','yoy');
+	var comparison = d3.barchart('#row3','Country comparison over annual temperature change', '/temp_change_distribution/'.concat(low).concat('/').concat(high).concat('/').concat(currentCountryISO).concat('?bins=10&lbound=-3&ubound=3'), 'countrycomparison','cmp');
 </script>
