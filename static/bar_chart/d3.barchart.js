@@ -140,7 +140,13 @@ d3.barchart = function barModule(position,title,url,id,type) {
 				.attr("class", "y axis")
 				.append("text")
 				.text("°Celsius")
-				.attr("transform", "translate(15, 40), rotate(-90)")}
+				.attr("transform", "translate(-20, -10)")}
+		if (type == 'cmp') {
+			svg.append("g")
+				.attr("class", "y axis")
+				.append("text")
+				.text("frequency")
+				.attr("transform", "translate(-20, -10)")}				
 
 		svg.append("g")
 			.attr("class", "X axis")

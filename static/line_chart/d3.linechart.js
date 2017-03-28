@@ -94,6 +94,12 @@ d3.linechart = function lineModule(position,title,url,id,type) {
 			.attr("y", 5 - (margin.top / 2))
 			.attr("text-anchor", "middle")  
 			.text(title);
+			
+		svg.append("g")
+				.attr("class", "y axis")
+				.append("text")
+				.text("°Celsius")
+				.attr("transform", "translate(-20, -10)")			
 
 		// Add the X Axis
 		svg.append("g")
