@@ -3,8 +3,10 @@
 // barchart adapted from  Datafunk https://bl.ocks.org/datafunk/8a17b5f476a40a08ed17
 
 d3.barchart = function barModule(position,title,url,id,type) {
-
-	d3.select('#sideblock').selectAll('#tempchangebar').remove();
+	if (position == "#row2") {
+	d3.select('#sideblock').selectAll('#tempchangebar').remove(); }
+	if (position == "#row3") {
+	d3.select('#sideblock').selectAll('#countrycomparison').remove(); } 
 	d3.select('#sideblock').selectAll("#heatmap").remove();
 		
 	// Set the dimensions
@@ -21,8 +23,14 @@ d3.barchart = function barModule(position,title,url,id,type) {
 	var x = d3.scale.ordinal()
 		.rangeRoundBands([0, width], .2);
 
+	var l,h;
+	if (type == 'yoy') {
+		l = low; h = high}
+	if (type == 'cmp') {
+		l = -3; h = 3}
+		
 	var xAxisScale = d3.scale.linear()
-		.domain([low, high])
+		.domain([l, h])
 		.range([ 0, width]);
 
 	var xAxis = d3.svg.axis()
@@ -32,7 +40,8 @@ d3.barchart = function barModule(position,title,url,id,type) {
 
 	var yAxis = d3.svg.axis()
 		.scale(y)
-		.orient("left");
+		.orient("left")
+		.ticks(5);
 
 	var svg = d3.select(position).append("svg")
 		.attr("id",id)
@@ -43,44 +52,76 @@ d3.barchart = function barModule(position,title,url,id,type) {
 
 	// Get the data
 	d3.json(url, function(error, data) {
-		x.domain(data.temperatures.map(function(d) {
-			return d.year;
+		if (type == 'yoy') {
+			var dat = data.temperatures;}
+		if (type == 'cmp') {
+			var dat = data.histogram;}
+		
+		x.domain(dat.map(function(d) {
+			if (type == 'yoy') {
+				return d.year;}
+			if (type == 'cmp') {
+				return d.lbound;}
 		}));
-		y.domain(d3.extent(data.temperatures, function(d) {
-			return +d.yoy_change_avg_temp;
+		y.domain(d3.extent(dat, function(d) {
+			if (type == 'yoy') {
+				return +d.yoy_change_avg_temp;}
+			if (type == 'cmp') {
+				return +d.count;}
 		})).nice();	
 
 		svg.selectAll(".bar")
-			.data(data.temperatures)
+			.data(dat)
 			.enter().append("rect")
 			.attr("class", function(d) {
-				if (d.yoy_change_avg_temp < 0){
-					return "bar negative";
-				} else {
-					return "bar positive";
-				}
+				if (type == 'yoy') {
+					if (d.yoy_change_avg_temp < 0){
+						return "bar negative";
+					} else {
+						return "bar positive";
+				} }
+				if (type == 'cmp') {
+					return "bar positive";}
 			})
 			.attr("data-yr", function(d){
-				return d.year;
+				if (type == 'yoy') {
+					return d.year;}
+				if (type == 'cmp') {
+					return d.lbound;}
 			})
 			.attr("data-c", function(d){
-				return d.yoy_change_avg_temp;
+				if (type == 'yoy') {
+					return d.yoy_change_avg_temp;}
+				if (type == 'cmp') {
+					return d.count;}				
+				
 			})
 			.attr("y", function(d) {
-
-				if (d.yoy_change_avg_temp > 0){
-					return y(d.yoy_change_avg_temp);
-				} else {
-					return y(0);
-				}
+				if (type == 'yoy') {
+					if (d.yoy_change_avg_temp > 0){
+						return y(d.yoy_change_avg_temp);
+					} else {
+						return y(0);
+				} }
+				if (type == 'cmp') {				
+					if (d.count > 0){
+						return y(d.count);
+					} else {
+				return y(0); }}
 
 			})
 			.attr("x", function(d) {
-				return x(d.year);
+			if (type == 'yoy') {
+				return x(d.year);}
+			if (type == 'cmp') {
+				return x(d.lbound);}
 			})
 			.attr("width", x.rangeBand())
 			.attr("height", function(d) {
-				return Math.abs(y(d.yoy_change_avg_temp) - y(0));
+				if (type == 'yoy') {				
+				return Math.abs(y(d.yoy_change_avg_temp) - y(0)); }
+				if (type == 'cmp') {
+				return Math.abs(y(d.count) - y(0)); }	
 			})
 		
 		// Add the title	
@@ -94,11 +135,12 @@ d3.barchart = function barModule(position,title,url,id,type) {
 			.attr("class", "y axis")
 			.call(yAxis);
 
-		svg.append("g")
-			.attr("class", "y axis")
-			.append("text")
-			.text("°Celsius")
-			.attr("transform", "translate(15, 40), rotate(-90)")
+		if (type == 'yoy') {
+			svg.append("g")
+				.attr("class", "y axis")
+				.append("text")
+				.text("°Celsius")
+				.attr("transform", "translate(15, 40), rotate(-90)")}
 
 		svg.append("g")
 			.attr("class", "X axis")

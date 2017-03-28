@@ -1,6 +1,6 @@
 // Jenny Trùo 
 
-// Slider adapted from 
+// Slider adapted from Melissa Yip https://github.com/su6a12/D3-heat-map
 
 d3.heatmap = function heatmapModule(id, min_year, max_year) {
 	"use strict";
