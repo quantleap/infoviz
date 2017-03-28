@@ -3,6 +3,12 @@
 
   <head>
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='introduction/introduction.css')}}" />
+    <script src="{{url_for('static', filename='jquery-3.2.0.min.js')}}"></script>
+    <script>
+    $(function(){
+      $("#includedContent").load("/");
+    });
+    </script>
   </head>
 
   <body>
@@ -88,7 +94,7 @@
 </div>
 
 <div class="mapplaceholder">
-    <img src="{{url_for('static', filename='introduction/images/format.jpg')}}"/>
+    <div id="includedContent"></div>
 </div>
 
 
