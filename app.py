@@ -11,12 +11,12 @@ api = Api(app)
 
 @app.route('/')
 def homepage():
-    return render_template('index.html')
-
-
-@app.route('/introduction')
-def introduction():
     return render_template('introduction.html')
+
+
+@app.route('/worldmap')
+def introduction():
+    return render_template('index.html')
 
 
 # API
