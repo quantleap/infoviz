@@ -346,6 +346,8 @@ path {
   width: 200px;
   height: 28px;
   pointer-events: none;
+  font-family: Helvetica;
+  font-size: 14px;
 }
 
 #needhelp {

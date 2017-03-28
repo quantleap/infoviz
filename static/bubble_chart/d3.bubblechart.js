@@ -4,7 +4,7 @@
 
 d3.bubblechart = function bubbleModule(year_low, year_high) {
 	"use strict";
-	
+
 	d3.select("#map").selectAll("*").remove();
 	
 	var margin = {top: 20, right: 20, bottom: 30, left: 40};
@@ -15,83 +15,71 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 	-  margin.top - margin.bottom; //505;
 
 
-	// TO DO: add list of countries to obtain data for --> top 5 countries highest emission, top 5 countries highest temp increase
-	// TO DO: add (dynamic) data read in from slider ('yearmin', 'yearmax')
-	/*
-	var data = {};
-	var countries = ['nl', 'gb', 'us', 'bd', 'au', 'sd', 'ru', 'no']
-	for (var i=0; i<countries.length; i++) {
-		var country_id = countries[i];
-		data[country_id] = {'temperature':undefined,
-							'co2':undefined
-						};
-		data[country_id].temperature = i;  // TO DO: make difference between 'year_high' and 'year_low'
-		data[country_id].co2 = i*1000;  // TO DO: make sum from 'year_low' to 'year_high'
-	}
-	console.log(data.gb);
-	*/
+	// reading in data
+	queue()
+	  .defer(d3.json, "temp_comparison/".concat(year_low).concat("/").concat(year_high))
+	  .defer(d3.json, "co2_comparison/".concat(year_low).concat("/").concat(year_high))
+	  .await(ready);
 
-// EXAMPLE URL: http://127.0.0.1:5000/country/nl/annual_temperatures?begin=1975&end=2017
-	function getTemp(country_id, year_low, year_high) {
-    	// code to be executed
-    	var url = 'country/'.concat(country_id).concat('/annual_temperatures')
-				 .concat('?begin=').concat(year_low).concat('&end=').concat(year_high);
-		d3.json(url, function (json) {
-			var temp_max = json.temperatures.slice(0)[0].avg_temp;  // first index (most recent year)
-			var temp_min = json.temperatures.slice(-1)[0].avg_temp;  // last index (oldest year)
+	function ready(error, tempData, co2Data) {
+		if (error) throw error;
+
+		var countries = ["us", "cn", "fr", "de", "it", "ca", "jp", "gb", "ru"]; // G8 countries
+		var country_names = ["United States", "Canada", "France", "Germany", "Germany", "Italy", "Canada", "Japan", "United Kingdom", "Russian Federation"];
+		var temps = {};
+		var co2 = {};
+		var co2_percap = {};
+
+		// console.log(tempData[0]);
+
+		tempData.forEach(function(d) {
+			if (countries.indexOf(d.iso_code) != -1) {
+				temps[d.iso_code] = +d.temp_increase;
+			};
+		 });
+
+		co2Data.forEach(function(d) {
+			if (countries.indexOf(d.iso_code) != -1) {
+				co2[d.iso_code] = +d.period_co2_emission;
+				co2_percap[d.iso_code] = +(co2[d.iso_code] / d.population_end_year);
+			};
 		});
 
-		return (temp_max - temp_min);
-	};
+		var dataset = [];
+		for (var i = 0; i<countries.length; i++) {
+			if (+co2[countries[i]] > 0) {  // Only take countries that have actual CO2 emission data
+				dataset.push( {
+					iso_code: countries[i],
+					country_name: country_names[i],
+					temp: +temps[countries[i]],
+					co2: +co2[countries[i]],
+					co2_percap: +co2_percap[countries[i]]
+				});
+			}
+		};
 
-// EXAMPLE URL: http://127.0.0.1:5000/country/nl/indicators?begin=1975&end=2017
-	function getCO2(country_id, year_low, year_high) {
-		// code to be executed
-		var url = 'country/'.concat(country_id).concat('/indicators')
-				 .concat('?begin=').concat(year_low).concat('&end=').concat(year_high);
-		d3.json(url, function (json) {
-			// for (var i=0; i<json.indicators.length; i++) {
-			// TO DO: sum CO2 emissions
-			// var emission = json.indicators.[0].co2_emission_total;  // emission in one year
-			// };
-		});
+		// console.log(dataset);
+		// console.log(countries);
+		// console.log(co2);
+		// console.log(co2_percap);
 
-		// return co2_total;
-	};
-	
 
-	var country_id = 'nl';
-	// query temperature data from database FOR A SINGLE COUNTRY
-	var url = 'country/'.concat(country_id).concat('/annual_temperatures')
-				 .concat('?begin=').concat(year_low).concat('&end=').concat(year_high);
-	d3.json(url, function (json) {
-		// console.log(url);
-		console.log(json.temperatures.slice(0)[0].avg_temp);  // first index (most recent year)
-		console.log(json.temperatures.slice(-1)[0].avg_temp);  // last index (oldest year)
-	});
-
-	/* 
-	 * value accessor - returns the value to encode for a given data object.
-	 * scale - maps value to a visual display encoding, such as a pixel position.
-	 * map function - maps from data value to display value
-	 * axis - sets up axis
-	 */ 
-
-	// TO DO: make scale logarithmic?
 	// setup x 
-	var xValue = function(d) { return d.emission;}, // data -> value
-		xScale = d3.scale.linear().range([0, width]), // value -> display
+	var xValue = function(d) { return d.co2;}, // data -> value
+		// xScale = d3.scale.linear().range([0, width]), // value -> display
+		xScale = d3.scale.log().base(Math.E).range([0, width]),
 		xMap = function(d) { return xScale(xValue(d));}, // data -> display
 		xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(7, ",.1s").tickSize(6, 0);
 
+
 	// setup y
-	var yValue = function(d) { return d.temperature;}, // data -> value
+	var yValue = function(d) { return d.temp;}, // data -> value
 		yScale = d3.scale.linear().range([height, 0]), // value -> display
 		yMap = function(d) { return yScale(yValue(d));}, // data -> display
 		yAxis = d3.svg.axis().scale(yScale).orient("left");
 
 	// setup fill color
-	var cValue = function(d) { return d.year;},
+	var cValue = function(d) { return d.iso_code;},
 		color = d3.scale.category10();
 
 	// add the graph canvas to the body of the webpage
@@ -107,133 +95,118 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 		.style("opacity", 0);
 
 
-	// load data
-	d3.csv("static/bubble_chart/fake_data.csv", function(error, data) {
-	  // change string (from CSV) into number format
-	  data.forEach(function(d) {
-		d.temperature = +d.temperature;
-		d.emission = +d.emission;
-	   // console.log(d);
+  // Determine bubble radius domain max
+  var radius = 0;
+  dataset.forEach(function(d) {
+	if (d.co2_percap > radius) {
+	  radius = d.co2_percap;
+	};
+  });
+  // console.log(radius);
+
+  // Set bubble radius range
+  var rScale = d3.scale.linear()
+	.domain([0,radius])
+	.range([7.5,25]);
+
+
+  // don't want dots overlapping axis, so add in buffer to data domain
+  // xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
+  // yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
+  xScale.domain([d3.min(dataset, xValue)-20, d3.max(dataset, xValue)+20+50]); // where '20' is the max of the range in rScale, 50 is for legend
+  yScale.domain([d3.min(dataset, yValue)-0.2, d3.max(dataset, yValue)+0.2]);
+
+  // x-axis
+  svg.append("g")
+	  .attr("class", "x axis")
+	  .attr("transform", "translate(0," + height + ")")  // bottom position
+	  // .attr("transform", "translate(0," + yScale(0) + ")")  // zero-line position
+	  .call(xAxis)
+	.append("text")
+	  .attr("class", "label")
+	  .attr("x", width)
+	  .attr("y", -6)
+	  .style("text-anchor", "end")
+	  .text("Emissions (Kiloton)")
+
+  // y-axis
+  svg.append("g")
+	  .attr("class", "y axis")
+	  .call(yAxis)
+	.append("text")
+	  .attr("class", "label")
+	  .attr("transform", "rotate(-90)")
+	  .attr("y", 6)
+	  .attr("dy", ".71em")
+	  .style("text-anchor", "end")
+	  .text("Temperature change (" + year_low + " - " + year_high + ")");  // TO DO: add 'degree celsius'?
+
+
+  // draw dots
+  svg.selectAll(".dot")
+	  .data(dataset)
+	.enter().append("circle")
+	  .attr("class", "dot")
+	  // .attr("r", 3.5)
+	  // .attr("r", function(d) { return rScale(d.emission/(d.population/100000));})  // Depends on how emission data and population is represented
+	  .attr("r", function(d) { return rScale(d.co2_percap);})
+	  .attr("cx", xMap)
+	  .attr("cy", yMap)
+	  .attr('fill-opacity', 0.6) ////////// TO DO: tweak value!
+	  .style("fill", function(d) { return color(d.iso_code);}) 
+	  .on("mouseover", function(d) {
+		  tooltip.transition()
+			   .duration(200)
+			   .style("opacity", .9);
+	   	tooltip.html(d.country_name + "<br/> (" + parseInt(xValue(d))
+			+ ", " + Number(Math.round(yValue(d)+'e2')+'e-2') + ")")
+			   .style("left", (d3.event.pageX + 5) + "px")
+			   .style("top", (d3.event.pageY - 28) + "px");
+	  })
+	  .on("mouseout", function(d) {
+		  tooltip.transition()
+			   .duration(500)
+			   .style("opacity", 0);
 	  });
 
 
-	  // Determine bubble radius domain max
-	  var max_r = 0;
-	  var new_r;
-	  data.forEach(function(d) {
-		new_r = d.emission/(d.population/100000);
-		if (new_r > max_r) {
-		  max_r = new_r
-		};
-	  });
-	  // console.log(max_r);
-
-	  // Set bubble radius range
-	  var rScale = d3.scale.linear()
-		.domain([0,max_r])
-		.range([7.5,25]);
-
-
-	  // don't want dots overlapping axis, so add in buffer to data domain
-	  // xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
-	  // yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
-	  xScale.domain([d3.min(data, xValue)-20, d3.max(data, xValue)+20+50]); // where '20' is the max of the range in rScale, 50 is for legend
-	  yScale.domain([d3.min(data, yValue)-0.2, d3.max(data, yValue)+0.2]);
-
-	  // x-axis
-	  svg.append("g")
-		  .attr("class", "x axis")
-		  // .attr("transform", "translate(0," + height + ")")  // bottom position
-		  .attr("transform", "translate(0," + yScale(0) + ")")  // zero-line position
-		  .call(xAxis)
-		.append("text")
-		  .attr("class", "label")
-		  .attr("x", width)
-		  .attr("y", -6)
-		  .style("text-anchor", "end")
-		  .text("Emissions (Kiloton)");
-
-	  // y-axis
-	  svg.append("g")
-		  .attr("class", "y axis")
-		  .call(yAxis)
-		.append("text")
-		  .attr("class", "label")
-		  .attr("transform", "rotate(-90)")
-		  .attr("y", 6)
-		  .attr("dy", ".71em")
-		  .style("text-anchor", "end")
-		  // .text("Temperature change (10 years)");  // TO DO: make 'years' dynamic
-		  .text("Temperature change (" + year_low + " - " + year_high + ")");  // TO DO: make 'years' dynamic
-
-
-	  // draw dots
-	  svg.selectAll(".dot")
-		  .data(data)
-		.enter().append("circle")
-		  .attr("class", "dot")
-		  // .attr("r", 3.5)
-		  .attr("r", function(d) { return rScale(d.emission/(d.population/100000));})  // Depends on how emission data and population is represented
-		  .attr("cx", xMap)
-		  .attr("cy", yMap)
-		  .attr('fill-opacity', 0.6) ////////// TO DO: tweak value!
-		  // .style("fill", function(d) { return color(cValue(d.country));}) 
-		  .style("fill", function(d) { return color(d.country);}) 
-		  .on("mouseover", function(d) {
-			  tooltip.transition()
-				   .duration(200)
-				   .style("opacity", .9);
-			  tooltip.html(d.country + "<br/> (" + xValue(d) 
-				+ ", " + yValue(d) + ")")
-				   .style("left", (d3.event.pageX + 5) + "px")
-				   .style("top", (d3.event.pageY - 28) + "px");
-		  })
-		  .on("mouseout", function(d) {
-			  tooltip.transition()
-				   .duration(500)
-				   .style("opacity", 0);
-		  });
-
-
-
-	var legendSize = [max_r, max_r/2, max_r/4, max_r/16];
+	var legendSize = [radius, radius/2, radius/4, radius/16];
 	var legendTopPadding = 30;
 	var legendPadding = 8;
 
-	  // draw legend
-	  var legend = svg.selectAll(".legend")
-		  .data(legendSize)
-		.enter().append("g")
-		  .attr("class", "legend")
-		  .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+ 	// draw legend
+ 	var legend = svg.selectAll(".legend")
+	  .data(legendSize)
+	.enter().append("g")
+	  .attr("class", "legend")
+	  .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-	  // draw legend sized bubbles
-	  legend.append("circle")
-		  .attr("cx", width - 18)
-		  .attr("cy", function(d,i) {return (legendTopPadding + (rScale(d)+legendPadding)*i);})
-		  .attr("r", function(d) { return rScale(d);})
-		  .style("stroke", "black")
-		  .style("fill", "none");
+ 	// draw legend sized bubbles
+ 	legend.append("circle")
+	  .attr("cx", width - 18)
+	  .attr("cy", function(d,i) {return (legendTopPadding + (rScale(d)+legendPadding)*i);})
+	  .attr("r", function(d) { return rScale(d);})
+	  .style("stroke", "black")
+	  .style("fill", "none");
 
-	  // draw legend text
-	  legend.append("text")
-		  // .attr("x", width - 24)
-		  .attr("x", function(d) {return (width - (24+rScale(d)));})
-		  // .attr("y", 9)
-		  .attr("y", function(d,i) {return (legendTopPadding + (rScale(d)+legendPadding)*i);})
-		  .attr("dy", ".35em")
-		  .style("text-anchor", "end")
-		  .text(function(d) {return d;})
+	// draw legend text
+	legend.append("text")
+	  // .attr("x", width - 24)
+	  .attr("x", function(d) {return (width - (24+rScale(d)));})
+	  // .attr("y", 9)
+	  .attr("y", function(d,i) {return (legendTopPadding + (rScale(d)+legendPadding)*i);})
+	  .attr("dy", ".35em")
+	  .style("text-anchor", "end")
+	  // .text(function(d) {return d;})
+	  .text(function(d) {return Number(Math.round(d+'e2')+'e-2');})
 
-		//create legend title 
-		svg.append("text")
-		.attr("x", width - 18)
-		.attr("y", 0)
-		// .style("text-anchor", "middle")
-		.style("text-anchor", "end")
-		// .text("Per capita CO2 emission:");
+	//create legend title 
+	svg.append("text")
+	.attr("x", width - 18)
+	.attr("y", 0)
+	// .style("text-anchor", "middle")
+	.style("text-anchor", "end")
+	.text("Per capita CO2 emission:");
 
-
-	});
-	
+	};
 }
