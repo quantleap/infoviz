@@ -320,7 +320,6 @@ animation:bounce 2s infinite;
 #includedContent{
   position: relative;
   top: 5%;
-  left: 15%;
 }
 
  svg {
