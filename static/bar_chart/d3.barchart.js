@@ -14,8 +14,6 @@ d3.barchart = function barModule(position,title,url,id,type) {
 		width = 475 - margin.left - margin.right,
 		height = 155 - margin.top - margin.bottom;
 		
-	// Parse the date
-	var parseDate = d3.time.format("%Y").parse;
 		
 	var y = d3.scale.linear()
 		.range([height, 0]);
@@ -33,10 +31,18 @@ d3.barchart = function barModule(position,title,url,id,type) {
 		.domain([l, h])
 		.range([ 0, width]);
 
+	if (type == 'yoy') {
 	var xAxis = d3.svg.axis()
 		.scale(xAxisScale)
 		.orient("bottom")
-		.ticks(5);
+		.ticks(5)
+		.tickFormat(d3.format("d")); }
+		
+	if (type == 'cmp') {
+	var xAxis = d3.svg.axis()
+		.scale(xAxisScale)
+		.orient("bottom")
+		.ticks(5); }		
 
 	var yAxis = d3.svg.axis()
 		.scale(y)
@@ -141,12 +147,19 @@ d3.barchart = function barModule(position,title,url,id,type) {
 				.append("text")
 				.text("°Celsius")
 				.attr("transform", "translate(-20, -10)")}
+		
 		if (type == 'cmp') {
 			svg.append("g")
 				.attr("class", "y axis")
 				.append("text")
-				.text("frequency")
-				.attr("transform", "translate(-20, -10)")}				
+				.text("Frequency")
+				.attr("transform", "translate(-20, -10)")
+				svg.append("g")
+				.attr("class", "x axis")
+				.append("text")
+				.text("°Celsius")
+				.attr("transform", "translate(365, 110)")
+				}				
 
 		svg.append("g")
 			.attr("class", "X axis")
