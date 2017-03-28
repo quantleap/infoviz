@@ -74,7 +74,7 @@ parralax scrolling effect*/
   background-image: url("introduction/images/forestfire.jpg");
 }
 
-/*Set the textblocks of */
+/*Set the information textblocks location, text size, color, etc */
 .page1 p, .page2 p, .page3 p {
   font-size: 3vmin;
   position: relative;
@@ -88,6 +88,8 @@ parralax scrolling effect*/
   text-align: center;
 }
 
+/*Set the location, size, background color of the
+divs of the images for page 2*/
 .page2 div {
   height: 35%;
   width: 27%;
@@ -172,14 +174,15 @@ parralax scrolling effect*/
     width: 100%;
   }
 
-/*.page3 div p{
-  font-size: 2.5vmin;
+.page3 div p{
+  font-size: 3vmin;
+  top: 5%;
   text-align: center;
   background: none;
   border: none;
   font-weight: bold;
   width: 100%;
-}*/
+}
 
 .thumb4, .thumb5{
   background: rgba(185, 191, 201, 0.3);
@@ -238,6 +241,35 @@ parralax scrolling effect*/
   position: relative;
   text-shadow: 1px 1px 1px black;
 }
+
+#pict3{
+  left:10%;
+}
+
+#page2text{
+  vertical-align: top;
+  text-align: center;
+  position: relative;
+  text-shadow: 1px 1px 1px black;
+}
+
+.bounce,.bounce2, .bounce3{
+width:0px;
+height:0px;
+border-left:12px solid transparent;
+border-right:12px solid transparent;
+border-top:12px solid #fff;
+position: relative;
+left:50%;
+bottom:0;
+margin-top:-25px;
+margin-left:-25px;
+-webkit-animation:bounce 2s infinite;
+-moz-animation:bounce 2s infinite;
+-o-animation:bounce 2s infinite;
+animation:bounce 2s infinite;
+}
+
 
 .bounce,.bounce2, .bounce3{
 width:0px;
@@ -326,6 +358,7 @@ path {
   fill: steelblue;
 }
 
+/*
 .button {
 	float: left;
     border: none;
@@ -334,7 +367,7 @@ path {
     text-align: center;
     text-decoration: none;
     font-size: 14px;
-}
+}*/
 
 .dot {
   stroke: #000;
@@ -349,19 +382,7 @@ path {
   font-size: 14px;
 }
 
-/*
-#needhelp {
-	float: left;
-	width: 450px;
-	font-family: Helvetica, Arial, Sans-Serif;
-	font-style: italic;
-	margin: 10px 0px 10px 10px;
-}
 
-#needhelp a {
-	text-decoration: none;
-}
-*/
 #midsection {
 	width: 1350px;
 	height: 535px;
