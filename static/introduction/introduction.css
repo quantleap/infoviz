@@ -106,15 +106,17 @@ h1 {
   height: 35%;
   width: 27%;
   position: relative;
-  top: 45%;
+  /*top: 80%;*/
   display: inline-block;
   background: rgba(185, 191, 201, 0.3);
   border-radius: 15px;
+  transform: translateY(100%);
 }
 
 .page2 div img{
-  top: 55%;
+  bottom: 0%;
   height: 75%;
+  align-content: middle;
   margin-left: auto;
   margin-right: auto;
   display: block;
@@ -124,7 +126,7 @@ h1 {
   /*display: inline-block;
   *display: inline;*/
   /*justify-content:space-between;*/
-  /*position: relative;*/
+  position: relative;
 }
 
 .page2 div p{
@@ -158,7 +160,6 @@ h1 {
 	position: absolute;
   height: 200%;
   top: -50%;
-  left: 10%;
   opacity: 1;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
@@ -183,7 +184,7 @@ h1 {
 	position: absolute;
   height: 200%;
   top: -50%;
-  left: 10%;
+  left: 0%;
   opacity: 1;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
@@ -208,7 +209,7 @@ h1 {
 	position: absolute;
   height: 200%;
   top: -50%;
-  left: 10%;
+  left: 0%;
   opacity: 1;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
@@ -262,7 +263,7 @@ top: 55%;
 
 .page3 div {
   height: 65%;
-  left:5%;
+  /*left:5%;          Works on FireFox, not Chrome.*/
   width: 30%;
   position: relative;
   top: 20%;
@@ -271,7 +272,6 @@ top: 55%;
   border-radius: 15px;
   justify-content: space-between;
 }
-
 
 .page3 div img{
     top: 15%;
@@ -304,7 +304,17 @@ top: 55%;
   background: rgba(185, 191, 201, 0.3);
   width: 100%;
   border-radius: 15px;
-  left: 50%;
+  /*left: 100%;*/
+}
+
+.thumb4{
+  position: relative;
+  left: 40%;
+}
+
+.thumb5{
+  position: relative;
+  right: -40%;
 }
 
 .thumb4:hover {
@@ -391,7 +401,7 @@ top: 55%;
   position: relative;
   right: 15%;
   width: 25%;
-  /*max-width: 40%;*/
+  max-width: 40%;
   height: auto;
   border: 1px solid green;
   background: rgba(50, 90, 45, 0.1);
