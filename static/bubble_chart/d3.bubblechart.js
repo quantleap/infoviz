@@ -24,8 +24,12 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 	function ready(error, tempData, co2Data) {
 		if (error) throw error;
 
-		var countries = ["us", "cn", "fr", "de", "it", "ca", "jp", "gb", "ru"]; // G8 countries + China (highest GDP in 2016 https://www.cia.gov/library/publications/the-world-factbook/rankorder/2001rank.html)
-		var country_names = ["United States", "China", "France", "Germany", "Germany", "Italy", "Canada", "Japan", "United Kingdom", "Russian Federation"];
+		// G8 + China (highest GDP in 2016 https://www.cia.gov/library/publications/the-world-factbook/rankorder/2001rank.html)
+		// var countries = ["us", "cn", "fr", "de", "it", "ca", "jp", "gb", "ru"];
+		// var country_names = ["United States", "China", "France", "Germany", "Germany", "Italy", "Canada", "Japan", "United Kingdom", "Russian Federation"];
+		// G20
+		var countries = ["ar", "au", "br", "ca", "cn", "fr", "de", "in", "id", "it", "jp", "kr", "mx", "ru", "sa", "za", "tr", "gb", "us"];
+		var country_names = ["Argentina", "Australia", "Brazil", "Canada", "China", "France", "Germany", "India", "Indonesia", "Italy", "Japan", "south Korea", "Mexico", "Russia", "Saudi Arabia", "South Africa", "Turkey", "United Kingdom", "United States"];
 		var temps = {};
 		var co2 = {};
 		var co2_percap = {};
