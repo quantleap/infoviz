@@ -24,7 +24,7 @@ d3.bubblechart = function bubbleModule(year_low, year_high) {
 	function ready(error, tempData, co2Data) {
 		if (error) throw error;
 
-		var countries = ["us", "cn", "fr", "de", "it", "ca", "jp", "gb", "ru"]; // G8 countries
+		var countries = ["us", "cn", "fr", "de", "it", "ca", "jp", "gb", "ru"]; // G8 countries + China (highest GDP in 2016 https://www.cia.gov/library/publications/the-world-factbook/rankorder/2001rank.html)
 		var country_names = ["United States", "China", "France", "Germany", "Germany", "Italy", "Canada", "Japan", "United Kingdom", "Russian Federation"];
 		var temps = {};
 		var co2 = {};
