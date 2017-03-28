@@ -18,21 +18,20 @@
 	<script src="{{ url_for('static', filename='line_chart/d3.linechart.js') }}"></script>
 	<script src="{{ url_for('static', filename='bar_chart/d3.barchart.js') }}"></script>	
 	<script src="{{ url_for('static', filename='bubble_chart/d3.bubblechart.js') }}"></script>
-	<script src="{{ url_for('static', 
-	filename='heat_map/d3.heatmap.js') }}"></script>
+	<script src="{{ url_for('static', filename='heat_map/d3.heatmap.js') }}"></script>
 </head>
 
 <body>
 	<div id="midsection">
 		<div id="topnav">
-			<button class="button" onclick="switchToMap(2017)">Explore</button>
-			<button class="button" onclick="switchToBubble()">Compare</button>
+			<button class="btn btn-default" onclick="switchToMap(2017)">Explore</button>
+			<button class="btn btn-default" onclick="switchToBubble()">Compare</button>
 		</div>
 		<div id="map"></div>	
 		<div id="sidescreen">
 			<div id="sidenav">
-				<button class="button" onclick="switchToChart()">Annual</button>
-				<button class="button" onclick="switchToHeatmap()">Monthly</button>
+				<button class="btn btn-default" onclick="switchToChart()">Annual</button>
+				<button class="btn btn-default" onclick="switchToHeatmap()">Monthly</button>
 			</div>
 			<div id="sideblock">
 			</div>

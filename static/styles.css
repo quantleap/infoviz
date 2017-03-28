@@ -326,6 +326,7 @@ path {
   fill: steelblue;
 }
 
+/*
 .button {
 	float: left;
     border: none;
@@ -334,7 +335,7 @@ path {
     text-align: center;
     text-decoration: none;
     font-size: 14px;
-}
+}*/
 
 .dot {
   stroke: #000;
@@ -349,19 +350,7 @@ path {
   font-size: 14px;
 }
 
-/*
-#needhelp {
-	float: left;
-	width: 450px;
-	font-family: Helvetica, Arial, Sans-Serif;
-	font-style: italic;
-	margin: 10px 0px 10px 10px;
-}
 
-#needhelp a {
-	text-decoration: none;
-}
-*/
 #midsection {
 	width: 1350px;
 	height: 535px;
