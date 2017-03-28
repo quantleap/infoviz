@@ -150,8 +150,8 @@ d3.slider = function sliderModule() {
       var minDragBehaviour = d3.behavior.drag();
       minDragBehaviour.on("drag", slider.dragMin);
 	  minDragBehaviour.on("dragend", function() {
-		  let low = slider.get_min_value();
-		  let high = slider.get_max_value();
+		  low = slider.get_min_value();
+		  high = slider.get_max_value();
 		  var url = '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high);	
 		  if (navExplore) {
 			  var map = d3.map(low,high);
@@ -172,8 +172,8 @@ d3.slider = function sliderModule() {
 	  var maxDragBehaviour = d3.behavior.drag();
       maxDragBehaviour.on("drag", slider.dragMax);
 	  maxDragBehaviour.on("dragend", function() {
-		  let low = slider.get_min_value();
-		  let high = slider.get_max_value();
+		  low = slider.get_min_value();
+		  high = slider.get_max_value();
 		  var url = '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high);	  
 		  if (navExplore) {
 			  //switchToMap();
