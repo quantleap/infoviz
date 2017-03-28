@@ -7,6 +7,7 @@ d3.heatmap = function heatmapModule(id, min_year, max_year) {
   
  	d3.select('#sideblock').select('#row').remove();
 	d3.select('#sideblock').select('#row2').remove();
+	d3.select('#sideblock').select('#row3').remove();
 	d3.select('#sideblock').selectAll("#heatmap").remove();
 	
 	var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

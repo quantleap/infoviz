@@ -35,6 +35,14 @@ path {
 	pointer-events: all;
 }
 
+.bar.positive {
+  fill: darkred;
+}
+
+.bar.negative {
+  fill: steelblue;
+}
+
 .button {
 	float: left;
     background-color: #bbbbff;
@@ -111,12 +119,4 @@ path {
 #slider {
 	width:800px;
 	float: left;
-}
-
-#first {
-	
-}
-
-#second {
-	margin: 0px 0px 0px 5px;
 }
