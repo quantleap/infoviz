@@ -175,7 +175,13 @@ d3.map = function mapModule(low,high) {
 		  .attr("x", 50)
 		  .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 4;})
 		  .text(function(d, i){ return legend_labels[i]; });
-		
+		  
+		  legend.append("g")
+				.attr("class", "y axis")
+				.append("text")
+				.text("°Celsius")
+				.attr("transform", "translate(20,500)")
+				
 		//handlePanZoom();
 		render();
 
