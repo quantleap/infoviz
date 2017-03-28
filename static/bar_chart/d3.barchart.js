@@ -61,7 +61,8 @@ d3.barchart = function barModule(position,title,url,id,type) {
 		if (type == 'yoy') {
 			var dat = data.temperatures;}
 		if (type == 'cmp') {
-			var dat = data.histogram;}
+			var dat = data.histogram;
+			var dat2 = data}
 		
 		x.domain(dat.map(function(d) {
 			if (type == 'yoy') {
@@ -130,6 +131,20 @@ d3.barchart = function barModule(position,title,url,id,type) {
 				return Math.abs(y(d.count) - y(0)); }	
 			})
 		
+		if (type == 'cmp') {
+		var value = dat2.country_temp_increase;
+		svg.append("line")
+			.attr("id","vertLine")
+			.attr("x1", function() {console.log(value); 
+			return (3+value)/6*425;} )
+			.attr("x2", function() {console.log(value); 
+			return (3+value)/6*425;})	
+			.attr("y1", 0)
+			.attr("y2", height)
+			.style("stroke-width", 2)
+			.style("stroke", "red")
+			.style("fill", "none");		}
+			
 		// Add the title	
 		svg.append("text")
 			.attr("x", (width / 2))             
@@ -162,7 +177,7 @@ d3.barchart = function barModule(position,title,url,id,type) {
 				}				
 
 		svg.append("g")
-			.attr("class", "X axis")
+			.attr("class", "x axis")
 			.attr("transform", "translate(" + (0) + "," + height + ")")
 			.call(xAxis);
 
