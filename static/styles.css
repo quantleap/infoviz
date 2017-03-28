@@ -30,6 +30,8 @@ h1 {
   border-color: rgb(50, 90, 45);
 }
 
+/*Set titles to be 20% of screenheight and give them a margin
+Note: This is where the overlap of the buttons came from!*/
 .title1, .title2, .title3, .title4{
   background-color: rgba(50, 90, 45, 1);
   height: 20vh;
@@ -38,6 +40,12 @@ h1 {
   padding: 0px;
 }
 
+.title4{
+  margin: 0px 0px 0px 0px;
+}
+
+/*Make the three pages 85% screenheight and create the
+parralax scrolling effect*/
 .page1, .page2, .page3{
   /* Set a specific height */
   height: 85vh;
@@ -50,6 +58,8 @@ h1 {
   padding: 0px;
 }
 
+
+/*Set the background images separately*/
 .page1 {
     /* The image used */
     background-image: url("introduction/images/treerow.jpg");
@@ -64,6 +74,7 @@ h1 {
   background-image: url("introduction/images/forestfire.jpg");
 }
 
+/*Set the textblocks of */
 .page1 p, .page2 p, .page3 p {
   font-size: 3vmin;
   position: relative;
