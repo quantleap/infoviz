@@ -72,20 +72,22 @@ d3.linechart = function lineModule(position,title,url,id,type) {
 		});
 
 		// Scale the range of the data
-		x.domain(d3.extent(data.temperatures, function(d) { 
-		return d.year; }));
-		if (type == 'avg') {
-		y.domain([d3.min(data.temperatures, function(d) { 
-		return d.avg; }), d3.max(data.temperatures, function(d) { 
-		return d.avg; })]); }
-		if (type == 'yoy') {
-		y.domain([d3.min(data.temperatures, function(d) { 
-		return d.yoy; }), d3.max(data.temperatures, function(d) { 
-		return d.yoy; })]); }
+		x.domain(d3.extent(data.temperatures, function(d) { return d.year; }));
 
-		// Add the valueline path
+		if (type == 'avg') {
+			y.domain([d3.min(data.temperatures, function(d) {
+			return d.avg; }), d3.max(data.temperatures, function(d) {
+			return d.avg; })]); }
+
+		if (type == 'yoy') {
+			y.domain([d3.min(data.temperatures, function(d) {
+			return d.yoy; }), d3.max(data.temperatures, function(d) {
+			return d.yoy; })]); }
+
+		// Add the value line path
 		svg.append("path")
 			.attr("class", "line")
+            .style("stroke-width", "3")
 			.attr("d", valueline(data.temperatures));
 		
 		// Add the title	
@@ -96,10 +98,10 @@ d3.linechart = function lineModule(position,title,url,id,type) {
 			.text(title);
 			
 		svg.append("g")
-				.attr("class", "y axis")
-				.append("text")
-				.text("°Celsius")
-				.attr("transform", "translate(-20, -10)")			
+            .attr("class", "y axis")
+            .append("text")
+            .text("°Celsius")
+            .attr("transform", "translate(-20, -10)")
 
 		// Add the X Axis
 		svg.append("g")
