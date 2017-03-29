@@ -20,12 +20,11 @@ d3.linechart = function lineModule(position,title,url,id,type) {
 	.append('div')
 		.attr('id', function (d) { return d.id; })
 		.style('display', 'table-row')
-		.style('height','155px')
 
 	// Set the dimensions
 	var margin = {top: 30, right: 20, bottom: 30, left: 30},
 		width = 475 - margin.left - margin.right,
-		height = 155 - margin.top - margin.bottom;
+		height = 200 - margin.top - margin.bottom;
 
 	// Parse the date
 	var parseDate = d3.time.format("%Y").parse;

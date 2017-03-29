@@ -6,10 +6,10 @@
 
 body {
   font-family: courier;
-  width: 100%;
+/*  width: 100%;
   height: 100%;
   margin: 0px 0px 0px 0px;
-  padding: 0px;
+  padding: 0px;*/
 }
 
 h1 {
@@ -411,44 +411,56 @@ path {
 
 #midsection {
 	width: 1350px;
-	height: 535px;
+    margin-left: 10px;
+	/*height: 535px;*/
 	}
 
 #btmsection {
 	padding: 5px 0px 0px 0px;
 	width: 1350px;
-	height: 90px;
+	/*height: 90px;*/
 	}
 
 #topnav {
 	width: 1350px;
 	height: 30px;
-	}
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 
 #map {
 	width: 800px;
-	height: 505px;
+	height: 600px;
 	float: left;
+    margin-right: 5px;
 }
 
 #sidescreen{
-	display:table;
+	display: inline;
 	table-layout:fixed;
 	padding: 0px 0px 0px 5px;
 	width: 460px;
 }
 
 #sidenav {
-	display : table-row;
-	height: 30px;
-	}
+    display : inline;
+    margin-left: 200px;
+}
+
 
 #sideblock {
-	display : table-row;
-	height: 465px;
-	}
+	display : inline;
+	/*margin-left: 5px;*/
+	/*height: 600px;*/
+}
 
 #slider {
-	width:800px;
+	width: 800px;
+    margin-left: 10px;
 	float: left;
+}
+
+#row2 {
+    margin-left: 5px;
 }

@@ -12,7 +12,7 @@ d3.barchart = function barModule(position,title,url,id,type) {
 	// Set the dimensions
 	var margin = {top: 30, right: 20, bottom: 30, left: 30},
 		width = 475 - margin.left - margin.right,
-		height = 155 - margin.top - margin.bottom;
+		height = 195 - margin.top - margin.bottom;
 		
 		
 	var y = d3.scale.linear()

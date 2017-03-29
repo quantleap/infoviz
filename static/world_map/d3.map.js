@@ -143,17 +143,17 @@ d3.map = function mapModule(low,high) {
 			let country = d3.select(lastCountry).style('stroke-width', '.5px').style('stroke', '#666')
 			let country2 = d3.select(this).style('stroke-width', '3px').style('stroke', 'white')
 			lastCountry = this;
-		})
-		
+		});
+
+		// country label
 		let textpos = d3.select('#sidenav')
-		.append('div')
-		.append('text')
-		.attr('id', 'countryname')
-		.attr('font-family', 'Verdana')
-		.attr('font-size', '15px')
-		.attr('margin','0px 5px 0px 0px')
-		.attr('padding', '3px 5px');
-		
+			//.append('div')
+			.append('text')
+			.attr('id', 'countryname')
+			//.attr('font-family', 'Verdana')
+			//.attr('font-size', '24px')
+			//.attr('margin','0px 5px 0px 0px')
+			//.attr('padding', '3px 5px');
 		textpos.text(currentCountryName);
 		
 		  //Adding legend

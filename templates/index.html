@@ -19,25 +19,26 @@
 	<script src="{{ url_for('static', filename='heat_map/d3.heatmap.js') }}"></script>
 </head>
 <body>
-	<div class="container-fluid">
 	<div id="midsection">
 		<div id="topnav">
-			<button class="btn btn-default" onclick="switchToMap(2017)">Explore</button>
-			<button class="btn btn-default" onclick="switchToBubble()">Compare</button>
-		</div>
-		<div id="map"></div>	
-		<div id="sidescreen">
-			<div id="sidenav">
+			<div style="display: inline;">
+				<button class="btn btn-default" onclick="switchToMap(2017)">Explore</button>
+				<button class="btn btn-default" onclick="switchToBubble()">Compare</button>
+				<div id="sidenav"></div>
+			</div>
+			<div style="float: right; margin-right: 70px;">
+
 				<button class="btn btn-default" onclick="switchToChart()">Annual</button>
 				<button class="btn btn-default" onclick="switchToHeatmap()">Monthly</button>
 			</div>
-			<div id="sideblock">
-			</div>
 		</div>
+		<div id="map"></div>	
+		<!--<div id="sidescreen">-->
+			<div id="sideblock"></div>
+		<!--</div>-->
 	</div>
 	<div id="btmsection">
 		<div id="slider"></div>
-	</div>
 	</div>
 	<script>
 		var navExplore = true, navCompare = false, navAnnual = true, navMonthly = false;
