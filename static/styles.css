@@ -464,3 +464,7 @@ path {
 #row2 {
     margin-left: 5px;
 }
+
+text#countryname {
+    font-size: 15pt;
+}
