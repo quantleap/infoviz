@@ -140,7 +140,9 @@ d3.map = function mapModule(low,high) {
 		  };	
 		})
 		.on('mouseup', function() {
-			let country = d3.select(this).style('stroke-width', '.5px').style('stroke', '#666')
+			let country = d3.select(lastCountry).style('stroke-width', '.5px').style('stroke', '#666')
+			let country2 = d3.select(this).style('stroke-width', '3px').style('stroke', 'white')
+			lastCountry = this;
 		})
 		
 		let textpos = d3.select('#sidenav')
