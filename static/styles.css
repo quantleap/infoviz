@@ -61,7 +61,6 @@ parralax scrolling effect*/
 
 /*Set the background images separately*/
 .page1 {
-    /* The image used */
     background-image: url("introduction/images/treerow.jpg");
 }
 
@@ -246,6 +245,10 @@ divs of the images for page 2*/
   height: auto;
   border: 1px solid green;
   background: rgba(50, 90, 45, 0.1);
+}
+
+#pict5, #pict6, #pict7{
+transform: translateY(15%);
 }
 
 #page2text{
