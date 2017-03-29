@@ -138,11 +138,25 @@ divs of the images for page 2*/
 	visibility:hidden;
 }
 
-.thumb:hover span, .thumb2:hover span, .thumb3:hover span{
+.thumb:hover span{
+  visibility:visible;
+  position: absolute;
+  height: 200%;
+  top: -30%;
+  left: 0%;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+.thumb2:hover span, .thumb3:hover span{
 	visibility:visible;
 	position: absolute;
-  height: 200%;
-  top: -50%;
+  height: 97%;
+  top: 15%;
+  left: 0%;
   opacity: 1;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
