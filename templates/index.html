@@ -27,7 +27,6 @@
 				<div id="sidenav"></div>
 			</div>
 			<div style="float: right; margin-right: 70px;">
-
 				<button class="btn btn-default" onclick="switchToChart()">Annual</button>
 				<button class="btn btn-default" onclick="switchToHeatmap()">Monthly</button>
 			</div>
@@ -63,13 +62,15 @@
 			linechart = d3.linechart('#row','Absolute temperatures', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'abstemp','avg');
 			var barchart = d3.barchart('#row2','Annual temperature change', '/country/'.concat(currentCountryISO).concat('/annual_temperatures').concat('?begin=').concat(low).concat('&end=').concat(high), 'tempchangebar','yoy');
 			var comparison = d3.barchart('#row3','Histogram of countries over annual temperature change', '/temp_change_distribution/'.concat(low).concat('/').concat(high).concat('/').concat(currentCountryISO).concat('?bins=10&lbound=-3&ubound=3'), 'countrycomparison','cmp');
-			navAnnual = true; navMonthly = false;
+			navAnnual = true;
+			navMonthly = false;
 		}
 
 		function switchToHeatmap(){
 			low = slider.get_min_value(), high = slider.get_max_value();
 			var heatmap = d3.heatmap(currentCountryISO,low,high);
-			navAnnual = false; navMonthly = true;
+			navAnnual = false;
+			navMonthly = true;
 		}
 	</script>
 	<script>

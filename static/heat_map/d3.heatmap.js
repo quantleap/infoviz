@@ -22,8 +22,8 @@ d3.heatmap = function heatmapModule(id, min_year, max_year) {
 	};
 	
 	var sideDiv = d3.select('#sideblock');
-	var width = sideDiv.node().getBoundingClientRect().width - margin.left - margin.right;
-	var height = 10 + sideDiv.node().getBoundingClientRect().height - margin.top - margin.bottom;
+	var width = 475 - margin.left - margin.right;
+	var height = 600 - margin.top - margin.bottom;
 	var legendWidth = 38;
 	
 	var url = 'country/'.concat(id).concat('/monthly_temperatures').concat('?begin=').concat(min_year).concat('&end=').concat(max_year);
