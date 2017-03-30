@@ -17,7 +17,7 @@ d3.heatmap = function heatmapModule(id, min_year, max_year) {
 	var margin = {
 	  top: 50,
 	  right: 20,
-	  bottom: 100,
+	  bottom: 130,
 	  left: 35
 	};
 	
