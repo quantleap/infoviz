@@ -182,7 +182,7 @@ d3.map = function mapModule(low,high) {
 				.attr("class", "y axis")
 				.append("text")
 				.text("°Celsius")
-				.attr("transform", "translate(20,500)")
+				.attr("transform", "translate(20, 430)")
 
 		//handlePanZoom();
 		render();
