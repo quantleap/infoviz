@@ -1,4 +1,4 @@
-// Sebastiaan Hoekstra stnr 10264523 
+// Sebastiaan Hoekstra stnr 10264523
 
 // Partially adapted from:
 // Steve Hollasch http://bl.ocks.org/hollasch/12e6627b4a8d7c3ceaac5297fa1d3169
@@ -7,10 +7,10 @@
 
 d3.map = function mapModule(low,high) {
 	"use strict";
-	
+
 	d3.select("svg").remove();
 	d3.select("#countryname").remove();
-	
+
 	var mapDiv = d3.select('#map');
 	var width  = mapDiv.node().getBoundingClientRect().width;
 	var height = mapDiv.node().getBoundingClientRect().height;
@@ -18,7 +18,7 @@ d3.map = function mapModule(low,high) {
 
 	var initialLongitude = 0;            // Initial longitude to center
 	var latitudeBounds = [ -80, 84 ];      // Maximum latitude to display
-		
+
 	var projection = d3.geo.mercator()
 		.rotate([-initialLongitude, 0])    // Rotate the initial longitude to center
 		.scale(1)                          // We'll scale up to match the viewport shortly
@@ -32,8 +32,8 @@ d3.map = function mapModule(low,high) {
 	var legend_labels = ["< -3", "-2+", "-1+", "0+", "1+", "2+", "> 3"]
 	var color = d3.scale.threshold()
 		.domain(color_domain)
-		.range(["#313695", "#4575b4", "#74add1", "#abd9e9", "#e0f3f8", "#ffffbf", "#fee090", "#fdae61", "#f46d43", "#d73027", "#a50026"]);
-	
+		.range(["#313695", "#313695", "#4575b4", "#74add1", "#abd9e9", "#e0f3f8", "#ffffbf", "#fee090", "#fdae61", "#f46d43", "#d73027", "#a50026"]);
+
 	//Reading map file and data
 
 	queue()
@@ -46,26 +46,26 @@ d3.map = function mapModule(low,high) {
 
 	function ready(error, world, countryNames, tempData) {
 		if (error) throw error;
-		  
+
 		var tempById = {};
 		var nameById = {};
 
 		countryNames.forEach(function(d){
 			nameById[d.id] = d.name;
 		});
-		
+
 		tempData.forEach(function(d) {
 			tempById[d.iso_code] = +d.temp_increase;
-		 });	
-			
+		 });
+
 		let countries = topojson.feature(world, world.objects.countries).features;
 
 		countries = countries.filter(function(d) {
 			return countryNames.some(function(n) {
 				if (d.id == n.id) return d.name = n.name, d.iso_code = n.iso_code
 			})
-		})			
-			
+		})
+
 		function updateProjectionBounds() {
 			// Updates the view top left and bottom right with the current projection.
 			var yaw = projection.rotate()[0];
@@ -83,7 +83,7 @@ d3.map = function mapModule(low,high) {
 
 		projection
 			.scale(scaleExtent[0]);         // Set up projection to minimium zoom
-			
+
 		var path = d3.geo.path()            // Map Geometry
 			.projection(projection);
 
@@ -100,7 +100,7 @@ d3.map = function mapModule(low,high) {
 			.on("zoom", handlePanZoom);
 
 		svg.call(zoom);                     // Attach zoom event
-		
+
 		// Load map data
 		map.selectAll('.country')
 		.data(countries)
@@ -134,10 +134,10 @@ d3.map = function mapModule(low,high) {
 			currentCountryISO = iso;
 		  if (navAnnual) {
 			  switchToChart();
-		  };	
+		  };
 		  if (navMonthly) {
 			  switchToHeatmap();
-		  };	
+		  };
 		})
 		.on('mouseup', function() {
 			let country = d3.select(lastCountry).style('stroke-width', '.5px').style('stroke', '#666')
@@ -155,7 +155,7 @@ d3.map = function mapModule(low,high) {
 			//.attr('margin','0px 5px 0px 0px')
 			//.attr('padding', '3px 5px');
 		textpos.text(currentCountryName);
-		
+
 		  //Adding legend
 
 		  var legend = svg.selectAll("g.legend")
@@ -177,13 +177,13 @@ d3.map = function mapModule(low,high) {
 		  .attr("x", 50)
 		  .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 4;})
 		  .text(function(d, i){ return legend_labels[i]; });
-		  
+
 		  legend.append("g")
 				.attr("class", "y axis")
 				.append("text")
 				.text("°Celsius")
 				.attr("transform", "translate(20,500)")
-				
+
 		//handlePanZoom();
 		render();
 
@@ -191,7 +191,7 @@ d3.map = function mapModule(low,high) {
 			map.selectAll('path')       // Redraw all map paths
 				.attr('d', path)
 				.style("fill", function(d) {
-				return color(tempById[d.iso_code]); 
+				return color(tempById[d.iso_code]);
 			});
 		}
 
@@ -200,7 +200,7 @@ d3.map = function mapModule(low,high) {
 
 			var scale = zoom.scale();
 			var translate = zoom.translate();
-			
+
 			// If the scaling changes, ignore translation (otherwise touch zooms are weird).
 			var delta = [ translate[0] - translateLast[0], translate[1] - translateLast[1] ];
 			if (scale != scaleLast) {
@@ -208,7 +208,7 @@ d3.map = function mapModule(low,high) {
 			} else {
 				var longitude = projection.rotate()[0];
 				var tp = projection.translate();
-			
+
 				// Use the X translation to rotate, based on the current scale.
 				longitude += 360 * (delta[0] / width) * (scaleExtent[0] / scale);
 				projection.rotate ([longitude, 0, 0]);
